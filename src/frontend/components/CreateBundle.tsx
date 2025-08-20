@@ -136,7 +136,7 @@ const CreateBundle: React.FC = () => {
                 value={bundleConfig.name}
                 onChange={(e) => setBundleConfig({ ...bundleConfig, name: e.target.value })}
                 placeholder="e.g., DeFi Growth Bundle"
-                className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
               />
             </div>
             <div>
@@ -146,7 +146,7 @@ const CreateBundle: React.FC = () => {
                 value={bundleConfig.symbol}
                 onChange={(e) => setBundleConfig({ ...bundleConfig, symbol: e.target.value.toUpperCase() })}
                 placeholder="e.g., DEFI"
-                className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
               />
             </div>
             <div>
@@ -156,7 +156,7 @@ const CreateBundle: React.FC = () => {
                 onChange={(e) => setBundleConfig({ ...bundleConfig, description: e.target.value })}
                 placeholder="Describe your bundle strategy..."
                 rows={4}
-                className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
               />
             </div>
             <button
@@ -182,7 +182,7 @@ const CreateBundle: React.FC = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search tokens..."
-              className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+              className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
             />
           </div>
 
@@ -242,7 +242,7 @@ const CreateBundle: React.FC = () => {
                       type="number"
                       value={asset.weight}
                       onChange={(e) => handleWeightChange(asset.symbol, parseFloat(e.target.value) || 0)}
-                      className="w-20 px-3 py-2 border border-emerald-200 rounded-lg text-center"
+                      className="w-20 px-3 py-2 border border-emerald-200 rounded-lg text-center text-black"
                       min="0"
                       max="100"
                       step="0.1"
@@ -283,7 +283,7 @@ const CreateBundle: React.FC = () => {
                     type="number"
                     value={bundleConfig.threshold}
                     onChange={(e) => setBundleConfig({ ...bundleConfig, threshold: parseFloat(e.target.value) || 0 })}
-                    className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
                     min="0"
                     step="0.1"
                   />
@@ -302,7 +302,7 @@ const CreateBundle: React.FC = () => {
                   type="number"
                   value={bundleConfig.managementFee}
                   onChange={(e) => setBundleConfig({ ...bundleConfig, managementFee: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
                   min="0"
                   step="0.1"
                 />
@@ -313,7 +313,7 @@ const CreateBundle: React.FC = () => {
                   type="number"
                   value={bundleConfig.performanceFee}
                   onChange={(e) => setBundleConfig({ ...bundleConfig, performanceFee: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
                   min="0"
                   step="0.1"
                 />

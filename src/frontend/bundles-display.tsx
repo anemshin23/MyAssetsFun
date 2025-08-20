@@ -726,20 +726,16 @@ const BundlesDisplay: React.FC = () => {
                         <div key={bundle.id} className="bg-white rounded-2xl border border-emerald-100 p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                           {/* Bundle Header */}
                           <div className="flex items-start justify-between mb-6">
-                            <div>
-                              <h3 className="font-bold text-gray-900 text-xl mb-2">
-                                {bundle.bundle.slice(0, 2).join(' + ')} Bundle
-                              </h3>
-                              
+                            
                               <a 
                                 href={`https://twitter.com/${bundle.originalUsername}/status/${bundle.originalTweetId}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-800 text-sm font-medium transition-colors"
+                                className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-800 text-sm font-large transition-colors"
                               >
-                                <span>*View Original Tweet from @{bundle.originalUsername}</span>
+                                Bundle from @{bundle.originalUsername}
                               </a>
-                            </div>
+                              
                           </div>
 
                           {/* Asset List */}
