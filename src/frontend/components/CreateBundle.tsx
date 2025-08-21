@@ -38,6 +38,7 @@ const CreateBundle: React.FC = () => {
 
   // Mock token list - replace with actual token data
   const availableTokens = [
+    { symbol: 'BERA', name: 'Berachain', address: '0x...' },
     { symbol: 'BTC', name: 'Bitcoin', address: '0x...' },
     { symbol: 'ETH', name: 'Ethereum', address: '0x...' },
     { symbol: 'USDC', name: 'USD Coin', address: '0x...' },
@@ -130,7 +131,7 @@ const CreateBundle: React.FC = () => {
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Bundle Details</h2>
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Bundle Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Bundle Name <span className="text-red-500">*</span></label>
               <input
                 type="text"
                 value={bundleConfig.name}
@@ -140,7 +141,7 @@ const CreateBundle: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Symbol (Ticker)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Symbol (Ticker) <span className="text-red-500">*</span></label>
               <input
                 type="text"
                 value={bundleConfig.symbol}

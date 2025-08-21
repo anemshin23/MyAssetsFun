@@ -9,6 +9,7 @@ interface CompletedBundle {
   completedAt: string;
   conversationType: 'single_tweet' | 'conversation';
   tweetText?: string;
+  profileImageUrl?: string;
 }
 
 interface Influencer {
@@ -19,6 +20,7 @@ interface Influencer {
   avgBundleSize: number;
   totalAssets: string[];
   uniqueAssets: string[];
+  profileImageUrl?: string;
 }
 
 const InfluencerProfiles: React.FC = () => {
@@ -61,6 +63,9 @@ const InfluencerProfiles: React.FC = () => {
             const allAssets = bundles.flatMap(b => b.bundle);
             const uniqueAssets = Array.from(new Set(allAssets));
             
+            // Get profile image URL from the first bundle (most recent)
+            const profileImageUrl = bundles[0]?.profileImageUrl;
+            
             return {
               username,
               bundleCount: bundles.length,
@@ -68,7 +73,8 @@ const InfluencerProfiles: React.FC = () => {
               lastActive: new Date(Math.max(...bundles.map(b => new Date(b.completedAt).getTime()))).toISOString(),
               avgBundleSize: bundles.reduce((sum, b) => sum + b.bundle.length, 0) / bundles.length,
               totalAssets: allAssets,
-              uniqueAssets: uniqueAssets
+              uniqueAssets: uniqueAssets,
+              profileImageUrl
             };
           });
           
@@ -278,7 +284,20 @@ const InfluencerProfiles: React.FC = () => {
                 {/* User Profile Header */}
                 <div className="bg-white rounded-2xl border border-emerald-100 p-8 shadow-lg mb-8">
                   <div className="flex items-center gap-6 mb-6">
-                    <div className="w-20 h-20 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                    {influencer.profileImageUrl ? (
+                      <img 
+                        src={influencer.profileImageUrl} 
+                        alt={`@${influencer.username}`}
+                        className="w-20 h-20 rounded-full object-cover border-2 border-emerald-200"
+                        onError={(e) => {
+                          // Fallback to letter if image fails to load
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.nextElementSibling?.classList.remove('hidden');
+                        }}
+                      />
+                    ) : null}
+                    <div className={`w-20 h-20 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full flex items-center justify-center text-white font-bold text-2xl ${influencer.profileImageUrl ? 'hidden' : ''}`}>
                       {influencer.username.charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -424,7 +443,20 @@ const InfluencerProfiles: React.FC = () => {
                   onClick={() => setSelectedInfluencer(influencer.username)}
                 >
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                    {influencer.profileImageUrl ? (
+                      <img 
+                        src={influencer.profileImageUrl} 
+                        alt={`@${influencer.username}`}
+                        className="w-16 h-16 rounded-full object-cover border-2 border-emerald-200"
+                        onError={(e) => {
+                          // Fallback to letter if image fails to load
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.nextElementSibling?.classList.remove('hidden');
+                        }}
+                      />
+                    ) : null}
+                    <div className={`w-16 h-16 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl ${influencer.profileImageUrl ? 'hidden' : ''}`}>
                       {influencer.username.charAt(0).toUpperCase()}
                     </div>
                     <div>
