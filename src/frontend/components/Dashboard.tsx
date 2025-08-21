@@ -13,8 +13,34 @@ interface Bundle {
 }
 
 const Dashboard: React.FC = () => {
-  const { isConnected } = useAccount();
+  const { isConnected, connector } = useAccount();
   const [activeTab, setActiveTab] = useState<'bundles' | 'investments' | 'notifications' | 'settings'>('bundles');
+  const [notifications, setNotifications] = useState([
+    {
+      id: '1',
+      type: 'rebalance',
+      message: 'DeFi Growth Bundle rebalanced due to 5% drift',
+      timestamp: '2 hours ago',
+      read: false,
+    },
+    {
+      id: '2',
+      type: 'fee',
+      message: 'Performance fee of 0.5 BERA collected from Layer 2 Bundle',
+      timestamp: '1 day ago',
+      read: true,
+    },
+  ]);
+
+  const markAsRead = (notificationId: string) => {
+    setNotifications(prevNotifications =>
+      prevNotifications.map(notification =>
+        notification.id === notificationId
+          ? { ...notification, read: true }
+          : notification
+      )
+    );
+  };
 
   // Mock data - replace with real data from your backend
   const myBundles: Bundle[] = [
@@ -50,23 +76,6 @@ const Dashboard: React.FC = () => {
       performance: 12.1,
       shares: 450,
       isCreator: false,
-    },
-  ];
-
-  const notifications = [
-    {
-      id: '1',
-      type: 'rebalance',
-      message: 'DeFi Growth Bundle rebalanced due to 5% drift',
-      timestamp: '2 hours ago',
-      read: false,
-    },
-    {
-      id: '2',
-      type: 'fee',
-      message: 'Performance fee of 0.5 BERA collected from Layer 2 Bundle',
-      timestamp: '1 day ago',
-      read: true,
     },
   ];
 
@@ -121,9 +130,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           <div className="text-3xl font-bold text-green-600">
-            +{((myBundles.reduce((sum, b) => sum + b.performance, 0) + 
-                myInvestments.reduce((sum, inv) => sum + inv.performance, 0)) / 
-               (myBundles.length + myInvestments.length)).toFixed(1)}%
+            +{Math.round((myBundles.reduce((sum, b) => sum + b.performance, 0) / myBundles.length) * 100) / 100}%
           </div>
         </div>
 
@@ -170,9 +177,7 @@ const Dashboard: React.FC = () => {
             <div>
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">My Created Bundles</h2>
-                <button className="bg-gradient-to-r from-emerald-500 to-green-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-600 transition-all duration-300">
-                  Create New Bundle
-                </button>
+                
               </div>
               
               {myBundles.length === 0 ? (
@@ -304,7 +309,10 @@ const Dashboard: React.FC = () => {
                         <p className="text-sm text-gray-500">{notification.timestamp}</p>
                       </div>
                       {!notification.read && (
-                        <button className="text-emerald-600 hover:text-emerald-800 text-sm font-medium">
+                        <button 
+                          onClick={() => markAsRead(notification.id)}
+                          className="text-emerald-600 hover:text-emerald-800 text-sm font-medium"
+                        >
                           Mark Read
                         </button>
                       )}
@@ -326,9 +334,9 @@ const Dashboard: React.FC = () => {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-gray-700">Connected Wallet</span>
-                      <button className="text-emerald-600 hover:text-emerald-800 font-medium">
-                        Change Wallet
-                      </button>
+                      <span className="text-emerald-600 font-medium">
+                        {connector?.name || 'Unknown Wallet'}
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-700">Network</span>
@@ -337,30 +345,7 @@ const Dashboard: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="border border-emerald-200 rounded-xl p-6">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Profile Settings</h3>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Display Name</label>
-                      <input
-                        type="text"
-                        placeholder="Enter your display name"
-                        className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                      <input
-                        type="email"
-                        placeholder="Enter your email"
-                        className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                      />
-                    </div>
-                    <button className="bg-gradient-to-r from-emerald-500 to-green-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-600 transition-all duration-300">
-                      Save Changes
-                    </button>
-                  </div>
-                </div>
+               
               </div>
             </div>
           )}
