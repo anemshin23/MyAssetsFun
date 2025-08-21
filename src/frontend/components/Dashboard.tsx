@@ -93,11 +93,9 @@ const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-white rounded-2xl p-6 border border-emerald-100 shadow-lg">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-green-500 rounded-xl flex items-center justify-center text-white">
-              📦
-            </div>
+            
             <div>
-              <div className="text-gray-600 text-sm">Created Bundles</div>
+              <div className="text-gray-600 text-md">Created Bundles</div>
             </div>
           </div>
           <div className="text-3xl font-bold text-gray-900">{myBundles.length}</div>
@@ -105,11 +103,9 @@ const Dashboard: React.FC = () => {
 
         <div className="bg-white rounded-2xl p-6 border border-emerald-100 shadow-lg">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-teal-500 rounded-xl flex items-center justify-center text-white">
-              💰
-            </div>
+            
             <div>
-              <div className="text-gray-600 text-sm">Total Invested</div>
+              <div className="text-gray-600 text-md">Total Invested</div>
             </div>
           </div>
           <div className="text-3xl font-bold text-gray-900">
@@ -119,9 +115,7 @@ const Dashboard: React.FC = () => {
 
         <div className="bg-white rounded-2xl p-6 border border-emerald-100 shadow-lg">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-xl flex items-center justify-center text-white">
-              📈
-            </div>
+            
             <div>
               <div className="text-gray-600 text-sm">Avg Performance</div>
             </div>
@@ -135,9 +129,7 @@ const Dashboard: React.FC = () => {
 
         <div className="bg-white rounded-2xl p-6 border border-emerald-100 shadow-lg">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center text-white">
-              🔔
-            </div>
+           
             <div>
               <div className="text-gray-600 text-sm">Unread</div>
             </div>
@@ -152,10 +144,10 @@ const Dashboard: React.FC = () => {
       <div className="bg-white rounded-2xl border border-emerald-100 shadow-lg mb-8">
         <div className="flex border-b border-emerald-100">
           {[
-            { id: 'bundles', label: 'My Bundles', icon: '📦' },
-            { id: 'investments', label: 'My Investments', icon: '💰' },
-            { id: 'notifications', label: 'Notifications', icon: '🔔' },
-            { id: 'settings', label: 'Settings', icon: '⚙️' },
+            { id: 'bundles', label: 'My Bundles'},
+            { id: 'investments', label: 'My Investments'},
+            { id: 'notifications', label: 'Notifications'},
+            { id: 'settings', label: 'Settings'},
           ].map((tab) => (
             <button
               key={tab.id}
@@ -166,7 +158,6 @@ const Dashboard: React.FC = () => {
                   : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
               }`}
             >
-              <span>{tab.icon}</span>
               <span>{tab.label}</span>
             </button>
           ))}

@@ -28,9 +28,9 @@ const CreateBundle: React.FC = () => {
     description: '',
     assets: [],
     rebalancePolicy: 'weekly',
-    threshold: 5,
-    managementFee: 0.5,
-    performanceFee: 10,
+    threshold: 2.0,
+    managementFee: 0.0,
+    performanceFee: 0.0,
   });
 
   const [selectedTokens, setSelectedTokens] = useState<string[]>([]);
@@ -268,8 +268,9 @@ const CreateBundle: React.FC = () => {
                 <select
                   value={bundleConfig.rebalancePolicy}
                   onChange={(e) => setBundleConfig({ ...bundleConfig, rebalancePolicy: e.target.value as any })}
-                  className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900"
                 >
+                  <option value="" disabled>Select rebalance policy</option>
                   <option value="daily">Daily</option>
                   <option value="weekly">Weekly</option>
                   <option value="monthly">Monthly</option>
@@ -301,10 +302,19 @@ const CreateBundle: React.FC = () => {
                 <input
                   type="number"
                   value={bundleConfig.managementFee}
-                  onChange={(e) => setBundleConfig({ ...bundleConfig, managementFee: parseFloat(e.target.value) || 0 })}
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (!isNaN(value) && value >= 0 && value <= 2) {
+                      setBundleConfig({ ...bundleConfig, managementFee: value });
+                    }
+                  }}
+                  onKeyDown={(e) => e.preventDefault()}
+                  onPaste={(e) => e.preventDefault()}
                   className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
                   min="0"
+                  max="2"
                   step="0.1"
+                  //readOnly
                 />
               </div>
               <div>
@@ -312,10 +322,19 @@ const CreateBundle: React.FC = () => {
                 <input
                   type="number"
                   value={bundleConfig.performanceFee}
-                  onChange={(e) => setBundleConfig({ ...bundleConfig, performanceFee: parseFloat(e.target.value) || 0 })}
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (!isNaN(value) && value >= 0 && value <= 2) {
+                      setBundleConfig({ ...bundleConfig, performanceFee: value });
+                    }
+                  }}
+                  onKeyDown={(e) => e.preventDefault()}
+                  onPaste={(e) => e.preventDefault()}
                   className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
                   min="0"
+                  max="2"
                   step="0.1"
+                  //readOnly
                 />
               </div>
             </div>
