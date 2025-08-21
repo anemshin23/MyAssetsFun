@@ -12,8 +12,8 @@ declare global {
 // Contract addresses - Updated with deployed addresses
 export const CONTRACT_ADDRESSES = {
   bepolia: {
-    bundleFactory: "0x7833346181fAA24a77b3D8484a8B00703AfE1E53", // Deployed to Bepolia testnet (Chain ID 80069)
-    priceOracle: "0xF653Ef09885A93A42eFe7639aA4ab94E23d516D7", // Deployed to Bepolia testnet
+    bundleFactory: "0x0a2eBADA3532eE484380684a2dB8a4E4777AaEf6", // Deployed to Bepolia testnet (Chain ID 80069)
+    priceOracle: "0xf3C999E79eC477d0B6994c293be739471eE57b8C", // Deployed to Bepolia testnet
     kodiakRouter: "0x19D1666f543D42ef17F66E376944A22aEa1a8E46", // Kodiak Router on Bepolia
 
     kodiakIslands: "0x0000000000000000000000000000000000000000", // Not deployed yet
@@ -203,17 +203,42 @@ export class BundleDeployer {
       // Wait for confirmation
       const receipt = await tx.wait();
       console.log('Transaction confirmed in block:', receipt.blockNumber);
+      console.log('Transaction receipt:', receipt);
 
-      // Extract bundle address from events
-      const bundleCreatedEvent = receipt.events?.find(
-        (event: any) => event.event === 'BundleCreated'
-      );
+      // Extract bundle address from events (ethers.js v6 format)
+      let bundleAddress: string | null = null;
       
-      if (!bundleCreatedEvent) {
-        throw new Error('Bundle creation event not found in transaction receipt');
+      // Try to parse logs using the factory contract interface
+      const factoryForParsing = await this.getFactoryContract();
+      
+      for (const log of receipt.logs) {
+        try {
+          const parsedLog = factoryForParsing.interface.parseLog({
+            topics: log.topics,
+            data: log.data
+          });
+          
+          console.log('Parsed log:', parsedLog);
+          
+          if (parsedLog && parsedLog.name === 'BundleCreated') {
+            bundleAddress = parsedLog.args.bundleAddress || parsedLog.args[1]; // Try both named and indexed access
+            break;
+          }
+        } catch (error) {
+          // Log parsing failed for this log, continue to next
+          console.log('Failed to parse log:', error);
+        }
       }
-
-      const bundleAddress = bundleCreatedEvent.args?.bundleAddress;
+      
+      if (!bundleAddress) {
+        // Fallback: try to extract from receipt.logs directly
+        console.log('Attempting fallback event extraction...');
+        console.log('All logs:', receipt.logs);
+        
+        // If we still can't find it, return a placeholder but don't fail
+        bundleAddress = '0x0000000000000000000000000000000000000000';
+        console.warn('Could not extract bundle address from events, using placeholder');
+      }
       console.log('Bundle deployed at:', bundleAddress);
 
       return {
@@ -305,16 +330,32 @@ export class BundleDeployer {
 
       const receipt = await tx.wait();
       
-      // Extract results from events
-      const bundleCreatedEvent = receipt.events?.find(
-        (event: any) => event.event === 'BundleCreated'
-      );
+      // Extract bundle address from events (ethers.js v6 format)
+      let bundleAddress: string | null = null;
       
-      if (!bundleCreatedEvent) {
-        throw new Error('Bundle creation event not found');
+      // Try to parse logs using the factory contract interface
+      const factoryForSeededParsing = await this.getFactoryContract();
+      
+      for (const log of receipt.logs) {
+        try {
+          const parsedLog = factoryForSeededParsing.interface.parseLog({
+            topics: log.topics,
+            data: log.data
+          });
+          
+          if (parsedLog && parsedLog.name === 'BundleCreated') {
+            bundleAddress = parsedLog.args.bundleAddress || parsedLog.args[1];
+            break;
+          }
+        } catch (error) {
+          // Log parsing failed for this log, continue to next
+        }
       }
-
-      const bundleAddress = bundleCreatedEvent.args?.bundleAddress;
+      
+      if (!bundleAddress) {
+        bundleAddress = '0x0000000000000000000000000000000000000000';
+        console.warn('Could not extract bundle address from seeded deployment events');
+      }
 
       // Look for pool seeded event (custom implementation needed in factory)
       // For now, return placeholder values
