@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
 import { useAccount } from 'wagmi';
+import { BundleDeployer, DEFAULT_CONFIGS, DeployBundleParams } from '../utils/deployBundle';
+
+// Extend window interface for ethereum
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
 
 interface BundleAsset {
   symbol: string;
@@ -17,6 +25,12 @@ interface BundleConfig {
   threshold: number;
   managementFee: number;
   performanceFee: number;
+  // Kodiak-specific configuration
+  riskProfile: 'conservative' | 'balanced' | 'aggressive';
+  enableIslands: boolean;
+  islandAllocation: number; // 0-50%
+  enableRewardReinvestment: boolean;
+  rewardReinvestmentRatio: number; // 0-100%
 }
 
 const CreateBundle: React.FC = () => {
@@ -31,16 +45,27 @@ const CreateBundle: React.FC = () => {
     threshold: 5,
     managementFee: 0.5,
     performanceFee: 10,
+    riskProfile: 'balanced',
+    enableIslands: true,
+    islandAllocation: 20, // 20%
+    enableRewardReinvestment: true,
+    rewardReinvestmentRatio: 70, // 70% reinvest, 30% to creator
   });
 
   const [selectedTokens, setSelectedTokens] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isDeploying, setIsDeploying] = useState(false);
+  const [deploymentResult, setDeploymentResult] = useState<{
+    bundleAddress: string;
+    transactionHash: string;
+  } | null>(null);
+  const [deploymentError, setDeploymentError] = useState<string | null>(null);
 
   // Mock token list - replace with actual token data
   const availableTokens = [
-    { symbol: 'BTC', name: 'Bitcoin', address: '0x...' },
-    { symbol: 'ETH', name: 'Ethereum', address: '0x...' },
-    { symbol: 'USDC', name: 'USD Coin', address: '0x...' },
+    { symbol: 'BTC', name: 'Bitcoin', address: '0xc7728Db26526Ae7fBc46b99f0EE667Eaba7E6bb9' },
+    { symbol: 'ETH', name: 'Ethereum', address: '0x4752428217c35c7779b077170529f8d10676f660' },
+    { symbol: 'USDC', name: 'USD Coin', address: '0x6e8d0eCfCE5c2b7587263923e23d141F6364c7f9' },
     { symbol: 'BASE', name: 'Base', address: '0x...' },
     { symbol: 'SOL', name: 'Solana', address: '0x...' },
     { symbol: 'AVAX', name: 'Avalanche', address: '0x...' },
@@ -364,6 +389,14 @@ const CreateBundle: React.FC = () => {
                 <div className="text-sm text-gray-600">Management Fee</div>
                 <div className="font-semibold text-gray-900">{bundleConfig.managementFee}%</div>
               </div>
+              <div>
+                <div className="text-sm text-gray-600">Risk Profile</div>
+                <div className="font-semibold text-gray-900 capitalize">{bundleConfig.riskProfile}</div>
+              </div>
+              <div>
+                <div className="text-sm text-gray-600">Islands Enabled</div>
+                <div className="font-semibold text-gray-900">{bundleConfig.enableIslands ? `Yes (${bundleConfig.islandAllocation}%)` : 'No'}</div>
+              </div>
             </div>
           </div>
 
@@ -378,20 +411,39 @@ const CreateBundle: React.FC = () => {
                 </div>
               ))}
             </div>
+            
+            {/* Kodiak Features Summary */}
+            {bundleConfig.enableIslands && (
+              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h4 className="font-semibold text-blue-800 mb-2">🐻 Kodiak Features Enabled</h4>
+                <div className="text-sm text-blue-700 space-y-1">
+                  <div>• {bundleConfig.islandAllocation}% allocated to Islands for yield generation</div>
+                  <div>• Automated PoL rewards from Berachain validators</div>
+                  {bundleConfig.enableRewardReinvestment && (
+                    <div>• {bundleConfig.rewardReinvestmentRatio}% rewards auto-reinvested for compound growth</div>
+                  )}
+                  <div>• Risk profile: {bundleConfig.riskProfile}</div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Deploy Button */}
           <div className="text-center">
             <button
-              onClick={() => {
-                // TODO: Implement bundle deployment
-                console.log('Deploying bundle:', bundleConfig);
-              }}
-              className="bg-gradient-to-r from-emerald-500 to-green-500 text-white px-12 py-4 rounded-xl font-bold text-xl hover:from-emerald-600 hover:to-green-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              onClick={handleDeployBundle}
+              disabled={isDeploying}
+              className={`px-12 py-4 rounded-xl font-bold text-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 ${
+                isDeploying 
+                  ? 'bg-gray-400 cursor-not-allowed text-white'
+                  : 'bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:from-emerald-600 hover:to-green-600'
+              }`}
             >
-              Deploy Bundle
+              {isDeploying ? 'Deploying...' : 'Deploy Bundle'}
             </button>
-            <p className="text-sm text-gray-500 mt-3">Estimated gas: ~0.001 BERA</p>
+            <p className="text-sm text-gray-500 mt-3">
+              Estimated gas: ~0.002 BERA {bundleConfig.enableIslands && '(+Islands setup)'}
+            </p>
           </div>
 
           <div className="flex justify-center mt-6">
@@ -401,11 +453,117 @@ const CreateBundle: React.FC = () => {
             >
               Back
             </button>
+            
+            {/* Deployment Status */}
+            {deploymentResult && (
+              <div className="mt-6 p-6 bg-green-50 border border-green-200 rounded-xl">
+                <h4 className="text-lg font-semibold text-green-800 mb-3">✅ Bundle Deployed Successfully!</h4>
+                <div className="space-y-2 text-sm">
+                  <div>
+                    <span className="font-medium text-green-700">Bundle Address: </span>
+                    <span className="font-mono text-green-600">{deploymentResult.bundleAddress}</span>
+                  </div>
+                  <div>
+                    <span className="font-medium text-green-700">Transaction: </span>
+                    <a 
+                      href={`https://artio.beratrail.io/tx/${deploymentResult.transactionHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-green-600 hover:underline"
+                    >
+                      {deploymentResult.transactionHash.slice(0, 20)}...{deploymentResult.transactionHash.slice(-10)}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {deploymentError && (
+              <div className="mt-6 p-6 bg-red-50 border border-red-200 rounded-xl">
+                <h4 className="text-lg font-semibold text-red-800 mb-3">❌ Deployment Failed</h4>
+                <p className="text-sm text-red-600">{deploymentError}</p>
+              </div>
+            )}
           </div>
         </div>
       )}
     </div>
   );
+  
+  // Handle bundle deployment
+  async function handleDeployBundle() {
+    if (!isConnected) {
+      setDeploymentError('Please connect your wallet first');
+      return;
+    }
+    
+    setIsDeploying(true);
+    setDeploymentError(null);
+    setDeploymentResult(null);
+    
+    try {
+      // Get provider from window.ethereum
+      if (typeof window === 'undefined' || !window.ethereum) {
+        throw new Error('No ethereum provider found');
+      }
+      
+      const { BrowserProvider } = await import('ethers');
+      const web3Provider = new BrowserProvider(window.ethereum);
+      // Auto-detect network based on connected wallet's chain ID
+      const deployer = new BundleDeployer(web3Provider);
+      
+      // Convert UI config to deployment parameters
+      const tokens = bundleConfig.assets.map(asset => ({
+        address: asset.address,
+        symbol: asset.symbol,
+        name: asset.name,
+        decimals: 18, // Assuming 18 decimals for now
+        weight: asset.weight
+      }));
+      
+      // Get configuration based on risk profile
+      const riskConfig = DEFAULT_CONFIGS[bundleConfig.riskProfile];
+      
+      // Convert UI values to contract format
+      const deployParams: DeployBundleParams = {
+        name: bundleConfig.name,
+        symbol: bundleConfig.symbol,
+        tokens: tokens,
+        managementFee: Math.round(bundleConfig.managementFee * 100), // Convert to basis points
+        config: {
+          driftThreshold: riskConfig.driftThreshold,
+          maxSlippageBps: riskConfig.maxSlippageBps,
+          minRebalanceInterval: riskConfig.minRebalanceInterval,
+          islandAllocationBps: bundleConfig.enableIslands ? Math.round(bundleConfig.islandAllocation * 100) : 0,
+          enableIslandRewards: bundleConfig.enableIslands && bundleConfig.enableRewardReinvestment,
+          rewardReinvestBps: bundleConfig.enableRewardReinvestment 
+            ? Math.round(bundleConfig.rewardReinvestmentRatio * 100)
+            : 0
+        }
+      };
+      
+      console.log('Deploying bundle with params:', deployParams);
+      
+      const result = await deployer.deployBundle(deployParams);
+      
+      setDeploymentResult({
+        bundleAddress: result.bundleAddress,
+        transactionHash: result.transactionHash
+      });
+      
+      console.log('Bundle deployed successfully:', result);
+      
+    } catch (error) {
+      console.error('Bundle deployment failed:', error);
+      setDeploymentError(
+        error instanceof Error 
+          ? error.message 
+          : 'An unknown error occurred during deployment'
+      );
+    } finally {
+      setIsDeploying(false);
+    }
+  }
 };
 
 export default CreateBundle; 

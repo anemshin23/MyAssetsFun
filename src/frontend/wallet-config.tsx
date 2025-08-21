@@ -5,7 +5,7 @@ import { createPublicClient } from 'viem';
 
 // Berachain configuration (you'll need to add this)
 const berachain: Chain = {
-  id: 80094, // Replace with actual Berachain chain ID
+  id: 80069, // Replace with actual Berachain chain ID
   name: 'Berachain',
   nativeCurrency: {
     decimals: 18,
