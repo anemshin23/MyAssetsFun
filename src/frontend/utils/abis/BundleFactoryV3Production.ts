@@ -1,3 +1,4 @@
+// Minimal Factory ABI - simplified version without token whitelisting
 export const BundleFactoryV3ProductionABI = [
   // Events
   {

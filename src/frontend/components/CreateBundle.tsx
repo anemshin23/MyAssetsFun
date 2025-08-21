@@ -61,16 +61,17 @@ const CreateBundle: React.FC = () => {
   } | null>(null);
   const [deploymentError, setDeploymentError] = useState<string | null>(null);
 
-  // Mock token list - replace with actual token data
+  // Available tokens - updated to use our deployed component tokens
   const availableTokens = [
-    { symbol: 'BTC', name: 'Bitcoin', address: '0xc7728Db26526Ae7fBc46b99f0EE667Eaba7E6bb9' },
-    { symbol: 'ETH', name: 'Ethereum', address: '0x4752428217c35c7779b077170529f8d10676f660' },
-    { symbol: 'USDC', name: 'USD Coin', address: '0x6e8d0eCfCE5c2b7587263923e23d141F6364c7f9' },
-    { symbol: 'BASE', name: 'Base', address: '0x...' },
-    { symbol: 'SOL', name: 'Solana', address: '0x...' },
-    { symbol: 'AVAX', name: 'Avalanche', address: '0x...' },
-    { symbol: 'MATIC', name: 'Polygon', address: '0x...' },
-    { symbol: 'LINK', name: 'Chainlink', address: '0x...' },
+    // Our newly deployed component tokens (have oracle prices and user has balance)
+    { symbol: 'COMP1', name: 'Component Token 1', address: '0x33E2d7Fc013D43bE07e90Cb49f072ECf65Cc9CbD' },
+    { symbol: 'COMP2', name: 'Component Token 2', address: '0xD78a73e98EcCd3ADc3B0352F1d033dbd6D6a98e4' },
+    { symbol: 'COMP3', name: 'Component Token 3', address: '0xa2De30d3BcD85192F616474E50660C65b676D856' },
+    // Our deployed mock tokens (also have oracle prices)
+    { symbol: 'USDC', name: 'USD Coin (Mock)', address: '0x93B0c7AF3A1772919b56b1A2bE9966204dD39082' },
+    { symbol: 'BTC', name: 'Bitcoin (Mock)', address: '0xCb3bb12157097612D4e98981F03d3bB68a16672f' },
+    { symbol: 'ETH', name: 'Ethereum (Mock)', address: '0x50e05C0E4ebF75d86d9a21BA33a0cb819438deCD' },
+    { symbol: 'BERA', name: 'Berachain (Mock)', address: '0x25beBbD6B6bA19f90BCDD5f23aC67FbeA065AbC7' },
   ];
 
   const filteredTokens = availableTokens.filter(token =>
