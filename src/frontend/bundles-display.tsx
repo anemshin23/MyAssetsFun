@@ -5,6 +5,7 @@ import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { wagmiConfig, chains } from './wallet-config';
 import WalletConnect from './components/WalletConnect';
 import CreateBundle from './components/CreateBundle';
+import ManageBundles from './components/ManageBundles';
 import Dashboard from './components/Dashboard';
 import InfluencerProfiles from './components/InfluencerProfiles';
 import '@rainbow-me/rainbowkit/styles.css';
@@ -45,7 +46,7 @@ const BundlesDisplay: React.FC = () => {
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
   const [showCashtagDropdown, setShowCashtagDropdown] = useState(false);
   const [selectedCashtags, setSelectedCashtags] = useState<string[]>([]);
-  const [currentView, setCurrentView] = useState<'home' | 'bundles' | 'create' | 'dashboard' | 'influencers'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'bundles' | 'create' | 'manage' | 'dashboard' | 'influencers'>('home');
   const [cryptoPrices, setCryptoPrices] = useState<{[key: string]: {price: number, change: number}}>({});
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [selectedUsername, setSelectedUsername] = useState('');
@@ -533,6 +534,17 @@ const BundlesDisplay: React.FC = () => {
                 </button>
                 
                 <button
+                  onClick={() => setCurrentView('manage')}
+                  className={`py-4 px-2 border-b-2 font-medium text-sm ${
+                    currentView === 'manage'
+                      ? 'border-emerald-500 text-emerald-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  Manage Bundles
+                </button>
+                
+                <button
                   onClick={() => setCurrentView('dashboard')}
                   className={`py-4 px-2 border-b-2 font-medium text-sm transition-all duration-300 ${
                     currentView === 'dashboard'
@@ -781,6 +793,7 @@ const BundlesDisplay: React.FC = () => {
             )}
 
             {currentView === 'create' && <CreateBundle />}
+            {currentView === 'manage' && <ManageBundles />}
             {currentView === 'dashboard' && <Dashboard />}
             {currentView === 'influencers' && <InfluencerProfiles />}
           </div>

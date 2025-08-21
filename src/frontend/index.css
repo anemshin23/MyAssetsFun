@@ -75,3 +75,12 @@
 body {
   @apply font-mono bg-background text-foreground;
 }
+
+/* Custom slider styles for Kodiak integration */
+.slider-thumb::-webkit-slider-thumb {
+  @apply appearance-none w-5 h-5 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full cursor-pointer shadow-lg hover:shadow-xl transition-all duration-200;
+}
+
+.slider-thumb::-moz-range-thumb {
+  @apply w-5 h-5 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full cursor-pointer border-none shadow-lg hover:shadow-xl transition-all duration-200;
+}
