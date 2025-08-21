@@ -43,8 +43,8 @@ const CreateBundle: React.FC = () => {
     assets: [],
     rebalancePolicy: 'weekly',
     threshold: 5,
-    managementFee: 0.5,
-    performanceFee: 10,
+    managementFee: 0.0,
+    performanceFee: 0.0,
     riskProfile: 'balanced',
     enableIslands: true,
     islandAllocation: 20, // 20%
