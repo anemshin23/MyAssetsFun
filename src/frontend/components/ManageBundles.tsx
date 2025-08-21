@@ -13,15 +13,15 @@ const BundleCard: React.FC<BundleCardProps> = ({ bundle, onManage }) => {
   const userValue = parseFloat(bundle.userBalanceUSD);
   
   return (
-    <div className="bg-white rounded-2xl p-6 border border-emerald-100 shadow-lg hover:shadow-xl transition-all duration-300">
+    <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/20 shadow-2xl hover:shadow-purple-500/25 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="text-xl font-bold text-gray-900">{bundle.name}</h3>
-          <p className="text-gray-500">{bundle.symbol}</p>
+          <h3 className="text-xl font-bold text-white">{bundle.name}</h3>
+          <p className="text-slate-300">{bundle.symbol}</p>
         </div>
         <div className="text-right">
-          <div className="text-sm text-gray-500">NAV</div>
-          <div className="text-lg font-semibold text-gray-900">
+          <div className="text-sm text-slate-300">NAV</div>
+          <div className="text-lg font-semibold text-white">
             ${navValue.toFixed(4)}
           </div>
         </div>
@@ -29,37 +29,37 @@ const BundleCard: React.FC<BundleCardProps> = ({ bundle, onManage }) => {
 
       <div className="space-y-3 mb-6">
         <div className="flex justify-between">
-          <span className="text-gray-600">Total Supply</span>
-          <span className="font-medium">{parseFloat(bundle.totalSupply).toLocaleString()}</span>
+          <span className="text-slate-300">Total Supply</span>
+          <span className="font-medium text-white">{parseFloat(bundle.totalSupply).toLocaleString()}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-600">Your Position</span>
-          <span className="font-medium">{parseFloat(bundle.userBalance).toFixed(4)} shares</span>
+          <span className="text-slate-300">Your Position</span>
+          <span className="font-medium text-white">{parseFloat(bundle.userBalance).toFixed(4)} shares</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-600">Position Value</span>
-          <span className="font-medium text-emerald-600">${userValue.toFixed(2)}</span>
+          <span className="text-slate-300">Position Value</span>
+          <span className="font-medium text-purple-400">${userValue.toFixed(2)}</span>
         </div>
       </div>
 
       <div className="mb-4">
-        <h4 className="text-sm font-medium text-gray-700 mb-2">Components</h4>
+        <h4 className="text-sm font-medium text-slate-300 mb-2">Components</h4>
         <div className="space-y-1">
           {bundle.components.slice(0, 3).map((component, index) => (
             <div key={index} className="flex justify-between text-sm">
-              <span className="text-gray-600">{component.symbol}</span>
-              <span className="text-gray-900">{component.weight}%</span>
+              <span className="text-slate-300">{component.symbol}</span>
+              <span className="text-white">{component.weight}%</span>
             </div>
           ))}
           {bundle.components.length > 3 && (
-            <div className="text-sm text-gray-500">+{bundle.components.length - 3} more</div>
+            <div className="text-sm text-slate-400">+{bundle.components.length - 3} more</div>
           )}
         </div>
       </div>
 
       <button
         onClick={() => onManage(bundle)}
-        className="w-full bg-gradient-to-r from-emerald-500 to-green-500 text-white py-3 rounded-xl font-medium hover:from-emerald-600 hover:to-green-600 transition-all duration-300"
+        className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 rounded-xl font-medium hover:from-purple-600 hover:to-blue-600 transition-all duration-500 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20"
       >
         Manage Position
       </button>
@@ -86,7 +86,7 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
   // Calculate expected shares when amount changes
   useEffect(() => {
     const calculateShares = async () => {
-      if (bundleManager && amount && parseFloat(amount) > 0) {
+      if (bundleManager && bundle && amount && parseFloat(amount) > 0) {
         try {
           setError(null); // Clear any previous errors
           
@@ -177,50 +177,50 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
+      <div className="bg-gradient-to-r from-slate-800/90 to-purple-800/90 backdrop-blur-lg rounded-2xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto border border-purple-500/20 shadow-2xl">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">Manage {bundle.symbol}</h2>
+          <h2 className="text-2xl font-bold text-white">Manage {bundle.symbol}</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 text-2xl"
+            className="text-slate-400 hover:text-white text-2xl transition-colors duration-300"
           >
             ×
           </button>
         </div>
 
         {/* Bundle Info */}
-        <div className="bg-emerald-50 p-4 rounded-xl mb-6">
+        <div className="bg-purple-500/10 p-4 rounded-xl mb-6 border border-purple-400/20 backdrop-blur-sm">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <div className="text-sm text-gray-600">Your Position</div>
-              <div className="font-semibold">{parseFloat(bundle.userBalance).toFixed(4)} shares</div>
+              <div className="text-sm text-slate-300">Your Position</div>
+              <div className="font-semibold text-white">{parseFloat(bundle.userBalance).toFixed(4)} shares</div>
             </div>
             <div>
-              <div className="text-sm text-gray-600">Value</div>
-              <div className="font-semibold text-emerald-600">${parseFloat(bundle.userBalanceUSD).toFixed(2)}</div>
+              <div className="text-sm text-slate-300">Value</div>
+              <div className="font-semibold text-purple-400">${parseFloat(bundle.userBalanceUSD).toFixed(2)}</div>
             </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex mb-6 bg-gray-100 rounded-xl p-1">
+        <div className="flex mb-6 bg-slate-700/60 rounded-xl p-1 backdrop-blur-sm border border-slate-500/30">
           <button
             onClick={() => setActiveTab('invest')}
-            className={`flex-1 py-2 px-4 rounded-lg transition-all ${
+            className={`flex-1 py-2 px-4 rounded-lg transition-all duration-300 ${
               activeTab === 'invest'
-                ? 'bg-white text-emerald-600 shadow-sm'
-                : 'text-gray-600 hover:text-gray-800'
+                ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+                : 'text-slate-300 hover:text-white'
             }`}
           >
             Invest
           </button>
           <button
             onClick={() => setActiveTab('redeem')}
-            className={`flex-1 py-2 px-4 rounded-lg transition-all ${
+            className={`flex-1 py-2 px-4 rounded-lg transition-all duration-300 ${
               activeTab === 'redeem'
-                ? 'bg-white text-emerald-600 shadow-sm'
-                : 'text-gray-600 hover:text-gray-800'
+                ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+                : 'text-slate-300 hover:text-white'
             }`}
           >
             Redeem
@@ -231,26 +231,26 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
         <div className="space-y-4">
           {activeTab === 'invest' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-slate-300 mb-2">
                 Investment Method
               </label>
-              <div className="flex bg-gray-100 rounded-xl p-1 mb-4">
+              <div className="flex bg-slate-700/60 rounded-xl p-1 mb-4 backdrop-blur-sm border border-slate-500/30">
                 <button
                   onClick={() => setInvestMethod('exact')}
-                  className={`flex-1 py-2 px-4 rounded-lg transition-all text-sm ${
+                  className={`flex-1 py-2 px-4 rounded-lg transition-all duration-300 text-sm ${
                     investMethod === 'exact'
-                      ? 'bg-white text-emerald-600 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-800'
+                      ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+                      : 'text-slate-300 hover:text-white'
                   }`}
                 >
                   Exact Basket
                 </button>
                 <button
                   onClick={() => setInvestMethod('single')}
-                  className={`flex-1 py-2 px-4 rounded-lg transition-all text-sm ${
+                  className={`flex-1 py-2 px-4 rounded-lg transition-all duration-300 text-sm ${
                     investMethod === 'single'
-                      ? 'bg-white text-emerald-600 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-800'
+                      ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+                      : 'text-slate-300 hover:text-white'
                   }`}
                 >
                   Single Token
@@ -260,7 +260,7 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">
               {activeTab === 'invest' 
                 ? (investMethod === 'exact' ? 'Number of Shares' : 'Investment Amount (USDC)')
                 : 'Shares to Redeem'
@@ -274,13 +274,13 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
                 ? (investMethod === 'exact' ? '1.0' : '100') 
                 : '10.0'
               }
-              className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
+              className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white placeholder-slate-400 backdrop-blur-sm"
             />
           </div>
 
           {activeTab === 'invest' && (
-            <div className="bg-blue-50 p-4 rounded-xl">
-              <div className="text-sm text-blue-800">
+            <div className="bg-blue-500/10 p-4 rounded-xl border border-blue-400/30 backdrop-blur-sm">
+              <div className="text-sm text-blue-200">
                 <div className="font-semibold mb-1">
                   {investMethod === 'exact' ? 'Exact Basket Details:' : 'Single Token Details:'}
                 </div>
@@ -305,8 +305,8 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
           )}
 
           {activeTab === 'redeem' && (
-            <div className="bg-orange-50 p-4 rounded-xl">
-              <div className="text-sm text-orange-800">
+            <div className="bg-orange-500/10 p-4 rounded-xl border border-orange-400/30 backdrop-blur-sm">
+              <div className="text-sm text-orange-200">
                 <div className="font-semibold mb-1">Redemption Details:</div>
                 <div>• You'll receive underlying tokens</div>
                 <div>• Current value: ${amount ? (parseFloat(amount) * parseFloat(bundle.nav)).toFixed(2) : '0'}</div>
@@ -316,14 +316,14 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
           )}
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <div className="text-red-800 text-sm">{error}</div>
+            <div className="bg-red-500/10 border border-red-400/30 rounded-xl p-4 backdrop-blur-sm">
+              <div className="text-red-200 text-sm">{error}</div>
             </div>
           )}
 
           {txHash && (
-            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-              <div className="text-green-800 text-sm">
+            <div className="bg-purple-500/10 border border-purple-400/30 rounded-xl p-4 backdrop-blur-sm">
+              <div className="text-purple-200 text-sm">
                 <div className="font-semibold">Transaction Successful!</div>
                 <div className="break-all mt-1">
                   <a 
@@ -342,11 +342,11 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
           <button
             onClick={activeTab === 'invest' ? handleInvest : handleRedeem}
             disabled={isLoading || !amount}
-            className={`w-full py-3 rounded-xl font-medium transition-all ${
+            className={`w-full py-3 rounded-xl font-medium transition-all duration-500 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20 ${
               isLoading || !amount
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                ? 'bg-slate-600 text-slate-400 cursor-not-allowed'
                 : activeTab === 'invest'
-                ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:from-emerald-600 hover:to-green-600'
+                ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600'
                 : 'bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600'
             }`}
           >
@@ -416,8 +416,8 @@ const ManageBundles: React.FC = () => {
     return (
       <div className="max-w-6xl mx-auto p-6">
         <div className="text-center py-12">
-          <div className="text-2xl font-bold text-gray-700 mb-4">Connect Your Wallet</div>
-          <p className="text-gray-500">Please connect your wallet to manage bundle positions</p>
+          <div className="text-2xl font-bold text-white mb-4">Connect Your Wallet</div>
+          <p className="text-slate-300">Please connect your wallet to manage bundle positions</p>
         </div>
       </div>
     );
@@ -426,19 +426,19 @@ const ManageBundles: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Manage Bundles</h1>
-        <p className="text-gray-600">Invest in or redeem from deployed asset bundles</p>
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-2">Manage Bundles</h1>
+        <p className="text-slate-300">Invest in or redeem from deployed asset bundles</p>
       </div>
 
       {loading ? (
         <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mx-auto mb-4"></div>
-          <p className="text-gray-500">Loading bundles...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <p className="text-slate-300">Loading bundles...</p>
         </div>
       ) : bundles.length === 0 ? (
         <div className="text-center py-12">
-          <div className="text-xl font-semibold text-gray-700 mb-2">No Bundles Found</div>
-          <p className="text-gray-500">No bundles have been deployed yet.</p>
+          <div className="text-xl font-semibold text-white mb-2">No Bundles Found</div>
+          <p className="text-slate-300">No bundles have been deployed yet.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

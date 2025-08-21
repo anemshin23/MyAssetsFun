@@ -114,8 +114,8 @@ const CreateBundle: React.FC = () => {
   if (!isConnected) {
     return (
       <div className="text-center py-12">
-        <div className="text-2xl font-bold text-gray-700 mb-4">Connect Your Wallet</div>
-        <p className="text-gray-500">Please connect your wallet to create bundles</p>
+        <div className="text-2xl font-bold text-white mb-4">Connect Your Wallet</div>
+        <p className="text-slate-300">Please connect your wallet to create bundles</p>
       </div>
     );
   }
@@ -129,20 +129,20 @@ const CreateBundle: React.FC = () => {
             <div key={step} className="flex items-center">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
                 currentStep >= step 
-                  ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white' 
-                  : 'bg-gray-200 text-gray-500'
+                  ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white' 
+                  : 'bg-slate-700 text-slate-400'
               }`}>
                 {step}
               </div>
               {step < 4 && (
                 <div className={`w-16 h-1 mx-2 ${
-                  currentStep > step ? 'bg-gradient-to-r from-emerald-500 to-green-500' : 'bg-gray-200'
+                  currentStep > step ? 'bg-gradient-to-r from-purple-500 to-blue-500' : 'bg-slate-700'
                 }`}></div>
               )}
             </div>
           ))}
         </div>
-        <div className="flex justify-between text-sm text-gray-600">
+        <div className="flex justify-between text-sm text-slate-300">
           <span>Bundle Details</span>
           <span>Asset Selection</span>
           <span>Configuration</span>
@@ -152,43 +152,43 @@ const CreateBundle: React.FC = () => {
 
       {/* Step 1: Bundle Details */}
       {currentStep === 1 && (
-        <div className="bg-white rounded-2xl p-8 border border-emerald-100 shadow-lg">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Bundle Details</h2>
+        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
+          <h2 className="text-2xl font-bold text-white mb-6">Bundle Details</h2>
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Bundle Name <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Bundle Name <span className="text-red-400">*</span></label>
               <input
                 type="text"
                 value={bundleConfig.name}
                 onChange={(e) => setBundleConfig({ ...bundleConfig, name: e.target.value })}
                 placeholder="e.g., DeFi Growth Bundle"
-                className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
+                className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white placeholder-slate-400 backdrop-blur-sm"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Symbol (Ticker) <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Symbol (Ticker) <span className="text-red-400">*</span></label>
               <input
                 type="text"
                 value={bundleConfig.symbol}
                 onChange={(e) => setBundleConfig({ ...bundleConfig, symbol: e.target.value.toUpperCase() })}
                 placeholder="e.g., DEFI"
-                className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
+                className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white placeholder-slate-400 backdrop-blur-sm"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Description</label>
               <textarea
                 value={bundleConfig.description}
                 onChange={(e) => setBundleConfig({ ...bundleConfig, description: e.target.value })}
                 placeholder="Describe your bundle strategy..."
                 rows={4}
-                className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
+                className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white placeholder-slate-400 backdrop-blur-sm"
               />
             </div>
             <button
               onClick={() => setCurrentStep(2)}
               disabled={!bundleConfig.name || !bundleConfig.symbol}
-              className="w-full bg-gradient-to-r from-emerald-500 to-green-500 text-white py-4 rounded-xl font-bold text-lg hover:from-emerald-600 hover:to-green-600 transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-4 rounded-xl font-bold text-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-500 shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed"
             >
               Next: Asset Selection
             </button>
@@ -198,8 +198,8 @@ const CreateBundle: React.FC = () => {
 
       {/* Step 2: Asset Selection */}
       {currentStep === 2 && (
-        <div className="bg-white rounded-2xl p-8 border border-emerald-100 shadow-lg">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Asset Selection</h2>
+        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
+          <h2 className="text-2xl font-bold text-white mb-6">Asset Selection</h2>
           
           {/* Search */}
           <div className="mb-6">
@@ -208,23 +208,23 @@ const CreateBundle: React.FC = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search tokens..."
-              className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
+              className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white placeholder-slate-400 backdrop-blur-sm"
             />
           </div>
 
           {/* Token List */}
           <div className="grid grid-cols-2 gap-4 mb-6 max-h-96 overflow-y-auto">
             {filteredTokens.map((token) => (
-              <label key={token.symbol} className="flex items-center gap-3 p-3 border border-emerald-200 rounded-lg hover:border-emerald-300 cursor-pointer">
+              <label key={token.symbol} className="flex items-center gap-3 p-3 bg-slate-700/60 border border-purple-500/30 rounded-lg hover:border-purple-400/50 cursor-pointer backdrop-blur-sm transition-all duration-300">
                 <input
                   type="checkbox"
                   checked={selectedTokens.includes(token.symbol)}
                   onChange={() => handleTokenSelection(token.symbol)}
-                  className="rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500"
+                  className="rounded border-purple-400 text-purple-500 focus:ring-purple-500"
                 />
                 <div>
-                  <div className="font-medium text-gray-900">{token.symbol}</div>
-                  <div className="text-sm text-gray-500">{token.name}</div>
+                  <div className="font-medium text-white">{token.symbol}</div>
+                  <div className="text-sm text-slate-300">{token.name}</div>
                 </div>
               </label>
             ))}
@@ -233,14 +233,14 @@ const CreateBundle: React.FC = () => {
           <div className="flex gap-4">
             <button
               onClick={() => setCurrentStep(1)}
-              className="px-6 py-3 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-colors"
+              className="px-6 py-3 bg-slate-700/60 text-white rounded-xl hover:bg-slate-600/80 transition-all duration-300 backdrop-blur-sm border border-slate-500/30"
             >
               Back
             </button>
             <button
               onClick={addSelectedTokens}
               disabled={selectedTokens.length === 0}
-              className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-500 text-white rounded-xl hover:from-emerald-600 hover:to-green-600 transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed"
+              className="px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-xl hover:from-purple-600 hover:to-blue-600 transition-all duration-500 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed"
             >
               Next: Configuration
             </button>
@@ -250,35 +250,35 @@ const CreateBundle: React.FC = () => {
 
       {/* Step 3: Configuration */}
       {currentStep === 3 && (
-        <div className="bg-white rounded-2xl p-8 border border-emerald-100 shadow-lg">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Configuration</h2>
+        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
+          <h2 className="text-2xl font-bold text-white mb-6">Configuration</h2>
           
           {/* Asset Weights */}
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Asset Weights</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Asset Weights</h3>
             <div className="space-y-4">
               {bundleConfig.assets.map((asset) => (
-                <div key={asset.symbol} className="flex items-center justify-between p-4 bg-emerald-50 rounded-lg">
+                <div key={asset.symbol} className="flex items-center justify-between p-4 bg-purple-500/10 rounded-lg border border-purple-400/20 backdrop-blur-sm">
                   <div className="flex items-center gap-3">
-                    <span className="font-medium text-gray-900">{asset.symbol}</span>
-                    <span className="text-sm text-gray-500">{asset.name}</span>
+                    <span className="font-medium text-white">{asset.symbol}</span>
+                    <span className="text-sm text-slate-300">{asset.name}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <input
                       type="number"
                       value={asset.weight}
                       onChange={(e) => handleWeightChange(asset.symbol, parseFloat(e.target.value) || 0)}
-                      className="w-20 px-3 py-2 border border-emerald-200 rounded-lg text-center text-black"
+                      className="w-20 px-3 py-2 bg-slate-700/60 border border-purple-500/30 rounded-lg text-center text-white backdrop-blur-sm"
                       min="0"
                       max="100"
                       step="0.1"
                     />
-                    <span className="text-gray-500">%</span>
+                    <span className="text-slate-300">%</span>
                   </div>
                 </div>
               ))}
-              <div className={`text-center p-3 rounded-lg ${
-                totalWeight === 100 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+              <div className={`text-center p-3 rounded-lg backdrop-blur-sm ${
+                totalWeight === 100 ? 'bg-purple-500/20 text-purple-300 border border-purple-400/30' : 'bg-red-500/20 text-red-300 border border-red-400/30'
               }`}>
                 Total Weight: {totalWeight.toFixed(1)}% {totalWeight === 100 ? '✓' : '✗'}
               </div>
@@ -287,14 +287,14 @@ const CreateBundle: React.FC = () => {
 
           {/* Rebalance Policy */}
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Rebalance Policy</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Rebalance Policy</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Policy Type</label>
+                <label className="block text-sm font-medium text-slate-300 mb-2">Policy Type</label>
                 <select
                   value={bundleConfig.rebalancePolicy}
                   onChange={(e) => setBundleConfig({ ...bundleConfig, rebalancePolicy: e.target.value as any })}
-                  className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900"
+                  className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white backdrop-blur-sm"
                 >
                   <option value="" disabled>Select rebalance policy</option>
                   <option value="daily">Daily</option>
@@ -305,12 +305,12 @@ const CreateBundle: React.FC = () => {
               </div>
               {bundleConfig.rebalancePolicy === 'threshold' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Threshold (%)</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Threshold (%)</label>
                   <input
                     type="number"
                     value={bundleConfig.threshold}
                     onChange={(e) => setBundleConfig({ ...bundleConfig, threshold: parseFloat(e.target.value) || 0 })}
-                    className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
+                    className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white backdrop-blur-sm"
                     min="0"
                     step="0.1"
                   />
@@ -321,10 +321,10 @@ const CreateBundle: React.FC = () => {
 
           {/* Fees */}
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Fees</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Fees</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Management Fee (%)</label>
+                <label className="block text-sm font-medium text-slate-300 mb-2">Management Fee (%)</label>
                 <input
                   type="number"
                   value={bundleConfig.managementFee}
@@ -336,7 +336,7 @@ const CreateBundle: React.FC = () => {
                   }}
                   onKeyDown={(e) => e.preventDefault()}
                   onPaste={(e) => e.preventDefault()}
-                  className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
+                  className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white backdrop-blur-sm"
                   min="0"
                   max="2"
                   step="0.1"
@@ -344,7 +344,7 @@ const CreateBundle: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Performance Fee (%)</label>
+                <label className="block text-sm font-medium text-slate-300 mb-2">Performance Fee (%)</label>
                 <input
                   type="number"
                   value={bundleConfig.performanceFee}
@@ -356,7 +356,7 @@ const CreateBundle: React.FC = () => {
                   }}
                   onKeyDown={(e) => e.preventDefault()}
                   onPaste={(e) => e.preventDefault()}
-                  className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
+                  className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white backdrop-blur-sm"
                   min="0"
                   max="2"
                   step="0.1"
@@ -369,14 +369,14 @@ const CreateBundle: React.FC = () => {
           <div className="flex gap-4">
             <button
               onClick={() => setCurrentStep(2)}
-              className="px-6 py-3 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-colors"
+              className="px-6 py-3 bg-slate-700/60 text-white rounded-xl hover:bg-slate-600/80 transition-all duration-300 backdrop-blur-sm border border-slate-500/30"
             >
               Back
             </button>
             <button
               onClick={() => setCurrentStep(4)}
               disabled={!isValid}
-              className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-500 text-white rounded-xl hover:from-emerald-600 hover:to-green-600 transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed"
+              className="px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-xl hover:from-purple-600 hover:to-blue-600 transition-all duration-500 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed"
             >
               Next: Review & Deploy
             </button>
@@ -386,57 +386,57 @@ const CreateBundle: React.FC = () => {
 
       {/* Step 4: Review & Deploy */}
       {currentStep === 4 && (
-        <div className="bg-white rounded-2xl p-8 border border-emerald-100 shadow-lg">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Review & Deploy</h2>
+        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
+          <h2 className="text-2xl font-bold text-white mb-6">Review & Deploy</h2>
           
           {/* Summary Card */}
-          <div className="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-200 mb-8">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">Bundle Summary</h3>
+          <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 p-6 rounded-xl border border-purple-400/20 mb-8 backdrop-blur-sm">
+            <h3 className="text-xl font-bold text-white mb-4">Bundle Summary</h3>
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <div className="text-sm text-gray-600">Name</div>
-                <div className="font-semibold text-gray-900">{bundleConfig.name}</div>
+                <div className="text-sm text-slate-300">Name</div>
+                <div className="font-semibold text-white">{bundleConfig.name}</div>
               </div>
               <div>
-                <div className="text-sm text-gray-600">Symbol</div>
-                <div className="font-semibold text-gray-900">{bundleConfig.symbol}</div>
+                <div className="text-sm text-slate-300">Symbol</div>
+                <div className="font-semibold text-white">{bundleConfig.symbol}</div>
               </div>
               <div>
-                <div className="text-sm text-gray-600">Assets</div>
-                <div className="font-semibold text-gray-900">{bundleConfig.assets.length}</div>
+                <div className="text-sm text-slate-300">Assets</div>
+                <div className="font-semibold text-white">{bundleConfig.assets.length}</div>
               </div>
               <div>
-                <div className="text-sm text-gray-600">Management Fee</div>
-                <div className="font-semibold text-gray-900">{bundleConfig.managementFee}%</div>
+                <div className="text-sm text-slate-300">Management Fee</div>
+                <div className="font-semibold text-white">{bundleConfig.managementFee}%</div>
               </div>
               <div>
-                <div className="text-sm text-gray-600">Risk Profile</div>
-                <div className="font-semibold text-gray-900 capitalize">{bundleConfig.riskProfile}</div>
+                <div className="text-sm text-slate-300">Risk Profile</div>
+                <div className="font-semibold text-white capitalize">{bundleConfig.riskProfile}</div>
               </div>
               <div>
-                <div className="text-sm text-gray-600">Islands Enabled</div>
-                <div className="font-semibold text-gray-900">{bundleConfig.enableIslands ? `Yes (${bundleConfig.islandAllocation}%)` : 'No'}</div>
+                <div className="text-sm text-slate-300">Islands Enabled</div>
+                <div className="font-semibold text-white">{bundleConfig.enableIslands ? `Yes (${bundleConfig.islandAllocation}%)` : 'No'}</div>
               </div>
             </div>
           </div>
 
           {/* Asset Breakdown */}
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Asset Breakdown</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Asset Breakdown</h3>
             <div className="space-y-3">
               {bundleConfig.assets.map((asset) => (
-                <div key={asset.symbol} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                  <span className="font-medium">{asset.symbol}</span>
-                  <span className="text-gray-600">{asset.weight}%</span>
+                <div key={asset.symbol} className="flex justify-between items-center p-3 bg-slate-700/60 rounded-lg backdrop-blur-sm border border-slate-500/30">
+                  <span className="font-medium text-white">{asset.symbol}</span>
+                  <span className="text-slate-300">{asset.weight}%</span>
                 </div>
               ))}
             </div>
             
             {/* Kodiak Features Summary */}
             {bundleConfig.enableIslands && (
-              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <h4 className="font-semibold text-blue-800 mb-2">🐻 Kodiak Features Enabled</h4>
-                <div className="text-sm text-blue-700 space-y-1">
+              <div className="mt-6 p-4 bg-blue-500/10 border border-blue-400/30 rounded-lg backdrop-blur-sm">
+                <h4 className="font-semibold text-blue-300 mb-2">🐻 Kodiak Features Enabled</h4>
+                <div className="text-sm text-blue-200 space-y-1">
                   <div>• {bundleConfig.islandAllocation}% allocated to Islands for yield generation</div>
                   <div>• Automated PoL rewards from Berachain validators</div>
                   {bundleConfig.enableRewardReinvestment && (
@@ -453,15 +453,15 @@ const CreateBundle: React.FC = () => {
             <button
               onClick={handleDeployBundle}
               disabled={isDeploying}
-              className={`px-12 py-4 rounded-xl font-bold text-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 ${
+              className={`px-12 py-4 rounded-xl font-bold text-xl transition-all duration-500 shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20 ${
                 isDeploying 
-                  ? 'bg-gray-400 cursor-not-allowed text-white'
-                  : 'bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:from-emerald-600 hover:to-green-600'
+                  ? 'bg-slate-600 cursor-not-allowed text-white'
+                  : 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600'
               }`}
             >
               {isDeploying ? 'Deploying...' : 'Deploy Bundle'}
             </button>
-            <p className="text-sm text-gray-500 mt-3">
+            <p className="text-sm text-slate-300 mt-3">
               Estimated gas: ~0.002 BERA {bundleConfig.enableIslands && '(+Islands setup)'}
             </p>
           </div>
@@ -469,27 +469,27 @@ const CreateBundle: React.FC = () => {
           <div className="flex justify-center mt-6">
             <button
               onClick={() => setCurrentStep(3)}
-              className="px-6 py-3 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-colors"
+              className="px-6 py-3 bg-slate-700/60 text-white rounded-xl hover:bg-slate-600/80 transition-all duration-300 backdrop-blur-sm border border-slate-500/30"
             >
               Back
             </button>
             
             {/* Deployment Status */}
             {deploymentResult && (
-              <div className="mt-6 p-6 bg-green-50 border border-green-200 rounded-xl">
-                <h4 className="text-lg font-semibold text-green-800 mb-3">✅ Bundle Deployed Successfully!</h4>
+              <div className="mt-6 p-6 bg-purple-500/10 border border-purple-400/30 rounded-xl backdrop-blur-sm">
+                <h4 className="text-lg font-semibold text-purple-300 mb-3">✅ Bundle Deployed Successfully!</h4>
                 <div className="space-y-2 text-sm">
                   <div>
-                    <span className="font-medium text-green-700">Bundle Address: </span>
-                    <span className="font-mono text-green-600">{deploymentResult.bundleAddress}</span>
+                    <span className="font-medium text-purple-200">Bundle Address: </span>
+                    <span className="font-mono text-purple-300">{deploymentResult.bundleAddress}</span>
                   </div>
                   <div>
-                    <span className="font-medium text-green-700">Transaction: </span>
+                    <span className="font-medium text-purple-200">Transaction: </span>
                     <a 
                       href={`https://artio.beratrail.io/tx/${deploymentResult.transactionHash}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-green-600 hover:underline"
+                      className="font-mono text-purple-300 hover:underline"
                     >
                       {deploymentResult.transactionHash.slice(0, 20)}...{deploymentResult.transactionHash.slice(-10)}
                     </a>
@@ -499,9 +499,9 @@ const CreateBundle: React.FC = () => {
             )}
             
             {deploymentError && (
-              <div className="mt-6 p-6 bg-red-50 border border-red-200 rounded-xl">
-                <h4 className="text-lg font-semibold text-red-800 mb-3">❌ Deployment Failed</h4>
-                <p className="text-sm text-red-600">{deploymentError}</p>
+              <div className="mt-6 p-6 bg-red-500/10 border border-red-400/30 rounded-xl backdrop-blur-sm">
+                <h4 className="text-lg font-semibold text-red-300 mb-3">❌ Deployment Failed</h4>
+                <p className="text-sm text-red-200">{deploymentError}</p>
               </div>
             )}
           </div>

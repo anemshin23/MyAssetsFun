@@ -82,8 +82,8 @@ const Dashboard: React.FC = () => {
   if (!isConnected) {
     return (
       <div className="text-center py-12">
-        <div className="text-2xl font-bold text-gray-700 mb-4">Connect Your Wallet</div>
-        <p className="text-gray-500">Please connect your wallet to view your dashboard</p>
+        <div className="text-2xl font-bold text-white mb-4">Connect Your Wallet</div>
+        <p className="text-slate-300">Please connect your wallet to view your dashboard</p>
       </div>
     );
   }
@@ -92,64 +92,60 @@ const Dashboard: React.FC = () => {
     <div className="max-w-7xl mx-auto p-6">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-2">
           Dashboard
         </h1>
-        <p className="text-xl text-gray-600">Manage your bundles and investments</p>
+        <p className="text-xl text-slate-300">Manage your bundles and investments</p>
       </div>
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-2xl p-6 border border-emerald-100 shadow-lg">
+        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/20 shadow-2xl">
           <div className="flex items-center gap-3 mb-2">
-            
             <div>
-              <div className="text-gray-600 text-md">Created Bundles</div>
+              <div className="text-slate-300 text-md">Created Bundles</div>
             </div>
           </div>
-          <div className="text-3xl font-bold text-gray-900">{myBundles.length}</div>
+          <div className="text-3xl font-bold text-white">{myBundles.length}</div>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 border border-emerald-100 shadow-lg">
+        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/20 shadow-2xl">
           <div className="flex items-center gap-3 mb-2">
-            
             <div>
-              <div className="text-gray-600 text-md">Total Invested</div>
+              <div className="text-slate-300 text-md">Total Invested</div>
             </div>
           </div>
-          <div className="text-3xl font-bold text-gray-900">
+          <div className="text-3xl font-bold text-white">
             ${myInvestments.reduce((sum, inv) => sum + inv.totalValue, 0).toLocaleString()}
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 border border-emerald-100 shadow-lg">
+        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/20 shadow-2xl">
           <div className="flex items-center gap-3 mb-2">
-            
             <div>
-              <div className="text-gray-600 text-sm">Avg Performance</div>
+              <div className="text-slate-300 text-sm">Avg Performance</div>
             </div>
           </div>
-          <div className="text-3xl font-bold text-green-600">
+          <div className="text-3xl font-bold text-purple-400">
             +{Math.round((myBundles.reduce((sum, b) => sum + b.performance, 0) / myBundles.length) * 100) / 100}%
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 border border-emerald-100 shadow-lg">
+        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/20 shadow-2xl">
           <div className="flex items-center gap-3 mb-2">
-           
             <div>
-              <div className="text-gray-600 text-sm">Unread</div>
+              <div className="text-slate-300 text-sm">Unread</div>
             </div>
           </div>
-          <div className="text-3xl font-bold text-gray-900">
+          <div className="text-3xl font-bold text-white">
             {notifications.filter(n => !n.read).length}
           </div>
         </div>
       </div>
 
       {/* Navigation Tabs */}
-      <div className="bg-white rounded-2xl border border-emerald-100 shadow-lg mb-8">
-        <div className="flex border-b border-emerald-100">
+      <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl border border-purple-500/20 shadow-2xl mb-8">
+        <div className="flex border-b border-purple-500/20">
           {[
             { id: 'bundles', label: 'My Bundles'},
             { id: 'investments', label: 'My Investments'},
@@ -159,10 +155,10 @@ const Dashboard: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${
+              className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-all duration-300 ${
                 activeTab === tab.id
-                  ? 'text-emerald-600 border-b-2 border-emerald-500 bg-emerald-50'
-                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                  ? 'text-purple-400 border-b-2 border-purple-500 bg-purple-500/10'
+                  : 'text-slate-400 hover:text-purple-300 hover:bg-purple-500/5'
               }`}
             >
               <span>{tab.label}</span>
@@ -176,39 +172,38 @@ const Dashboard: React.FC = () => {
           {activeTab === 'bundles' && (
             <div>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">My Created Bundles</h2>
-                
+                <h2 className="text-2xl font-bold text-white">My Created Bundles</h2>
               </div>
               
               {myBundles.length === 0 ? (
                 <div className="text-center py-12">
-                  <div className="text-gray-500 text-lg mb-4">No bundles created yet</div>
-                  <button className="bg-gradient-to-r from-emerald-500 to-green-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-600 transition-all duration-300">
+                  <div className="text-slate-300 text-lg mb-4">No bundles created yet</div>
+                  <button className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-purple-600 hover:to-blue-600 transition-all duration-500 shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20">
                     Create Your First Bundle
                   </button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {myBundles.map((bundle) => (
-                    <div key={bundle.id} className="border border-emerald-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div key={bundle.id} className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg border border-purple-500/20 rounded-xl p-6 hover:shadow-purple-500/25 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105">
                       <div className="flex items-start justify-between mb-4">
                         <div>
-                          <h3 className="text-xl font-bold text-gray-900 mb-1">{bundle.name}</h3>
-                          <p className="text-emerald-600 font-medium">{bundle.symbol}</p>
+                          <h3 className="text-xl font-bold text-white mb-1">{bundle.name}</h3>
+                          <p className="text-purple-400 font-medium">{bundle.symbol}</p>
                         </div>
                         <div className="text-right">
-                          <div className="text-2xl font-bold text-gray-900">${bundle.totalValue.toLocaleString()}</div>
-                          <div className={`text-sm font-medium ${bundle.performance > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                          <div className="text-2xl font-bold text-white">${bundle.totalValue.toLocaleString()}</div>
+                          <div className={`text-sm font-medium ${bundle.performance > 0 ? 'text-purple-400' : 'text-red-400'}`}>
                             {bundle.performance > 0 ? '+' : ''}{bundle.performance}%
                           </div>
                         </div>
                       </div>
                       
                       <div className="mb-4">
-                        <div className="text-sm text-gray-600 mb-2">Assets:</div>
+                        <div className="text-sm text-slate-300 mb-2">Assets:</div>
                         <div className="flex flex-wrap gap-2">
                           {bundle.assets.map((asset) => (
-                            <span key={asset} className="px-2 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-medium">
+                            <span key={asset} className="px-2 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs font-medium backdrop-blur-sm border border-purple-400/30">
                               {asset}
                             </span>
                           ))}
@@ -216,10 +211,10 @@ const Dashboard: React.FC = () => {
                       </div>
 
                       <div className="flex gap-3">
-                        <button className="flex-1 bg-emerald-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-emerald-700 transition-colors">
+                        <button className="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white py-2 px-4 rounded-lg font-medium hover:from-purple-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20">
                           Manage
                         </button>
-                        <button className="flex-1 bg-gray-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-gray-700 transition-colors">
+                        <button className="flex-1 bg-slate-700/60 text-white py-2 px-4 rounded-lg font-medium hover:bg-slate-600/80 transition-all duration-300 backdrop-blur-sm border border-slate-500/30">
                           View Details
                         </button>
                       </div>
@@ -233,38 +228,38 @@ const Dashboard: React.FC = () => {
           {/* My Investments Tab */}
           {activeTab === 'investments' && (
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">My Investments</h2>
+              <h2 className="text-2xl font-bold text-white mb-6">My Investments</h2>
               
               {myInvestments.length === 0 ? (
                 <div className="text-center py-12">
-                  <div className="text-gray-500 text-lg mb-4">No investments yet</div>
-                  <button className="bg-gradient-to-r from-emerald-500 to-green-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-600 transition-all duration-300">
+                  <div className="text-slate-300 text-lg mb-4">No investments yet</div>
+                  <button className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-purple-600 hover:to-blue-600 transition-all duration-500 shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20">
                     Explore Bundles
                   </button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {myInvestments.map((investment) => (
-                    <div key={investment.id} className="border border-emerald-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div key={investment.id} className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg border border-purple-500/20 rounded-xl p-6 hover:shadow-purple-500/25 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105">
                       <div className="flex items-start justify-between mb-4">
                         <div>
-                          <h3 className="text-xl font-bold text-gray-900 mb-1">{investment.name}</h3>
-                          <p className="text-emerald-600 font-medium">{investment.symbol}</p>
+                          <h3 className="text-xl font-bold text-white mb-1">{investment.name}</h3>
+                          <p className="text-purple-400 font-medium">{investment.symbol}</p>
                         </div>
                         <div className="text-right">
-                          <div className="text-2xl font-bold text-gray-900">${investment.totalValue.toLocaleString()}</div>
-                          <div className={`text-sm font-medium ${investment.performance > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                          <div className="text-2xl font-bold text-white">${investment.totalValue.toLocaleString()}</div>
+                          <div className={`text-sm font-medium ${investment.performance > 0 ? 'text-purple-400' : 'text-red-400'}`}>
                             {investment.performance > 0 ? '+' : ''}{investment.performance}%
                           </div>
                         </div>
                       </div>
                       
                       <div className="mb-4">
-                        <div className="text-sm text-gray-600 mb-2">Your Shares: {investment.shares.toLocaleString()}</div>
-                        <div className="text-sm text-gray-600">Assets:</div>
+                        <div className="text-sm text-slate-300 mb-2">Your Shares: {investment.shares.toLocaleString()}</div>
+                        <div className="text-sm text-slate-300">Assets:</div>
                         <div className="flex flex-wrap gap-2 mt-1">
                           {investment.assets.map((asset) => (
-                            <span key={asset} className="px-2 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-medium">
+                            <span key={asset} className="px-2 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs font-medium backdrop-blur-sm border border-purple-400/30">
                               {asset}
                             </span>
                           ))}
@@ -272,10 +267,10 @@ const Dashboard: React.FC = () => {
                       </div>
 
                       <div className="flex gap-3">
-                        <button className="flex-1 bg-emerald-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-emerald-700 transition-colors">
+                        <button className="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white py-2 px-4 rounded-lg font-medium hover:from-purple-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20">
                           Invest More
                         </button>
-                        <button className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 transition-colors">
+                        <button className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 transition-all duration-300 shadow-lg hover:shadow-red-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-red-400/20">
                           Withdraw
                         </button>
                       </div>
@@ -289,29 +284,29 @@ const Dashboard: React.FC = () => {
           {/* Notifications Tab */}
           {activeTab === 'notifications' && (
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Notifications</h2>
+              <h2 className="text-2xl font-bold text-white mb-6">Notifications</h2>
               
               {notifications.length === 0 ? (
                 <div className="text-center py-12">
-                  <div className="text-gray-500 text-lg">No notifications</div>
+                  <div className="text-slate-300 text-lg">No notifications</div>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {notifications.map((notification) => (
-                    <div key={notification.id} className={`flex items-start gap-4 p-4 rounded-lg border ${
-                      notification.read ? 'border-gray-200 bg-gray-50' : 'border-emerald-200 bg-emerald-50'
+                    <div key={notification.id} className={`flex items-start gap-4 p-4 rounded-lg border backdrop-blur-sm ${
+                      notification.read ? 'border-slate-500/30 bg-slate-700/30' : 'border-purple-500/30 bg-purple-500/10'
                     }`}>
                       <div className={`w-3 h-3 rounded-full mt-2 ${
-                        notification.read ? 'bg-gray-400' : 'bg-emerald-500'
+                        notification.read ? 'bg-slate-400' : 'bg-purple-400'
                       }`}></div>
                       <div className="flex-1">
-                        <p className="text-gray-900 mb-1">{notification.message}</p>
-                        <p className="text-sm text-gray-500">{notification.timestamp}</p>
+                        <p className="text-white mb-1">{notification.message}</p>
+                        <p className="text-sm text-slate-300">{notification.timestamp}</p>
                       </div>
                       {!notification.read && (
                         <button 
                           onClick={() => markAsRead(notification.id)}
-                          className="text-emerald-600 hover:text-emerald-800 text-sm font-medium"
+                          className="text-purple-400 hover:text-purple-300 text-sm font-medium transition-colors duration-300"
                         >
                           Mark Read
                         </button>
@@ -326,26 +321,24 @@ const Dashboard: React.FC = () => {
           {/* Settings Tab */}
           {activeTab === 'settings' && (
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Settings</h2>
+              <h2 className="text-2xl font-bold text-white mb-6">Settings</h2>
               
               <div className="space-y-6">
-                <div className="border border-emerald-200 rounded-xl p-6">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Wallet Management</h3>
+                <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg border border-purple-500/20 rounded-xl p-6 shadow-2xl">
+                  <h3 className="text-lg font-semibold text-white mb-4">Wallet Management</h3>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-700">Connected Wallet</span>
-                      <span className="text-emerald-600 font-medium">
+                      <span className="text-slate-300">Connected Wallet</span>
+                      <span className="text-purple-400 font-medium">
                         {connector?.name || 'Unknown Wallet'}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-700">Network</span>
-                      <span className="text-emerald-600 font-medium">Berachain</span>
+                      <span className="text-slate-300">Network</span>
+                      <span className="text-purple-400 font-medium">Berachain</span>
                     </div>
                   </div>
                 </div>
-
-               
               </div>
             </div>
           )}
