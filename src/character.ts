@@ -80,7 +80,7 @@ export const myCharacter: Character = {
       
       // Monitoring configuration 
       monitoringConfig: {
-        checkInterval: 900000, // checks every 15 minutes (900,000ms)
+        checkInterval: 300000, // checks every 15 minutes (900,000ms)
         maxDaysBack: 1, // Only process tweets from last 1 day
         enableDebugTrigger: false, // Disable debug test to avoid fake tweet replies
         debugTriggerDelay: 2000 // Wait 2s for services to be ready

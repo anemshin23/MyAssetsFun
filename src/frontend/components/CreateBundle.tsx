@@ -156,7 +156,7 @@ const CreateBundle: React.FC = () => {
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Bundle Details</h2>
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Bundle Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Bundle Name <span className="text-red-500">*</span></label>
               <input
                 type="text"
                 value={bundleConfig.name}
@@ -166,7 +166,7 @@ const CreateBundle: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Symbol (Ticker)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Symbol (Ticker) <span className="text-red-500">*</span></label>
               <input
                 type="text"
                 value={bundleConfig.symbol}
@@ -294,8 +294,9 @@ const CreateBundle: React.FC = () => {
                 <select
                   value={bundleConfig.rebalancePolicy}
                   onChange={(e) => setBundleConfig({ ...bundleConfig, rebalancePolicy: e.target.value as any })}
-                  className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900"
                 >
+                  <option value="" disabled>Select rebalance policy</option>
                   <option value="daily">Daily</option>
                   <option value="weekly">Weekly</option>
                   <option value="monthly">Monthly</option>
@@ -327,10 +328,19 @@ const CreateBundle: React.FC = () => {
                 <input
                   type="number"
                   value={bundleConfig.managementFee}
-                  onChange={(e) => setBundleConfig({ ...bundleConfig, managementFee: parseFloat(e.target.value) || 0 })}
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (!isNaN(value) && value >= 0 && value <= 2) {
+                      setBundleConfig({ ...bundleConfig, managementFee: value });
+                    }
+                  }}
+                  onKeyDown={(e) => e.preventDefault()}
+                  onPaste={(e) => e.preventDefault()}
                   className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
                   min="0"
+                  max="2"
                   step="0.1"
+                  //readOnly
                 />
               </div>
               <div>
@@ -338,10 +348,19 @@ const CreateBundle: React.FC = () => {
                 <input
                   type="number"
                   value={bundleConfig.performanceFee}
-                  onChange={(e) => setBundleConfig({ ...bundleConfig, performanceFee: parseFloat(e.target.value) || 0 })}
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (!isNaN(value) && value >= 0 && value <= 2) {
+                      setBundleConfig({ ...bundleConfig, performanceFee: value });
+                    }
+                  }}
+                  onKeyDown={(e) => e.preventDefault()}
+                  onPaste={(e) => e.preventDefault()}
                   className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-black"
                   min="0"
+                  max="2"
                   step="0.1"
+                  //readOnly
                 />
               </div>
             </div>

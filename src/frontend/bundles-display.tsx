@@ -51,6 +51,7 @@ const BundlesDisplay: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [selectedUsername, setSelectedUsername] = useState('');
   const [usernameError, setUsernameError] = useState('');
+  const [expandedBundles, setExpandedBundles] = useState<Set<string>>(new Set());
 
   const API_BASE = 'http://localhost:3002/api';
   const WS_BASE = 'http://localhost:3002';
@@ -277,10 +278,20 @@ const BundlesDisplay: React.FC = () => {
     if (filtered.length === 0) {
       setUsernameError(`This user hasn't created any bundles yet`);
       setFilteredBundles([]);
-    } else {
+      } else {
       setFilteredBundles(filtered);
       setUsernameError('');
     }
+  };
+
+  const toggleBundleExpansion = (bundleId: string) => {
+    const newExpanded = new Set(expandedBundles);
+    if (newExpanded.has(bundleId)) {
+      newExpanded.delete(bundleId);
+    } else {
+      newExpanded.add(bundleId);
+    }
+    setExpandedBundles(newExpanded);
   };
 
   useEffect(() => {
@@ -340,10 +351,10 @@ const BundlesDisplay: React.FC = () => {
       <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider>
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50">
-          {/* Header */}
+      {/* Header */}
           <div className="bg-gradient-to-r from-emerald-600 to-green-600 border-b border-emerald-700 px-6 py-4 shadow-lg">
-            <div className="max-w-7xl mx-auto flex items-center justify-between">
-              <div>
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div>
                 <h1 className="text-3xl font-bold text-white">MyAssetsFun</h1>
               </div>
               <WalletConnect/>
@@ -366,20 +377,17 @@ const BundlesDisplay: React.FC = () => {
             <div className="absolute bottom-20 left-1/4 w-24 h-24 bg-teal-300/30 rounded-full blur-xl animate-pulse delay-2000"></div>
             
             {/* Hero Content */}
-            <div className="relative z-10 text-center px-6">
-            
+            <div className="relative z-10 text-center px-6 py-40">
               
-              <h1 className="text-6xl lg:text-8xl font-bold bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent mb-8 leading-tight">
-                Assets are more fun together!
+              <h1 className="text-6xl lg:text-8xl font-bold bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent mb-12" style={{ lineHeight: '1.1' }}>
+                Assets are more fun<br />together!
               </h1>
               
-              <p className="text-xl lg:text-2xl text-gray-700 mb-12 max-w-4xl mx-auto leading-relaxed">
-                Discover the power of cryptocurrency bundling. Combine multiple assets into strategic portfolios that work together for better returns.
-              </p>
+              
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <button
-                  onClick={() => setCurrentView('bundles')}
+                  onClick={() => setCurrentView('influencers')}
                   className="group bg-gradient-to-r from-emerald-500 to-green-500 text-white px-10 py-5 rounded-2xl text-xl font-semibold hover:from-emerald-600 hover:to-green-600 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1"
                 >
                   <span className="flex items-center gap-3">
@@ -442,8 +450,8 @@ const BundlesDisplay: React.FC = () => {
                 <p>
                   Finally, bundling fosters a collaborative investment community where knowledge and strategies can be shared transparently. When experienced traders and analysts create bundles, they're essentially sharing their market insights and portfolio strategies with the broader community. This democratization of investment expertise allows less experienced investors to benefit from proven approaches while learning about effective portfolio construction techniques.
                 </p>
-              </div>
-              
+      </div>
+
               <div className="text-center mt-16">
                 <button
                   onClick={() => setCurrentView('bundles')}
@@ -488,20 +496,11 @@ const BundlesDisplay: React.FC = () => {
           </div>
 
           {/* Navigation */}
+
           <div className="bg-white border-b border-emerald-100">
             <div className="max-w-7xl mx-auto px-6">
               <div className="flex space-x-8">
-                <button
-                  onClick={() => setCurrentView('bundles')}
-                  className={`py-4 px-2 border-b-2 font-medium text-sm ${
-                    currentView === 'bundles'
-                      ? 'border-emerald-500 text-emerald-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  Explore Bundles
-                </button>
-                <button
+              <button
                   onClick={() => setCurrentView('influencers')}
                   className={`py-4 px-2 border-b-2 font-medium text-sm ${
                     currentView === 'influencers'
@@ -511,6 +510,17 @@ const BundlesDisplay: React.FC = () => {
                 >
                   Influencers
                 </button>
+                <button
+                  onClick={() => setCurrentView('bundles')}
+                  className={`py-4 px-2 border-b-2 font-medium text-sm ${
+                    currentView === 'bundles'
+                      ? 'border-emerald-500 text-emerald-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  All Bundles
+                </button>
+               
                 <button
                   onClick={() => setCurrentView('create')}
                   className={`py-4 px-2 border-b-2 font-medium text-sm ${
@@ -549,140 +559,61 @@ const BundlesDisplay: React.FC = () => {
           </div>
 
           {/* Content */}
-          <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="max-w-7xl mx-auto p-6">
             {currentView === 'bundles' && (
               <>
                 {/* Bundles Header */}
-                <div className="mb-8 text-center">
-                  <h1 className="text-5xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-4">Bundles</h1>
-                  <p className="text-xl text-gray-600">Explore all created bundles</p>
+                <div className="max-w-7xl mx-auto p-6">
+                  <div className="mb-8">
+                  <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-2">
+                    All Bundles
+                  </h1>
+                  <p className="text-xl text-gray-600">Discover all created bundles</p>
                 </div>
 
                 {/* Filters Section */}
-                <div className="bg-white rounded-2xl border border-emerald-100 p-8 shadow-lg mb-8">
+                <div className="bg-white rounded-xl border border-emerald-100 p-8 shadow-lg mb-8">
                   <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
                     Filter Bundles
                   </h3>
                   <div className="space-y-8">
-                    {/* Cashtags Filter */}
+                    {/* Combined Search Filter */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-3">By Currency</label>
                       <div className="flex gap-3">
                         <div className="relative flex-1">
-                          <button
-                            onClick={() => setShowCashtagDropdown(!showCashtagDropdown)}
-                            className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white text-left flex items-center justify-between hover:border-emerald-300 transition-colors"
-                          >
-                            <span className={selectedCashtags.length > 0 ? 'text-gray-900' : 'text-gray-700'}>
-                              {selectedCashtags.length > 0 
-                                ? `${selectedCashtags.length} cashtag(s) selected`
-                                : 'Press to Select Currencies'
-                              }
-                            </span>
-                            <svg className={`w-5 h-5 text-emerald-400 transition-transform ${showCashtagDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
-                          </button>
-                          
-                          {showCashtagDropdown && (
-                            <div className="absolute z-10 w-full mt-2 bg-white border border-emerald-200 rounded-xl shadow-xl max-h-64 overflow-y-auto" ref={dropdownRef}>
-                              <div className="p-4 border-b border-emerald-100">
-                                <div className="flex items-center justify-between mb-3">
-                                  <span className="text-sm font-medium text-gray-700">Select Cashtags</span>
-                                  <button
-                                    onClick={() => setSelectedCashtags([])}
-                                    className="text-xs text-emerald-600 hover:text-emerald-800 font-medium"
-                                  >
-                                    Clear All
-                                  </button>
-                                </div>
-                                <div className="flex flex-wrap gap-2">
-                                  {stats?.mostPopularCashtags.map(({ cashtag }) => (
-                                    <label key={cashtag} className="flex items-center gap-2 cursor-pointer">
-                                      <input
-                                        type="checkbox"
-                                        checked={selectedCashtags.includes(cashtag)}
-                                        onChange={(e) => {
-                                          if (e.target.checked) {
-                                            setSelectedCashtags([...selectedCashtags, cashtag]);
-                                          } else {
-                                            setSelectedCashtags(selectedCashtags.filter(tag => tag !== cashtag));
-                                          }
-                                        }}
-                                        className="rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500"
-                                      />
-                                      <span className="text-sm text-gray-700">{cashtag}</span>
-                                    </label>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                          )}
+                          <input
+                            type="text"
+                            className="w-full px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 hover:border-emerald-300 transition-colors text-gray-900"
+                            value={selectedUsername}
+                            onChange={(e) => setSelectedUsername(e.target.value)}
+                            placeholder="Search by username (e.g., cryptotrader) or currency (e.g., $BTC, $ETH)"
+                          />
                         </div>
-                        
-                        <button
-                          onClick={() => filterBundlesByCashtags()}
-                          disabled={selectedCashtags.length === 0}
-                          className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-500 text-white rounded-xl hover:from-emerald-600 hover:to-green-600 transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed whitespace-nowrap font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                        >
-                          Apply Filters
-                        </button>
-                        <button
-                          onClick={() => {
-                            setSelectedCashtags([]);
-                            setFilteredBundles([]);
-                            setShowCashtagDropdown(false);
-                          }}
-                          className="px-6 py-3 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-all duration-300 whitespace-nowrap font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                        >
-                          Show All
-                        </button>
-                      </div>
-                      
-                      {selectedCashtags.length > 0 && (
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          {selectedCashtags.map((cashtag) => (
-                            <span
-                              key={cashtag}
-                              className="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-800 rounded-full text-sm font-medium border border-emerald-200"
-                            >
-                              {cashtag}
-                              <button
-                                onClick={() => setSelectedCashtags(selectedCashtags.filter(tag => tag !== cashtag))}
-                                className="text-emerald-600 hover:text-emerald-800 hover:bg-emerald-200 rounded-full w-5 h-5 flex items-center justify-center"
-                              >
-                                ×
-                              </button>
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Username Filter */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-3">By Username</label>
-                      <div className="flex gap-3">
-                        <input
-                          type="text"
-                          className="flex-1 px-4 py-3 border border-emerald-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 hover:border-emerald-300 transition-colors text-gray-900"
-                          value={selectedUsername}
-                          onChange={(e) => setSelectedUsername(e.target.value)}
-                          placeholder="Enter username (e.g., cryptotrader)"
-                        />
                        
                         <button
-                          onClick={() => filterBundlesByUsername()}
+                          onClick={() => {
+                            const searchTerm = selectedUsername.trim();
+                            if (searchTerm.startsWith('$')) {
+                              // Search by currency
+                              setSelectedCashtags([searchTerm]);
+                              filterBundlesByCashtags();
+                            } else {
+                              // Search by username
+                              filterBundlesByUsername();
+                            }
+                          }}
                           disabled={!selectedUsername.trim()}
-                          className="px-6 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-xl hover:from-green-600 hover:to-teal-600 transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed whitespace-nowrap font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                          className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-500 text-white rounded-xl hover:from-emerald-600 hover:to-green-600 transition-all duration-300 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed whitespace-nowrap font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                         >
                           Search
                         </button>
                         <button
                           onClick={() => {
                             setSelectedUsername('');
+                            setSelectedCashtags([]);
                             setFilteredBundles([]);
                             setUsernameError('');
+                            setShowCashtagDropdown(false);
                           }}
                           className="px-6 py-3 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-all duration-300 whitespace-nowrap font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                         >
@@ -695,9 +626,33 @@ const BundlesDisplay: React.FC = () => {
                           {usernameError}
                         </div>
                       )}
+                      
+                      {selectedCashtags.length > 0 && (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {selectedCashtags.map((cashtag) => (
+                            <span
+                              key={cashtag}
+                              className="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-800 rounded-full text-sm font-medium border border-emerald-200"
+                            >
+                              {cashtag}
+                              <button
+                                onClick={() => {
+                                  setSelectedCashtags(selectedCashtags.filter(tag => tag !== cashtag));
+                                  if (selectedCashtags.length === 1) {
+                                    setFilteredBundles([]);
+                                  }
+                                }}
+                                className="text-emerald-600 hover:text-emerald-800 hover:bg-emerald-200 rounded-full w-5 h-5 flex items-center justify-center"
+                              >
+                                ×
+                              </button>
+                            </span>
+                          ))}
+                    </div>
+                      )}
                     </div>
                   </div>
-                </div>
+                        </div>
 
                 {/* Bundles Display Section */}
                 <div className="mb-8">
@@ -713,8 +668,8 @@ const BundlesDisplay: React.FC = () => {
                               : `Showing bundles from username "${selectedUsername}"`
                           }
                         </span>
-                      </div>
-                    </div>
+                          </div>
+                        </div>
                   )}
                   
                   {(filteredBundles.length > 0 ? filteredBundles : bundles).filter(bundle => bundle.bundle.length > 1).length === 0 ? (
@@ -729,7 +684,7 @@ const BundlesDisplay: React.FC = () => {
                           : 'Start creating crypto bundles with multiple currencies to see them here!'
                         }
                       </p>
-                    </div>
+                  </div>
                   ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
                       {(filteredBundles.length > 0 ? filteredBundles : bundles)
@@ -738,46 +693,19 @@ const BundlesDisplay: React.FC = () => {
                         <div key={bundle.id} className="bg-white rounded-2xl border border-emerald-100 p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                           {/* Bundle Header */}
                           <div className="flex items-start justify-between mb-6">
-                            
-                              <a 
-                                href={`https://twitter.com/${bundle.originalUsername}/status/${bundle.originalTweetId}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-800 text-sm font-large transition-colors"
-                              >
-                                Bundle from @{bundle.originalUsername}
-                              </a>
-                              
-                          </div>
+                            <a 
+                              href={`https://twitter.com/${bundle.originalUsername}/status/${bundle.originalTweetId}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 text-emerald-800 hover:text-emerald-800 text-xl font-bold transition-colors"
+                            >
+                              Bundle from @{bundle.originalUsername}
+                            </a>
+                  </div>
 
-                          {/* Asset List */}
-                          <div className="space-y-4 mb-6">
-                            {bundle.bundle.map((cashtag, index) => {
-                              const cachedData = cryptoPrices[cashtag];
-                              const price = cachedData ? cachedData.price : Math.random() * 100 + 1;
-                              const change = cachedData ? cachedData.change : Math.random() * 20 - 10;
-                              
-                              return (
-                                <div key={index} className="flex items-center justify-between p-3 bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl border border-emerald-100">
-                                  <div className="flex items-center gap-3">
-                                    <span className="font-bold text-gray-900 text-lg">{cashtag}</span>
-                                    <span className="text-emerald-600 text-sm font-medium bg-white px-2 py-1 rounded-full">({Math.round(100 / bundle.bundle.length)}%)</span>
-                                  </div>
-                                  <div className="text-right">
-                                    <div className="text-gray-900 font-medium">${price.toFixed(2)}</div>
-                                    <div className={`text-sm ${change > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                      {change > 0 ? '+' : ''}{change.toFixed(1)}%
-                                    </div>
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-
-                         
-                          {/* Summary Stats */}
+                  {/* Summary Stats */}
                           <div className="flex items-center justify-between mb-6 p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl border border-emerald-100">
-                            <div>
+                    <div>
                               <div className="text-gray-600 text-sm font-medium">Total Value</div>
                               <div className="text-2xl font-bold text-gray-900">
                                 ${bundle.bundle.reduce((total, cashtag) => {
@@ -788,42 +716,97 @@ const BundlesDisplay: React.FC = () => {
                                   return total + (Math.random() * 100 + 1);
                                 }, 0).toFixed(2)}
                               </div>
-                            </div>
-                            <div className="text-right">
+                              <button
+                                onClick={() => toggleBundleExpansion(bundle.id)}
+                                className="flex items-center gap-2 text-emerald-600 hover:text-emerald-800 text-sm font-medium mt-2 transition-colors"
+                              >
+                                {expandedBundles.has(bundle.id) ? (
+                                  <>
+                                    <span>Hide Assets</span>
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                    </svg>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span>Show Assets</span>
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                  </>
+                                )}
+                              </button>
+                    </div>
+                    <div className="text-right">
                               <div className="text-gray-600 text-sm font-medium">Performance</div>
                               <div className={`text-2xl font-bold ${getBundlePerformance(bundle) > 0 ? 'text-green-600' : 'text-red-600'}`}>
                                 {getBundlePerformance(bundle) > 0 ? '+' : ''}{getBundlePerformance(bundle).toFixed(1)}%
                               </div>
+                    </div>
+                  </div>
+
+                          {/* Collapsible Asset List */}
+                          {expandedBundles.has(bundle.id) && (
+                            <div className="space-y-4 mb-6">
+                              {bundle.bundle.map((cashtag, index) => {
+                                const cachedData = cryptoPrices[cashtag];
+                                const price = cachedData ? cachedData.price : Math.random() * 100 + 1;
+                                const change = cachedData ? cachedData.change : Math.random() * 20 - 10;
+                                
+                                return (
+                                  <div key={index} className="flex items-center justify-between p-3 bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl border border-emerald-100">
+                                    <div className="flex items-center gap-3">
+                                      <span className="font-bold text-gray-900 text-lg">{cashtag}</span>
+                                      <span className="text-emerald-600 text-sm font-medium bg-white px-2 py-1 rounded-full">({Math.round(100 / bundle.bundle.length)}%)</span>
+                                    </div>
+                                    <div className="text-right">
+                                      <div className="text-gray-900 font-medium">${price.toFixed(2)}</div>
+                                      <div className={`text-sm ${change > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                        {change > 0 ? '+' : ''}{change.toFixed(1)}%
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
                             </div>
-                          </div>
+                          )}
 
-                          {/* Action Button */}
+                         
+                          
+
+                  {/* Action Button */}
                           <button className="w-full bg-gradient-to-r from-emerald-500 to-green-500 text-white py-4 px-6 rounded-xl font-bold text-lg hover:from-emerald-600 hover:to-green-600 transition-all duration-300 mb-4 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                            Buy Bundle
-                          </button>
+                    Buy Bundle
+                  </button>
 
-                          {/* Timestamp */}
+                  {/* Timestamp */}
                           <div className="flex items-center gap-2 text-gray-500 text-sm justify-center">
                             <span className="w-4 h-4 bg-gradient-to-r from-emerald-400 to-green-400 rounded-full"></span>
-                            <span>{formatDate(bundle.completedAt)}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                    <span>{formatDate(bundle.completedAt)}</span>
+                  </div>
                 </div>
+                
+              ))}
+            </div>
+            
+          )}
+        </div>
+        
+        </div>
               </>
             )}
-
             {currentView === 'create' && <CreateBundle />}
             {currentView === 'manage' && <ManageBundles />}
             {currentView === 'dashboard' && <Dashboard />}
             {currentView === 'influencers' && <InfluencerProfiles />}
           </div>
         </div>
+        
       </RainbowKitProvider>
     </WagmiConfig>
   );
 };
 
-export default BundlesDisplay; 
+export default BundlesDisplay;
+
+

@@ -9,6 +9,7 @@ interface CompletedBundle {
   completedAt: string;
   conversationType: 'single_tweet' | 'conversation';
   tweetText?: string;
+  profileImageUrl?: string;
 }
 
 interface Influencer {
@@ -19,6 +20,7 @@ interface Influencer {
   avgBundleSize: number;
   totalAssets: string[];
   uniqueAssets: string[];
+  profileImageUrl?: string;
 }
 
 const InfluencerProfiles: React.FC = () => {
@@ -26,6 +28,7 @@ const InfluencerProfiles: React.FC = () => {
   const [selectedInfluencer, setSelectedInfluencer] = useState<string | null>(null);
   const [selectedBundle, setSelectedBundle] = useState<CompletedBundle | null>(null);
   const [loading, setLoading] = useState(true);
+  const [expandedBundles, setExpandedBundles] = useState<Set<string>>(new Set());
 
   // Fetch completed bundles and process influencers
   useEffect(() => {
@@ -60,6 +63,9 @@ const InfluencerProfiles: React.FC = () => {
             const allAssets = bundles.flatMap(b => b.bundle);
             const uniqueAssets = Array.from(new Set(allAssets));
             
+            // Get profile image URL from the first bundle (most recent)
+            const profileImageUrl = bundles[0]?.profileImageUrl;
+            
             return {
               username,
               bundleCount: bundles.length,
@@ -67,7 +73,8 @@ const InfluencerProfiles: React.FC = () => {
               lastActive: new Date(Math.max(...bundles.map(b => new Date(b.completedAt).getTime()))).toISOString(),
               avgBundleSize: bundles.reduce((sum, b) => sum + b.bundle.length, 0) / bundles.length,
               totalAssets: allAssets,
-              uniqueAssets: uniqueAssets
+              uniqueAssets: uniqueAssets,
+              profileImageUrl
             };
           });
           
@@ -134,6 +141,17 @@ const InfluencerProfiles: React.FC = () => {
     return { assets, totalValue, avgPerformance };
   };
 
+  // Toggle function for bundle expansion
+  const toggleBundleExpansion = (bundleId: string) => {
+    const newExpanded = new Set(expandedBundles);
+    if (newExpanded.has(bundleId)) {
+      newExpanded.delete(bundleId);
+    } else {
+      newExpanded.add(bundleId);
+    }
+    setExpandedBundles(newExpanded);
+  };
+
   const BundleDetailView: React.FC<{ bundle: CompletedBundle }> = ({ bundle }) => {
     const { assets, totalValue, avgPerformance } = getBundleDetails(bundle);
     const bundleName = bundle.bundle.slice(0, 2).join(' + ') + ' Bundle';
@@ -158,7 +176,7 @@ const InfluencerProfiles: React.FC = () => {
             rel="noopener noreferrer"
             className="text-emerald-600 hover:text-emerald-800 font-medium"
           >
-            *View Original Tweet from @{bundle.originalUsername}
+            View Original Tweet from @{bundle.originalUsername}
           </a>
         </div>
 
@@ -237,9 +255,9 @@ const InfluencerProfiles: React.FC = () => {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-2">
-          All Twitter Users
+          View by Influencer
         </h1>
-        <p className="text-xl text-gray-600">Discover all users who have created cryptocurrency bundles</p>
+        <p className="text-xl text-gray-600">Discover your favorite influencers and their bundles</p>
       </div>
 
       {selectedBundle ? (
@@ -266,12 +284,25 @@ const InfluencerProfiles: React.FC = () => {
                 {/* User Profile Header */}
                 <div className="bg-white rounded-2xl border border-emerald-100 p-8 shadow-lg mb-8">
                   <div className="flex items-center gap-6 mb-6">
-                    <div className="w-20 h-20 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                    {influencer.profileImageUrl ? (
+                      <img 
+                        src={influencer.profileImageUrl} 
+                        alt={`@${influencer.username}`}
+                        className="w-20 h-20 rounded-full object-cover border-2 border-emerald-200"
+                        onError={(e) => {
+                          // Fallback to letter if image fails to load
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.nextElementSibling?.classList.remove('hidden');
+                        }}
+                      />
+                    ) : null}
+                    <div className={`w-20 h-20 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full flex items-center justify-center text-white font-bold text-2xl ${influencer.profileImageUrl ? 'hidden' : ''}`}>
                       {influencer.username.charAt(0).toUpperCase()}
                     </div>
                     <div>
+                    
                       <h2 className="text-3xl font-bold text-gray-900">@{influencer.username}</h2>
-                      <p className="text-emerald-600 font-medium">Bundle Creator</p>
                     </div>
                   </div>
                   
@@ -295,7 +326,6 @@ const InfluencerProfiles: React.FC = () => {
                   </div>
                 </div>
 
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">All Bundles by @{influencer.username}</h3>
                 
                 {influencer.totalBundles.length === 0 ? (
                   <div className="text-center py-12">
@@ -305,35 +335,84 @@ const InfluencerProfiles: React.FC = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {influencer.totalBundles.map((bundle) => {
                       const { totalValue } = getBundleDetails(bundle);
+                      const isExpanded = expandedBundles.has(bundle.id);
                       return (
                         <div key={bundle.id} className="bg-white border border-emerald-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                          <div className="flex items-start justify-between mb-4">
-                            <div>
-                              <h4 className="text-xl font-bold text-gray-900 mb-1">
-                                {bundle.bundle.slice(0, 2).join(' + ')} Bundle
-                              </h4>
-                              <p className="text-emerald-600 font-medium">@{bundle.originalUsername}</p>
-                            </div>
-                            <div className="text-right">
-                              <div className="text-sm text-gray-500">{formatDate(bundle.completedAt)}</div>
-                            </div>
-                          </div>
-                          
-                          <div className="mb-6">
-                            <div className="text-3xl font-bold text-gray-900">${totalValue.toFixed(2)}</div>
-                            <div className="text-sm text-gray-600">Total Value</div>
+                          {/* Bundle Header */}
+                          <div className="flex items-start justify-between mb-6">
+                            <a 
+                              href={`https://twitter.com/${bundle.originalUsername}/status/${bundle.originalTweetId}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-800 text-xl font-bold transition-colors"
+                            >
+                              Bundle from @{bundle.originalUsername}
+                            </a>
                           </div>
 
-                          <div className="flex gap-3">
-                            <button className="flex-1 bg-emerald-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-emerald-700 transition-colors">
-                              Buy Bundle
-                            </button>
-                            <button 
-                              className="flex-1 bg-gray-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-gray-700 transition-colors"
-                              onClick={() => setSelectedBundle(bundle)}
-                            >
-                              View Details
-                            </button>
+                          {/* Summary Stats */}
+                          <div className="flex items-center justify-between mb-6 p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl border border-emerald-100">
+                            <div>
+                              <div className="text-gray-600 text-sm font-medium">Total Value</div>
+                              <div className="text-2xl font-bold text-gray-900">${totalValue.toFixed(2)}</div>
+                              <button
+                                onClick={() => toggleBundleExpansion(bundle.id)}
+                                className="flex items-center gap-2 text-emerald-600 hover:text-emerald-800 text-sm font-medium mt-2 transition-colors"
+                              >
+                                {isExpanded ? (
+                                  <>
+                                    <span>Hide Assets</span>
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                    </svg>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span>Show Assets</span>
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                  </>
+                                )}
+                              </button>
+                            </div>
+                            <div className="text-right">
+                              <div className="text-gray-600 text-sm font-medium">Performance</div>
+                              <div className={`text-2xl font-bold ${getBundleDetails(bundle).avgPerformance > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                {getBundleDetails(bundle).avgPerformance > 0 ? '+' : ''}{getBundleDetails(bundle).avgPerformance.toFixed(1)}%
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Collapsible Asset List */}
+                          {isExpanded && (
+                            <div className="space-y-4 mb-6">
+                              {getBundleDetails(bundle).assets.map((asset, index) => (
+                                <div key={index} className="flex items-center justify-between p-3 bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl border border-emerald-100">
+                                  <div className="flex items-center gap-3">
+                                    <span className="font-bold text-gray-900 text-lg">{asset.ticker}</span>
+                                    <span className="text-emerald-600 text-sm font-medium bg-white px-2 py-1 rounded-full">({asset.allocation.toFixed(0)}%)</span>
+                                  </div>
+                                  <div className="text-right">
+                                    <div className="text-gray-900 font-medium">${asset.value.toFixed(2)}</div>
+                                    <div className={`text-sm ${asset.performance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                      {asset.performance >= 0 ? '+' : ''}{asset.performance.toFixed(1)}%
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Action Button */}
+                          <button className="w-full bg-gradient-to-r from-emerald-500 to-green-500 text-white py-4 px-6 rounded-xl font-bold text-lg hover:from-emerald-600 hover:to-green-600 transition-all duration-300 mb-4 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                            Buy Bundle
+                          </button>
+
+                          {/* Timestamp */}
+                          <div className="flex items-center gap-2 text-gray-500 text-sm justify-center">
+                            <span className="w-4 h-4 bg-gradient-to-r from-emerald-400 to-green-400 rounded-full"></span>
+                            <span>{formatDate(bundle.completedAt)}</span>
                           </div>
                         </div>
                       );
@@ -356,7 +435,7 @@ const InfluencerProfiles: React.FC = () => {
               <p className="text-gray-500 text-lg">Users will appear here as they create bundles</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6">
               {influencers.map((influencer) => (
                 <div 
                   key={influencer.username} 
@@ -364,7 +443,20 @@ const InfluencerProfiles: React.FC = () => {
                   onClick={() => setSelectedInfluencer(influencer.username)}
                 >
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                    {influencer.profileImageUrl ? (
+                      <img 
+                        src={influencer.profileImageUrl} 
+                        alt={`@${influencer.username}`}
+                        className="w-16 h-16 rounded-full object-cover border-2 border-emerald-200"
+                        onError={(e) => {
+                          // Fallback to letter if image fails to load
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.nextElementSibling?.classList.remove('hidden');
+                        }}
+                      />
+                    ) : null}
+                    <div className={`w-16 h-16 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl ${influencer.profileImageUrl ? 'hidden' : ''}`}>
                       {influencer.username.charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -374,27 +466,10 @@ const InfluencerProfiles: React.FC = () => {
                   </div>
                   
                   <div className="space-y-3 mb-4">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Total Bundles:</span>
-                      <span className="font-medium">{influencer.bundleCount}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Avg Bundle Size:</span>
-                      <span className="font-medium">{influencer.avgBundleSize.toFixed(1)} assets</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Unique Assets:</span>
-                      <span className="font-medium">{influencer.uniqueAssets.length}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Last Active:</span>
-                      <span className="font-medium">{formatDate(influencer.lastActive)}</span>
-                    </div>
                   </div>
 
                   {/* Top Assets */}
                   <div className="mb-4">
-                    <div className="text-sm text-gray-600 mb-2">Assets Used:</div>
                     <div className="flex flex-wrap gap-1">
                       {influencer.uniqueAssets.slice(0, 5).map((asset) => (
                         <span key={asset} className="px-2 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-medium">

@@ -28,6 +28,7 @@ interface CompletedBundle {
   completedAt: string;
   conversationType: 'single_tweet' | 'conversation';
   tweetText?: string;
+  profileImageUrl?: string;
 }
 
 // Global storage for completed bundles
@@ -200,7 +201,7 @@ const initCharacter = ({ runtime }: { runtime: IAgentRuntime }) => { //initializ
   };
 
   // Function to save a completed bundle
-  const saveBundleToStorage = (tracker: ConversationTracker, tweetText?: string, conversationType: 'single_tweet' | 'conversation' = 'conversation') => {
+  const saveBundleToStorage = (tracker: ConversationTracker, tweetText?: string, conversationType: 'single_tweet' | 'conversation' = 'conversation', profileImageUrl?: string) => {
     const completedBundle: CompletedBundle = {
       id: `${tracker.originalUsername}_${tracker.originalCashtag}_${Date.now()}`,
       originalTweetId: tracker.originalTweetId,
@@ -209,7 +210,8 @@ const initCharacter = ({ runtime }: { runtime: IAgentRuntime }) => { //initializ
       bundle: [...tracker.bundle], // Create a copy of the bundle array
       completedAt: new Date().toISOString(),
       conversationType,
-      tweetText
+      tweetText,
+      profileImageUrl
     };
     
     saveCompletedBundle(completedBundle);
@@ -329,7 +331,7 @@ const initCharacter = ({ runtime }: { runtime: IAgentRuntime }) => { //initializ
           const requestParams: any = { 
             ...(character.settings as any).twitter.requestParams,
             expansions: ['author_id'],
-            'user.fields': ['username']
+            'user.fields': ['username', 'profile_image_url']
           };
           if (lastTweetId) requestParams.since_id = lastTweetId;
           
@@ -350,12 +352,21 @@ const initCharacter = ({ runtime }: { runtime: IAgentRuntime }) => { //initializ
               const user = timeline.includes?.users?.find((u: any) => u.id === tweet.author_id);
               const username = user?.username || tweet.author_id;
               
+              // Debug: Log user data to see what we're getting
+              console.log(`   • User data for @${username}:`, {
+                id: user?.id,
+                username: user?.username,
+                profile_image_url: user?.profile_image_url,
+                profile_image_url_https: user?.profile_image_url_https
+              });
+              
               const tweetData = {
                 id_str: tweet.id,
                 text: tweet.text,
                 username: username,
                 author_id: tweet.author_id,
-                created_at: tweet.created_at
+                created_at: tweet.created_at,
+                profileImageUrl: user?.profile_image_url_https || user?.profile_image_url || null
               };
               
               // Process the tweet for cashtags
@@ -443,7 +454,8 @@ const initCharacter = ({ runtime }: { runtime: IAgentRuntime }) => { //initializ
         bundle: cashtags, // Save all detected cashtags as the bundle
         completedAt: new Date().toISOString(),
         conversationType: cashtags.length > 1 ? 'single_tweet' : 'single_tweet',
-        tweetText: tweetData.text
+        tweetText: tweetData.text,
+        profileImageUrl: tweetData.profileImageUrl
       };
       
       saveCompletedBundle(completedBundle);
