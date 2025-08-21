@@ -255,7 +255,7 @@ const InfluencerProfiles: React.FC = () => {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-2">
-          All Twitter Users
+          View by Influencer
         </h1>
         <p className="text-xl text-gray-600">Discover your favorite influencers and their bundles</p>
       </div>

@@ -386,7 +386,7 @@ const BundlesDisplay: React.FC = () => {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <button
-                  onClick={() => setCurrentView('bundles')}
+                  onClick={() => setCurrentView('influencers')}
                   className="group bg-gradient-to-r from-emerald-500 to-green-500 text-white px-10 py-5 rounded-2xl text-xl font-semibold hover:from-emerald-600 hover:to-green-600 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1"
                 >
                   <span className="flex items-center gap-3">
@@ -495,20 +495,11 @@ const BundlesDisplay: React.FC = () => {
           </div>
 
           {/* Navigation */}
+
           <div className="bg-white border-b border-emerald-100">
             <div className="max-w-7xl mx-auto px-6">
               <div className="flex space-x-8">
-                <button
-                  onClick={() => setCurrentView('bundles')}
-                  className={`py-4 px-2 border-b-2 font-medium text-sm ${
-                    currentView === 'bundles'
-                      ? 'border-emerald-500 text-emerald-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  Explore Bundles
-                </button>
-                <button
+              <button
                   onClick={() => setCurrentView('influencers')}
                   className={`py-4 px-2 border-b-2 font-medium text-sm ${
                     currentView === 'influencers'
@@ -518,6 +509,17 @@ const BundlesDisplay: React.FC = () => {
                 >
                   Influencers
                 </button>
+                <button
+                  onClick={() => setCurrentView('bundles')}
+                  className={`py-4 px-2 border-b-2 font-medium text-sm ${
+                    currentView === 'bundles'
+                      ? 'border-emerald-500 text-emerald-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  All Bundles
+                </button>
+               
                 <button
                   onClick={() => setCurrentView('create')}
                   className={`py-4 px-2 border-b-2 font-medium text-sm ${
@@ -545,17 +547,20 @@ const BundlesDisplay: React.FC = () => {
           </div>
 
           {/* Content */}
-          <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="max-w-7xl mx-auto p-6">
             {currentView === 'bundles' && (
               <>
                 {/* Bundles Header */}
-                <div className="mb-8 text-center">
-                  <h1 className="text-5xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-4">Bundles</h1>
-                  <p className="text-xl text-gray-600">Explore all created bundles</p>
-            </div>
+                <div className="max-w-7xl mx-auto p-6">
+                  <div className="mb-8">
+                  <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-2">
+                    All Bundles
+                  </h1>
+                  <p className="text-xl text-gray-600">Discover all created bundles</p>
+                </div>
 
                 {/* Filters Section */}
-                <div className="bg-white rounded-2xl border border-emerald-100 p-8 shadow-lg mb-8">
+                <div className="bg-white rounded-xl border border-emerald-100 p-8 shadow-lg mb-8">
                   <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
                     Filter Bundles
                   </h3>
@@ -768,21 +773,27 @@ const BundlesDisplay: React.FC = () => {
                     <span>{formatDate(bundle.completedAt)}</span>
                   </div>
                 </div>
+                
               ))}
             </div>
+            
           )}
+        </div>
+        
         </div>
               </>
             )}
-
             {currentView === 'create' && <CreateBundle />}
             {currentView === 'dashboard' && <Dashboard />}
             {currentView === 'influencers' && <InfluencerProfiles />}
           </div>
         </div>
+        
       </RainbowKitProvider>
     </WagmiConfig>
   );
 };
 
-export default BundlesDisplay; 
+export default BundlesDisplay;
+
+
