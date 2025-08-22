@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
+import deployedBundlesData from '../../../data/completed-bundles.json';
 
 interface Bundle {
   id: string;
@@ -10,6 +11,18 @@ interface Bundle {
   performance: number;
   shares: number;
   isCreator: boolean;
+}
+
+interface DeployedBundle {
+  id: string;
+  originalTweetId: string;
+  originalUsername: string;
+  originalCashtag: string;
+  bundle: string[];
+  completedAt: string;
+  conversationType: string;
+  tweetText: string;
+  profileImageUrl: string;
 }
 
 const Dashboard: React.FC = () => {
@@ -31,6 +44,22 @@ const Dashboard: React.FC = () => {
       read: true,
     },
   ]);
+  const [myBundles, setMyBundles] = useState<Bundle[]>([]);
+
+  useEffect(() => {
+    const formattedBundles: Bundle[] = (deployedBundlesData as DeployedBundle[]).map((deployedBundle) => ({
+      id: deployedBundle.id,
+      name: `${deployedBundle.originalCashtag} Bundle`,
+      symbol: deployedBundle.originalCashtag,
+      assets: deployedBundle.bundle,
+      totalValue: Math.floor(Math.random() * 20000) + 5000, // Mock data for demonstration
+      performance: parseFloat(((Math.random() - 0.2) * 25).toFixed(2)), // Mock data for demonstration
+      shares: Math.floor(Math.random() * 1000) + 200, // Mock data for demonstration
+      isCreator: true,
+    }));
+    setMyBundles(formattedBundles);
+  }, []);
+
 
   const markAsRead = (notificationId: string) => {
     setNotifications(prevNotifications =>
@@ -41,30 +70,6 @@ const Dashboard: React.FC = () => {
       )
     );
   };
-
-  // Mock data - replace with real data from your backend
-  const myBundles: Bundle[] = [
-    {
-      id: '1',
-      name: 'DeFi Growth Bundle',
-      symbol: 'DEFI',
-      assets: ['BTC', 'ETH', 'LINK', 'UNI'],
-      totalValue: 12500,
-      performance: 15.2,
-      shares: 1000,
-      isCreator: true,
-    },
-    {
-      id: '2',
-      name: 'Layer 2 Bundle',
-      symbol: 'L2',
-      assets: ['MATIC', 'OP', 'ARB', 'BASE'],
-      totalValue: 8900,
-      performance: 8.7,
-      shares: 750,
-      isCreator: true,
-    },
-  ];
 
   const myInvestments: Bundle[] = [
     {
@@ -127,7 +132,10 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           <div className="text-3xl font-bold text-purple-400">
-            +{Math.round((myBundles.reduce((sum, b) => sum + b.performance, 0) / myBundles.length) * 100) / 100}%
+            {myBundles.length > 0 ?
+    `+${Math.round((myBundles.reduce((sum, b) => sum + b.performance, 0) / myBundles.length) * 100) / 100}%` :
+    'N/A'
+  }
           </div>
         </div>
 
