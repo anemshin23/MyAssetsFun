@@ -69,8 +69,8 @@
     "vite": "^6.0.1"
   },
   "scripts": {
-    "start": "elizaos start",
-    "start-bundlehub": "node start-bundlehub.js",
+    "start-elizaos": "elizaos start",
+    "start": "node start-bundlehub.js",
     "dev": "elizaos dev",
     "build": "tsc --noEmit && vite build && tsup",
     "lint": "prettier --write ./src",
