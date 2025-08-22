@@ -43,7 +43,7 @@ const WalletConnect: React.FC = () => {
                   return (
                     <button
                       onClick={openConnectModal}
-                      className="bg-gradient-to-r from-pink-500 to-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-pink-600 hover:to-orange-600 transition-all duration-500 shadow-lg hover:shadow-pink-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-pink-400/20"
+                      className="bg-gradient-to-r from-pink-400 to-pink-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-pink-500 hover:to-pink-600 transition-all duration-500 shadow-lg hover:shadow-pink-400/40 transform hover:-translate-y-1 backdrop-blur-sm border border-pink-300/30"
                     >
                       Connect Wallet
                     </button>
@@ -67,19 +67,19 @@ const WalletConnect: React.FC = () => {
                     <div className="relative">
                       <button
                         onClick={() => setShowNetworkSelector(!showNetworkSelector)}
-                        className="flex items-center gap-2 bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg border border-pink-500/20 px-4 py-2 rounded-lg hover:border-pink-400/50 transition-all duration-300 shadow-lg hover:shadow-pink-500/25"
+                        className="flex items-center gap-2 bg-gradient-to-r from-pink-900/80 to-pink-800/80 backdrop-blur-lg border border-pink-400/30 px-4 py-2 rounded-lg hover:border-pink-300/60 transition-all duration-300 shadow-lg hover:shadow-pink-400/30"
                       >
-                        <div className="w-3 h-3 rounded-full bg-pink-400"></div>
+                        <div className="w-3 h-3 rounded-full bg-pink-300"></div>
                         <span className="text-sm font-medium text-white">
                           {connectedChain.name}
                         </span>
-                        <svg className="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                       </button>
 
                       {showNetworkSelector && (
-                        <div className="absolute right-0 mt-2 w-48 bg-gradient-to-r from-slate-800/90 to-pink-800/90 backdrop-blur-lg border border-pink-500/20 rounded-lg shadow-2xl z-50">
+                        <div className="absolute right-0 mt-2 w-48 bg-gradient-to-r from-pink-900/90 to-pink-800/90 backdrop-blur-lg border border-pink-400/30 rounded-lg shadow-2xl z-[9999]">
                           <div className="p-2">
                             {chains.map((chainOption) => (
                               <button
@@ -90,8 +90,8 @@ const WalletConnect: React.FC = () => {
                                 }}
                                 className={`w-full text-left px-3 py-2 rounded text-sm transition-all duration-300 ${
                                   chainOption.id === connectedChain.id 
-                                    ? 'bg-pink-500/20 text-pink-300 border border-pink-400/30' 
-                                    : 'text-slate-300 hover:text-white hover:bg-slate-700/60'
+                                    ? 'bg-pink-400/30 text-pink-200 border border-pink-300/40' 
+                                    : 'text-slate-200 hover:text-white hover:bg-pink-800/60'
                                 }`}
                               >
                                 {chainOption.name}
@@ -105,17 +105,17 @@ const WalletConnect: React.FC = () => {
                     {/* Wallet Info */}
                     <button
                       onClick={openAccountModal}
-                      className="flex items-center gap-3 bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg border border-pink-500/20 px-4 py-3 rounded-lg hover:border-pink-400/50 transition-all duration-300 shadow-lg hover:shadow-pink-500/25"
+                      className="flex items-center gap-3 bg-gradient-to-r from-pink-900/80 to-pink-800/80 backdrop-blur-lg border border-pink-400/30 px-4 py-3 rounded-lg hover:border-pink-300/60 transition-all duration-300 shadow-lg hover:shadow-pink-400/30"
                     >
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        <div className="w-8 h-8 bg-gradient-to-r from-pink-400 to-pink-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
                           {account.displayName.charAt(0).toUpperCase()}
                         </div>
                         <div className="text-left">
                           <div className="text-sm font-medium text-white">
                             {account.displayName}
                           </div>
-                          <div className="text-xs text-slate-300">
+                          <div className="text-xs text-slate-200">
                             {account.address.slice(0, 6)}...{account.address.slice(-4)}
                           </div>
                         </div>

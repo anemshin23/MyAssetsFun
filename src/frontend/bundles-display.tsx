@@ -378,9 +378,9 @@ const BundlesDisplay: React.FC = () => {
             <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-gradient-to-r from-pink-400/20 to-orange-400/20 rounded-full blur-2xl animate-pulse delay-2000"></div>
             
             {/* Hero Content */}
-            <div className="relative z-10 text-center px-6 py-40">
+            <div className="relative z-0 text-center px-6 py-40">
               
-              <h1 className="text-6xl lg:text-8xl font-bold bg-gradient-to-r from-pink-400 via-orange-400 to-pink-400 bg-clip-text text-transparent mb-12 animate-fade-in" style={{ lineHeight: '1.1' }}>
+              <h1 className="text-6xl lg:text-8xl font-bold text-white mb-12 animate-fade-in" style={{ lineHeight: '1.1' }}>
                 Assets are more fun<br />together!
               </h1>
               
@@ -399,7 +399,7 @@ const BundlesDisplay: React.FC = () => {
                 
                 <button
                   onClick={() => setCurrentView('create')}
-                  className="group bg-slate-800/60 text-pink-400 border-2 border-pink-400/30 px-12 py-6 rounded-2xl text-xl font-semibold hover:bg-slate-700/80 hover:border-pink-400/50 transition-all duration-500 shadow-2xl hover:shadow-pink-400/25 transform hover:-translate-y-2 hover:scale-105 backdrop-blur-sm"
+                  className="group bg-slate-800/60 text-white border-2 border-pink-400/30 px-12 py-6 rounded-2xl text-xl font-semibold hover:bg-slate-700/80 hover:border-pink-400/50 transition-all duration-500 shadow-2xl hover:shadow-pink-400/25 transform hover:-translate-y-2 hover:scale-105 backdrop-blur-sm"
                 >
                   <span className="flex items-center gap-3">
                     <span>Create Bundle</span>
