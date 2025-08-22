@@ -161,20 +161,20 @@ const InfluencerProfiles: React.FC = () => {
         <div className="flex items-center gap-4 mb-6">
           <button
             onClick={() => setSelectedBundle(null)}
-            className="text-purple-400 hover:text-purple-300 font-medium flex items-center gap-2 transition-colors duration-300"
+            className="text-pink-400 hover:text-pink-300 font-medium flex items-center gap-2 transition-colors duration-300"
           >
             ← Back to Bundles
           </button>
         </div>
 
         {/* Bundle Header */}
-        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl border border-purple-500/20 p-8 shadow-2xl mb-6">
+        <div className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg rounded-2xl border border-pink-500/20 p-8 shadow-2xl mb-6">
           <h1 className="text-3xl font-bold text-white mb-2">{bundleName}</h1>
           <a 
             href={`https://twitter.com/${bundle.originalUsername}/status/${bundle.originalTweetId}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-purple-400 hover:text-purple-300 font-medium transition-colors duration-300"
+            className="text-pink-400 hover:text-pink-300 font-medium transition-colors duration-300"
           >
             View Original Tweet from @{bundle.originalUsername}
           </a>
@@ -183,11 +183,11 @@ const InfluencerProfiles: React.FC = () => {
         {/* Individual Assets */}
         <div className="space-y-4 mb-6">
           {assets.map((asset, index) => (
-            <div key={index} className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg border border-purple-500/20 rounded-xl p-6 shadow-2xl">
+            <div key={index} className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg border border-pink-500/20 rounded-xl p-6 shadow-2xl">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <h3 className="text-xl font-bold text-white">{asset.ticker}</h3>
-                  <span className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm font-medium backdrop-blur-sm border border-purple-400/30">
+                  <span className="px-3 py-1 bg-pink-500/20 text-pink-300 rounded-full text-sm font-medium backdrop-blur-sm border border-pink-400/30">
                     ({asset.allocation.toFixed(0)}%)
                   </span>
                 </div>
@@ -200,7 +200,7 @@ const InfluencerProfiles: React.FC = () => {
                 </div>
                 <div>
                   <div className="text-sm text-slate-300 mb-1">24h Performance</div>
-                  <div className={`text-2xl font-bold ${asset.performance >= 0 ? 'text-purple-400' : 'text-red-400'}`}>
+                  <div className={`text-2xl font-bold ${asset.performance >= 0 ? 'text-pink-400' : 'text-red-400'}`}>
                     {asset.performance >= 0 ? '+' : ''}{asset.performance.toFixed(1)}%
                   </div>
                 </div>
@@ -210,7 +210,7 @@ const InfluencerProfiles: React.FC = () => {
         </div>
 
         {/* Bundle Summary */}
-        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg border border-purple-500/20 rounded-xl p-8 mb-6 shadow-2xl">
+        <div className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg border border-pink-500/20 rounded-xl p-8 mb-6 shadow-2xl">
           <div className="grid grid-cols-2 gap-8">
             <div>
               <div className="text-sm text-slate-300 mb-1">Total Value</div>
@@ -218,7 +218,7 @@ const InfluencerProfiles: React.FC = () => {
             </div>
             <div>
               <div className="text-sm text-slate-300 mb-1">Performance</div>
-              <div className={`text-4xl font-bold ${avgPerformance >= 0 ? 'text-purple-400' : 'text-red-400'}`}>
+              <div className={`text-4xl font-bold ${avgPerformance >= 0 ? 'text-pink-400' : 'text-red-400'}`}>
                 {avgPerformance >= 0 ? '+' : ''}{avgPerformance.toFixed(1)}%
               </div>
             </div>
@@ -226,13 +226,13 @@ const InfluencerProfiles: React.FC = () => {
         </div>
 
         {/* Buy Bundle Button */}
-        <button className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-4 px-8 rounded-xl font-bold text-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-500 shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20">
+        <button className="w-full bg-gradient-to-r from-pink-500 to-orange-500 text-white py-4 px-8 rounded-xl font-bold text-lg hover:from-pink-600 hover:to-orange-600 transition-all duration-500 shadow-2xl hover:shadow-pink-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-pink-400/20">
           Buy Bundle
         </button>
 
         {/* Footer */}
-        <div className="flex items-center justify-center gap-2 mt-4 text-purple-400">
-          <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse"></div>
+        <div className="flex items-center justify-center gap-2 mt-4 text-pink-400">
+          <div className="w-3 h-3 bg-pink-400 rounded-full animate-pulse"></div>
           <span className="text-sm font-medium">Today</span>
         </div>
       </div>
@@ -241,9 +241,9 @@ const InfluencerProfiles: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-blue-900">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-900 via-pink-900 to-orange-900">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
           <p className="text-slate-300">Loading influencer profiles...</p>
         </div>
       </div>
@@ -254,7 +254,7 @@ const InfluencerProfiles: React.FC = () => {
     <div className="max-w-7xl mx-auto p-6">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-2">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-400 to-orange-400 bg-clip-text text-transparent mb-2">
           View by Influencer
         </h1>
         <p className="text-xl text-slate-300">Discover your favorite influencers and their bundles</p>
@@ -269,7 +269,7 @@ const InfluencerProfiles: React.FC = () => {
           <div className="flex items-center gap-4 mb-6">
             <button
               onClick={() => setSelectedInfluencer(null)}
-              className="text-purple-400 hover:text-purple-300 font-medium flex items-center gap-2 transition-colors duration-300"
+              className="text-pink-400 hover:text-pink-300 font-medium flex items-center gap-2 transition-colors duration-300"
             >
               ← Back to All Users
             </button>
@@ -282,13 +282,13 @@ const InfluencerProfiles: React.FC = () => {
             return (
               <div>
                 {/* User Profile Header */}
-                <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl border border-purple-500/20 p-8 shadow-2xl mb-8">
+                <div className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg rounded-2xl border border-pink-500/20 p-8 shadow-2xl mb-8">
                   <div className="flex items-center gap-6 mb-6">
                     {influencer.profileImageUrl ? (
                       <img 
                         src={influencer.profileImageUrl} 
                         alt={`@${influencer.username}`}
-                        className="w-20 h-20 rounded-full object-cover border-2 border-purple-400/30"
+                        className="w-20 h-20 rounded-full object-cover border-2 border-pink-400/30"
                         onError={(e) => {
                           // Fallback to letter if image fails to load
                           const target = e.target as HTMLImageElement;
@@ -297,7 +297,7 @@ const InfluencerProfiles: React.FC = () => {
                         }}
                       />
                     ) : null}
-                    <div className={`w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-2xl ${influencer.profileImageUrl ? 'hidden' : ''}`}>
+                    <div className={`w-20 h-20 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-2xl ${influencer.profileImageUrl ? 'hidden' : ''}`}>
                       {influencer.username.charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -336,27 +336,27 @@ const InfluencerProfiles: React.FC = () => {
                       const { totalValue } = getBundleDetails(bundle);
                       const isExpanded = expandedBundles.has(bundle.id);
                       return (
-                        <div key={bundle.id} className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg border border-purple-500/20 rounded-xl p-6 hover:shadow-purple-500/25 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105">
+                        <div key={bundle.id} className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg border border-pink-500/20 rounded-xl p-6 hover:shadow-pink-500/25 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105">
                           {/* Bundle Header */}
                           <div className="flex items-start justify-between mb-6">
                             <a 
                               href={`https://twitter.com/${bundle.originalUsername}/status/${bundle.originalTweetId}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 text-purple-10 hover:text-purple-0 text-xl font-bold transition-colors duration-300"
+                              className="inline-flex items-center gap-2 text-pink-400 hover:text-pink-300 text-xl font-bold transition-colors duration-300"
                             >
                               Bundle from @{bundle.originalUsername}
                             </a>
                           </div>
 
                           {/* Summary Stats */}
-                          <div className="flex items-center justify-between mb-6 p-4 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-xl border border-purple-400/20 backdrop-blur-sm">
+                          <div className="flex items-center justify-between mb-6 p-4 bg-gradient-to-r from-pink-500/10 to-orange-500/10 rounded-xl border border-pink-400/20 backdrop-blur-sm">
                             <div>
                               <div className="text-slate-300 text-sm font-medium">Total Value</div>
                               <div className="text-2xl font-bold text-white">${totalValue.toFixed(2)}</div>
                               <button
                                 onClick={() => toggleBundleExpansion(bundle.id)}
-                                className="flex items-center gap-2 text-purple-10 hover:text-purple-0 text-sm font-medium mt-2 transition-colors duration-300"
+                                className="flex items-center gap-2 text-pink-400 hover:text-pink-300 text-sm font-medium mt-2 transition-colors duration-300"
                               >
                                 {isExpanded ? (
                                   <>
@@ -377,7 +377,7 @@ const InfluencerProfiles: React.FC = () => {
                             </div>
                             <div className="text-right">
                               <div className="text-slate-300 text-sm font-medium">Performance</div>
-                              <div className={`text-2xl font-bold ${getBundleDetails(bundle).avgPerformance > 0 ? 'text-purple-10' : 'text-red-400'}`}>
+                              <div className={`text-2xl font-bold ${getBundleDetails(bundle).avgPerformance > 0 ? 'text-pink-400' : 'text-red-400'}`}>
                                 {getBundleDetails(bundle).avgPerformance > 0 ? '+' : ''}{getBundleDetails(bundle).avgPerformance.toFixed(1)}%
                               </div>
                             </div>
@@ -387,14 +387,14 @@ const InfluencerProfiles: React.FC = () => {
                           {isExpanded && (
                             <div className="space-y-4 mb-6">
                               {getBundleDetails(bundle).assets.map((asset, index) => (
-                                <div key={index} className="flex items-center justify-between p-3 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-xl border border-purple-400/20 backdrop-blur-sm">
+                                <div key={index} className="flex items-center justify-between p-3 bg-gradient-to-r from-pink-500/10 to-orange-500/10 rounded-xl border border-pink-400/20 backdrop-blur-sm">
                                   <div className="flex items-center gap-3">
                                     <span className="font-bold text-white text-lg">{asset.ticker}</span>
-                                    <span className="text-purple-10 text-sm font-medium bg-slate-700/60 px-2 py-1 rounded-full backdrop-blur-sm">({asset.allocation.toFixed(0)}%)</span>
+                                    <span className="text-pink-400 text-sm font-medium bg-slate-700/60 px-2 py-1 rounded-full backdrop-blur-sm">({asset.allocation.toFixed(0)}%)</span>
                                   </div>
                                   <div className="text-right">
                                     <div className="text-white font-medium">${asset.value.toFixed(2)}</div>
-                                    <div className={`text-sm ${asset.performance >= 0 ? 'text-purple-10' : 'text-red-400'}`}>
+                                    <div className={`text-sm ${asset.performance >= 0 ? 'text-pink-400' : 'text-red-400'}`}>
                                       {asset.performance >= 0 ? '+' : ''}{asset.performance.toFixed(1)}%
                                     </div>
                                   </div>
@@ -404,13 +404,13 @@ const InfluencerProfiles: React.FC = () => {
                           )}
 
                           {/* Action Button */}
-                          <button className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-4 px-6 rounded-xl font-bold text-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-500 mb-4 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20">
+                          <button className="w-full bg-gradient-to-r from-pink-500 to-orange-500 text-white py-4 px-6 rounded-xl font-bold text-lg hover:from-pink-600 hover:to-orange-600 transition-all duration-500 mb-4 shadow-lg hover:shadow-pink-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-pink-400/20">
                             Buy Bundle
                           </button>
 
                           {/* Timestamp */}
-                          <div className="flex items-center gap-2 text-slate-400 text-sm justify-center">
-                            <span className="w-4 h-4 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full animate-pulse"></span>
+                          <div className="flex items-center justify-center gap-2 text-slate-400 text-sm justify-center">
+                            <span className="w-4 h-4 bg-gradient-to-r from-pink-400 to-orange-400 rounded-full animate-pulse"></span>
                             <span>{formatDate(bundle.completedAt)}</span>
                           </div>
                         </div>
@@ -427,7 +427,7 @@ const InfluencerProfiles: React.FC = () => {
         <div>
           {influencers.length === 0 ? (
             <div className="text-center py-16">
-              <div className="w-24 h-24 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-purple-400/30">
+              <div className="w-24 h-24 bg-gradient-to-r from-pink-500/20 to-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-pink-400/30">
                 <span className="text-4xl">👥</span>
               </div>
               <div className="text-2xl font-bold text-white mb-3">No users found</div>
@@ -438,7 +438,7 @@ const InfluencerProfiles: React.FC = () => {
               {influencers.map((influencer) => (
                 <div 
                   key={influencer.username} 
-                  className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg border border-purple-500/20 rounded-xl p-6 hover:shadow-purple-500/25 transition-all duration-500 cursor-pointer transform hover:-translate-y-2 hover:scale-105"
+                  className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg border border-pink-500/20 rounded-xl p-6 hover:shadow-pink-500/25 transition-all duration-500 cursor-pointer transform hover:-translate-y-2 hover:scale-105"
                   onClick={() => setSelectedInfluencer(influencer.username)}
                 >
                   <div className="flex items-center gap-4 mb-4">
@@ -446,7 +446,7 @@ const InfluencerProfiles: React.FC = () => {
                       <img 
                         src={influencer.profileImageUrl} 
                         alt={`@${influencer.username}`}
-                        className="w-16 h-16 rounded-full object-cover border-2 border-purple-400/30"
+                        className="w-16 h-16 rounded-full object-cover border-2 border-pink-400/30"
                         onError={(e) => {
                           // Fallback to letter if image fails to load
                           const target = e.target as HTMLImageElement;
@@ -455,12 +455,12 @@ const InfluencerProfiles: React.FC = () => {
                         }}
                       />
                     ) : null}
-                    <div className={`w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl ${influencer.profileImageUrl ? 'hidden' : ''}`}>
+                    <div className={`w-16 h-16 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-xl ${influencer.profileImageUrl ? 'hidden' : ''}`}>
                       {influencer.username.charAt(0).toUpperCase()}
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white">@{influencer.username}</h3>
-                      <p className="text-purple-400 font-medium">{influencer.bundleCount} bundles</p>
+                      <p className="text-pink-400 font-medium">{influencer.bundleCount} bundles</p>
                     </div>
                   </div>
                   
@@ -471,7 +471,7 @@ const InfluencerProfiles: React.FC = () => {
                   <div className="mb-4">
                     <div className="flex flex-wrap gap-1">
                       {influencer.uniqueAssets.slice(0, 5).map((asset) => (
-                        <span key={asset} className="px-2 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs font-medium backdrop-blur-sm border border-purple-400/30">
+                        <span key={asset} className="px-2 py-1 bg-pink-500/20 text-pink-300 rounded-full text-xs font-medium backdrop-blur-sm border border-pink-400/30">
                           {asset}
                         </span>
                       ))}
@@ -483,7 +483,7 @@ const InfluencerProfiles: React.FC = () => {
                     </div>
                   </div>
 
-                  <button className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-2 px-4 rounded-lg font-medium hover:from-purple-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20">
+                  <button className="w-full bg-gradient-to-r from-pink-500 to-orange-500 text-white py-2 px-4 rounded-lg font-medium hover:from-pink-600 hover:to-orange-600 transition-all duration-300 shadow-lg hover:shadow-pink-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-pink-400/20">
                     View All Bundles
                   </button>
                 </div>

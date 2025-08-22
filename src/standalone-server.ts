@@ -136,6 +136,122 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Kodiak API proxy endpoints to handle CORS
+app.post('/api/kodiak/quote', async (req, res) => {
+  try {
+    const { tokenIn, tokenOut, amountIn, slippageTolerance, chainId = 80069 } = req.body;
+    
+    // Convert token addresses to Kodiak format
+    const tokenInAddress = tokenIn === '0x0000000000000000000000000000000000000000' ? 'BERA' : tokenIn;
+    const tokenOutAddress = tokenOut;
+    
+    // Build query parameters
+    const params = new URLSearchParams({
+      tokenInAddress,
+      tokenInChainId: chainId.toString(),
+      tokenOutAddress,
+      tokenOutChainId: chainId.toString(),
+      amount: amountIn,
+      type: 'exactIn'
+    });
+
+    // Add slippage if provided (convert from basis points to percentage)
+    if (slippageTolerance) {
+      params.append('slippageTolerance', (slippageTolerance / 100).toString());
+    }
+    
+    // Make request to correct Kodiak API endpoint
+    const response = await fetch(`https://backend.kodiak.finance/quote?${params}`);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Kodiak API error: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+
+    const data = await response.json() as any; // Kodiak API response structure
+    
+    // Transform the response to match our expected format
+    const transformedData = {
+      amountOut: data.quote || data.quoteDecimals || '0',
+      route: data.otherQuote?.route || [],
+      priceImpact: data.priceImpact || '0',
+      fee: data.refFee || '0',
+      gasEstimate: data.gasUseEstimate || '0',
+      provider: data.provider || 'Unknown',
+      exchangeRate: data.tokenOutPriceUSD || '0',
+      // Include raw data for debugging
+      raw: data
+    };
+    
+    res.json({
+      success: true,
+      data: transformedData
+    });
+  } catch (error) {
+    console.error('Kodiak quote proxy error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get swap quote from Kodiak',
+      details: error.message
+    });
+  }
+});
+
+app.post('/api/kodiak/swap-data', async (req, res) => {
+  try {
+    const { tokenIn, tokenOut, amountIn, amountOutMin, recipient, deadline } = req.body;
+    
+    // For now, return the swap data structure that the frontend expects
+    // In a full implementation, you might want to call additional Kodiak endpoints
+    res.json({
+      success: true,
+      data: {
+        tokenIn,
+        tokenOut,
+        amountIn,
+        amountOutMin,
+        recipient,
+        deadline,
+        // This would be the actual swap calldata from Kodiak
+        calldata: '0x' // Placeholder - would need actual Kodiak swap router integration
+      }
+    });
+  } catch (error) {
+    console.error('Kodiak swap data proxy error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get swap data from Kodiak'
+    });
+  }
+});
+
+app.post('/api/rpc-proxy', async (req, res) => {
+  try {
+    const response = await fetch('https://bepolia.beratrail.io/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(req.body),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`RPC proxy error: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('RPC proxy error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to proxy RPC request',
+      details: error.message,
+    });
+  }
+});
+
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.error('BundleHub Error:', err);
@@ -158,6 +274,8 @@ export const startBundleHubServer = () => {
     console.log(`   GET /api/bundles/cashtag/:cashtag - Get bundles by cashtag`);
     console.log(`   GET /api/stats - Get bundle statistics`);
     console.log(`   GET /api/health - Health check`);
+    console.log(`   POST /api/kodiak/quote - Kodiak DEX quote proxy`);
+    console.log(`   POST /api/kodiak/swap-data - Kodiak DEX swap data proxy`);
     console.log(`   WebSocket - Real-time bundle updates`);
   });
 };

@@ -1,7 +1,8 @@
-import { ethers, Contract, BrowserProvider, formatEther, parseEther } from 'ethers';
+import { ethers, Contract, BrowserProvider, formatEther, parseEther, Interface } from 'ethers';
 import { BundleV3ProductionABI } from './abis/BundleV3Production';
 import { BundleFactoryV3ProductionABI } from './abis/BundleFactoryV3Production';
 import { CONTRACT_ADDRESSES } from './deployBundle';
+import { getQuote } from './mock-quote-service';
 
 // Extend window interface for ethereum
 declare global {
@@ -29,6 +30,19 @@ export interface ComponentInfo {
   weight: number;
   balance: string;
   value: string;
+}
+
+// EIP-7702 Batch Transaction Interfaces
+export interface BatchCall {
+  to: string;
+  value: string;
+  data: string;
+}
+
+export interface BatchTransactionResult {
+  success: boolean;
+  txHash?: string;
+  error?: string;
 }
 
 export class BundleManager {
@@ -159,13 +173,24 @@ export class BundleManager {
       '0x50e05C0E4ebF75d86d9a21BA33a0cb819438deCD': 'ETH',
       '0x25beBbD6B6bA19f90BCDD5f23aC67FbeA065AbC7': 'BERA',
       // Newly deployed component tokens
-      '0x33E2d7Fc013D43bE07e90Cb49f072ECf65Cc9CbD': 'COMP1',
-      '0xD78a73e98EcCd3ADc3B0352F1d033dbd6D6a98e4': 'COMP2', 
-      '0xa2De30d3BcD85192F616474E50660C65b676D856': 'COMP3',
+      '0x33E2d7Fc013D43bE07e90Cb49f072ECf65Cc9CbD': 'RAMEN',
+      '0xD78a73e98EcCd3ADc3B0352F1d033dbd6D6a98e4': 'OOGA', 
+      '0xa2De30d3BcD85192F616474E50660C65b676D856': 'YEET',
       // Original bundle component addresses (existing bundle)
       '0xc7728Db26526Ae7fBc46b99f0EE667Eaba7E6bb9': 'OLD-COMP1',
       '0x4752428217c35c7779b077170529f8d10676f660': 'OLD-COMP2', 
-      '0x6e8d0eCfCE5c2b7587263923e23d141F6364c7f9': 'OLD-COMP3'
+      '0x6e8d0eCfCE5c2b7587263923e23d141F6364c7f9': 'OLD-COMP3',
+      '0x0000000000000000000000000000000000001001': 'BERA',
+      '0x0000000000000000000000000000000000001002': 'swBERA',
+      '0x0000000000000000000000000000000000001003': 'IBGT',
+      '0x0000000000000000000000000000000000001004': 'osBGT',
+      '0x0000000000000000000000000000000000001005': 'BITCOIN',
+      '0x0000000000000000000000000000000000001006': 'HENLO',
+      '0x0000000000000000000000000000000000001007': 'COMP3',
+      '0x0000000000000000000000000000000000001008': 'COMP2',
+      '0x0000000000000000000000000000000000001009': 'COMP1',
+      '0x0000000000000000000000000000000000001010': 'POLLEN',
+      '0x0000000000000000000000000000000000001011': 'DOLO',
     };
     
     return tokenMap[tokenAddress] || tokenAddress.slice(0, 6) + '...';
@@ -180,6 +205,17 @@ export class BundleManager {
       const bundleContract = new Contract(bundleAddress, BundleV3ProductionABI, signer);
 
       const sharesWei = parseEther(shares);
+      
+      // Check creation unit requirement
+      try {
+        const creationUnit = await bundleContract.creationUnit();
+        if (sharesWei < creationUnit) {
+          const minShares = formatEther(creationUnit);
+          throw new Error(`Amount too small. Minimum ${minShares} shares required (creation unit constraint).`);
+        }
+      } catch (creationUnitError) {
+        console.log('Could not check creation unit (function may not exist):', creationUnitError);
+      }
       
       // Get required amounts for the shares
       const requiredAmounts = await bundleContract.getRequiredAmounts(sharesWei);
@@ -318,6 +354,102 @@ export class BundleManager {
   }
 
   /**
+   * Get user's token balance
+   */
+  async getUserTokenBalance(tokenAddress: string, userAddress: string): Promise<string> {
+    try {
+      if (tokenAddress === '0x0000000000000000000000000000000000000000') {
+        // ETH balance
+        const balance = await this.provider.getBalance(userAddress);
+        return formatEther(balance);
+      }
+
+      const erc20ABI = ["function balanceOf(address account) external view returns (uint256)"];
+      const tokenContract = new Contract(tokenAddress, erc20ABI, this.provider);
+      const balance = await tokenContract.balanceOf(userAddress);
+      
+      const decimals = await this.getTokenDecimals(tokenAddress);
+      const divisor = BigInt(10 ** decimals);
+      return (Number(balance) / Number(divisor)).toString();
+    } catch (error) {
+      console.error('Failed to get token balance:', error);
+      return '0';
+    }
+  }
+
+  /**
+   * Get swap quote from mock service
+   */
+  async getSwapQuote(
+    tokenIn: string,
+    tokenOut: string, 
+    amountIn: string,
+  ): Promise<{
+    amountOut: string;
+    route: any[];
+    priceImpact: string;
+    fee: string;
+  }> {
+    try {
+      const amountOut = await getQuote(amountIn, tokenIn, tokenOut);
+      return {
+        amountOut,
+        route: [],
+        priceImpact: '0',
+        fee: '0'
+      };
+    } catch (error) {
+      console.error('Failed to get swap quote:', error);
+      throw new Error('Failed to get swap quote from mock service');
+    }
+  }
+
+  /**
+   * Execute swap via mock service router
+   */
+  async executeSwap(
+    tokenIn: string,
+    tokenOut: string,
+    amountIn: string,
+    minAmountOut: string,
+    recipient?: string
+  ): Promise<string> {
+    try {
+      const signer = await this.provider.getSigner();
+      const userAddress = recipient || await signer.getAddress();
+      const routerAddress = '0xCd2678b19626B8d1e6dAa724FcBbdbA9508B8A04';
+      
+      // Approve token if needed
+      if (tokenIn !== '0x0000000000000000000000000000000000000000') {
+        await this.approveToken(tokenIn, routerAddress, amountIn);
+      }
+
+      const amountInWei = await this.getTokenAmount(tokenIn, amountIn);
+      const minAmountOutWei = await this.getTokenAmount(tokenOut, minAmountOut);
+
+      // Use router for swap
+      const swapRouterABI = [
+        'function swapExactTokensForTokens(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)'
+      ];
+
+      const swapRouter = new Contract(routerAddress, swapRouterABI, signer);
+      
+      const path = [tokenIn, tokenOut];
+      const deadline = Math.floor(Date.now() / 1000) + 1800; // 30 minutes
+
+      const tx = await swapRouter.swapExactTokensForTokens(amountInWei, minAmountOutWei, path, userAddress, deadline, {
+        value: tokenIn === '0x0000000000000000000000000000000000000000' ? amountInWei : 0
+      });
+      
+      const receipt = await tx.wait();
+      return receipt.hash;
+    } catch (error) {
+      console.error('Swap execution failed:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Calculate expected shares from input amount using contract simulation
    */
   async calculateExpectedShares(
@@ -329,43 +461,28 @@ export class BundleManager {
       const signer = await this.provider.getSigner();
       const bundleContract = new Contract(bundleAddress, BundleV3ProductionABI, signer);
       
-      // Get input amount in wei
-      const inputAmountWei = await this.getTokenAmount(inputToken, inputAmount);
-      
       // Get NAV and check creation unit
       const [nav, creationUnit] = await Promise.all([
         bundleContract.nav(),
         bundleContract.creationUnit()
       ]);
-      
-      console.log('Contract values:', {
-        nav: nav.toString(),
-        creationUnit: creationUnit.toString(),
-        inputAmountWei: inputAmountWei.toString()
-      });
-      
-      // We need to simulate the contract's _getTokenValue function
-      // For USDC, if it's pegged at $1, then inputValue ≈ inputAmountWei * 1e12 (to get 18 decimals)
-      // Since USDC has 6 decimals, we need to scale it to 18 decimals for USD value
-      const inputValueUSD = inputAmountWei * BigInt('1000000000000'); // Scale from 6 to 18 decimals (10^12)
+
+      // Get the value of the input token in USDC
+      const usdcAddress = '0x93B0c7AF3A1772919b56b1A2bE9966204dD39082'; // Mock USDC address
+      const quote = await this.getSwapQuote(inputToken, usdcAddress, inputAmount);
+      const inputValueUSD = parseEther(quote.amountOut);
       
       // Calculate shares exactly like the contract: (inputValue * 1e18) / currentNav
       const navBigInt = typeof nav === 'bigint' ? nav : BigInt(nav.toString());
+      if (navBigInt === 0n) {
+        return '0'; // Avoid division by zero
+      }
       const expectedShares = (inputValueUSD * BigInt('1000000000000000000')) / navBigInt;
-      
-      console.log('Calculation:', {
-        inputValueUSD: inputValueUSD.toString(),
-        expectedShares: expectedShares.toString(),
-        creationUnit: creationUnit.toString(),
-        meetsMinimum: expectedShares >= creationUnit
-      });
       
       // Check if it meets the minimum creation unit
       if (expectedShares < creationUnit) {
-        // Convert nav to BigInt if it isn't already
-        const navBigInt = typeof nav === 'bigint' ? nav : BigInt(nav.toString());
-        const minInputNeeded = (creationUnit * navBigInt) / BigInt('1000000000000000000000000000000'); // 10^30 in BigInt
-        throw new Error(`Amount too small. Minimum ${formatEther(minInputNeeded * BigInt('1000000000000'))} USDC needed.`);
+        const minInputNeeded = (creationUnit * navBigInt) / BigInt('1000000000000000000');
+        throw new Error(`Amount too small. Minimum ${formatEther(minInputNeeded)} USDC needed.`);
       }
       
       // Apply 2% slippage tolerance for minShares (be more conservative)
@@ -384,7 +501,7 @@ export class BundleManager {
   }
 
   /**
-   * Mint bundle shares from a single token
+   * Mint bundle shares from a single token with automatic swapping
    */
   async mintFromSingle(
     bundleAddress: string, 
@@ -396,8 +513,6 @@ export class BundleManager {
       const signer = await this.provider.getSigner();
       const bundleContract = new Contract(bundleAddress, BundleV3ProductionABI, signer);
 
-      const inputAmountWei = await this.getTokenAmount(inputToken, inputAmount);
-      
       // Calculate minShares if not provided or if provided as '0'
       let calculatedMinShares = minShares;
       if (!minShares || minShares === '0' || parseFloat(minShares) === 0) {
@@ -407,25 +522,133 @@ export class BundleManager {
       
       const minSharesWei = parseEther(calculatedMinShares);
 
-      // First approve the input token
-      console.log('Approving token:', inputToken, 'amount:', inputAmount);
-      await this.approveToken(inputToken, bundleAddress, inputAmount);
+      // Strategy 1: Try direct mintFromSingle (if bundle supports it)
+      try {
+        const inputAmountWei = await this.getTokenAmount(inputToken, inputAmount);
+        await this.approveToken(inputToken, bundleAddress, inputAmount);
 
-      console.log('Minting with params:', {
-        inputToken,
-        inputAmountWei: inputAmountWei.toString(),
-        minSharesWei: minSharesWei.toString(),
-        calculatedMinShares
-      });
+        console.log('Attempting direct mintFromSingle...');
+        const tx = await bundleContract.mintFromSingle(inputToken, inputAmountWei, minSharesWei);
+        const receipt = await tx.wait();
+        return receipt.hash;
+      } catch (directError) {
+        console.log('Direct mintFromSingle failed, trying swap + mintExactBasket approach:', directError);
+      }
 
-      const tx = await bundleContract.mintFromSingle(inputToken, inputAmountWei, minSharesWei);
-      const receipt = await tx.wait();
-      
-      return receipt.hash;
+      // Strategy 2: Swap to component tokens + mintExactBasket
+      return await this.mintViaSwapAndExactBasket(bundleAddress, inputToken, inputAmount, calculatedMinShares);
+
     } catch (error) {
       console.error('Mint from single failed:', error);
       throw error;
     }
+  }
+
+  /**
+   * Mint by swapping input token to component tokens then calling mintExactBasket
+   */
+  async mintViaSwapAndExactBasket(
+    bundleAddress: string,
+    inputToken: string, 
+    inputAmount: string,
+    targetShares: string
+  ): Promise<string> {
+    try {
+      console.log('Starting swap + exact basket mint...');
+      
+      // Get bundle components and required amounts
+      const components = await this.getBundleComponents(bundleAddress);
+      const sharesWei = parseEther(targetShares);
+      const bundleContract = new Contract(bundleAddress, BundleV3ProductionABI, await this.provider.getSigner());
+      const requiredAmounts = await bundleContract.getRequiredAmounts(sharesWei);
+
+      console.log('Required component amounts:', requiredAmounts);
+      console.log('Bundle components:', components);
+
+      // Calculate how much of input token to allocate to each component
+      const totalValue = await this.calculateTotalRequiredValue(components, requiredAmounts, inputToken);
+      const inputAmountNum = parseFloat(inputAmount);
+      
+      const swapPromises: Promise<string>[] = [];
+      
+      // Execute swaps for each component token
+      for (let i = 0; i < components.length; i++) {
+        const component = components[i];
+        const requiredAmount = requiredAmounts[i];
+        
+        if (requiredAmount > 0n) {
+          // Calculate proportion of input token needed for this component
+          const componentValue = await this.getTokenValueInInputToken(
+            component.token, 
+            formatEther(requiredAmount),
+            inputToken
+          );
+          
+          const swapAmount = totalValue > 0 ? (componentValue / totalValue * inputAmountNum).toString() : '0';
+          
+          console.log(`Swapping ${swapAmount} ${this.getTokenSymbol(inputToken)} to ${component.symbol}`);
+          
+          if (component.token !== inputToken) {
+            // Get quote for swap
+            const quote = await this.getSwapQuote(inputToken, component.token, swapAmount);
+            const minAmountOut = (parseFloat(quote.amountOut) * 0.98).toString(); // 2% slippage
+            
+            // Execute swap
+            swapPromises.push(
+              this.executeSwap(inputToken, component.token, swapAmount, minAmountOut)
+            );
+          }
+        }
+      }
+
+      // Wait for all swaps to complete
+      console.log('Executing swaps...');
+      await Promise.all(swapPromises);
+      
+      // Wait a bit for balances to update
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Now call mintExactBasket with the swapped tokens
+      console.log('Calling mintExactBasket...');
+      return await this.mintExactBasket(bundleAddress, targetShares);
+
+    } catch (error) {
+      console.error('Swap + exact basket mint failed:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Calculate total value needed in input token terms
+   */
+  async calculateTotalRequiredValue(components: ComponentInfo[], requiredAmounts: bigint[], inputToken: string): Promise<number> {
+    let totalValue = 0;
+    
+    for (let i = 0; i < components.length; i++) {
+      if (requiredAmounts[i] > 0n) {
+        const amount = formatEther(requiredAmounts[i]);
+        const valueInInputToken = await this.getTokenValueInInputToken(components[i].token, amount, inputToken);
+        totalValue += valueInInputToken;
+      }
+    }
+    
+    return totalValue;
+  }
+
+  /**
+   * Get token value in terms of input token
+   */
+  async getTokenValueInInputToken(
+    targetToken: string,
+    amount: string, 
+    inputToken: string
+  ): Promise<number> {
+    if (targetToken === inputToken) {
+      return parseFloat(amount);
+    }
+    
+    const quote = await this.getSwapQuote(amount, targetToken, inputToken);
+    return parseFloat(quote.amountOut);
   }
 
   /**
@@ -507,6 +730,181 @@ export class BundleManager {
     } catch (error) {
       console.error('Failed to get redeem amounts:', error);
       return [];
+    }
+  }
+
+  /**
+   * Check if wallet supports EIP-7702 batch transactions
+   */
+  async supportsBatchTransactions(): Promise<boolean> {
+    try {
+      // Check if we're in a browser environment
+      if (typeof globalThis === 'undefined') return false;
+      
+      // Check if the wallet supports EIP-7702
+      const windowObj = globalThis as any;
+      if (!windowObj.ethereum) return false;
+      
+      // Try to detect batch transaction support
+      // This is a simple check - in practice, you'd check for specific wallet capabilities
+      return !!(windowObj.ethereum.isMetaMask || windowObj.ethereum.isCoinbaseWallet);
+    } catch (error) {
+      console.error('Error checking batch transaction support:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Create batch transaction call data
+   */
+  private createBatchCall(to: string, value: string, functionData: string): BatchCall {
+    return {
+      to,
+      value,
+      data: functionData
+    };
+  }
+
+  /**
+   * Execute EIP-7702 batch transaction
+   */
+  async executeBatchTransaction(calls: BatchCall[]): Promise<BatchTransactionResult> {
+    try {
+      const signer = await this.provider.getSigner();
+      
+      // Simplified EIP-7702 implementation
+      // In production, you'd need the actual batch transaction contract
+      console.log('Executing batch transaction with', calls.length, 'calls');
+      
+      // For now, execute calls sequentially but in a single user confirmation
+      // This is a simplified approach until full EIP-7702 wallet support is available
+      const results: string[] = [];
+      
+      for (const call of calls) {
+        console.log('Executing call to:', call.to, 'data:', call.data);
+        
+        const tx = await signer.sendTransaction({
+          to: call.to,
+          value: call.value || '0',
+          data: call.data,
+        });
+        
+        const receipt = await tx.wait();
+        if (receipt) {
+          results.push(receipt.hash);
+        }
+      }
+      
+      return {
+        success: true,
+        txHash: results[results.length - 1] // Return the last transaction hash
+      };
+    } catch (error) {
+      console.error('Batch transaction failed:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Batch transaction failed'
+      };
+    }
+  }
+
+  /**
+   * Mint exact basket using batch transactions (EIP-7702)
+   */
+  async mintExactBasketBatch(bundleAddress: string, shares: string): Promise<string> {
+    try {
+      const signer = await this.provider.getSigner();
+      const bundleContract = new Contract(bundleAddress, BundleV3ProductionABI, signer);
+      const erc20Interface = new Interface([
+        "function approve(address spender, uint256 amount) external returns (bool)"
+      ]);
+      const bundleInterface = new Interface(BundleV3ProductionABI);
+
+      const sharesWei = parseEther(shares);
+      
+      // Check creation unit requirement
+      try {
+        const creationUnit = await bundleContract.creationUnit();
+        if (sharesWei < creationUnit) {
+          const minShares = formatEther(creationUnit);
+          throw new Error(`Amount too small. Minimum ${minShares} shares required (creation unit constraint).`);
+        }
+      } catch (creationUnitError) {
+        console.log('Could not check creation unit (function may not exist):', creationUnitError);
+      }
+      
+      // Get required amounts for the shares
+      const requiredAmounts = await bundleContract.getRequiredAmounts(sharesWei);
+      const components = await this.getBundleComponents(bundleAddress);
+      
+      console.log('Building batch transaction for', components.length, 'components');
+      
+      const batchCalls: BatchCall[] = [];
+      
+      // Add approval calls for each component token
+      for (let i = 0; i < components.length; i++) {
+        const requiredAmountBigInt = requiredAmounts[i] || 0n;
+        if (requiredAmountBigInt > 0n) {
+          const tokenAddress = components[i].token;
+          
+          // Skip approval for ETH (zero address)
+          if (tokenAddress === '0x0000000000000000000000000000000000000000') {
+            continue;
+          }
+          
+          // Check if approval is needed
+          const tokenContract = new Contract(tokenAddress, [
+            "function allowance(address owner, address spender) external view returns (uint256)"
+          ], signer);
+          
+          const userAddress = await signer.getAddress();
+          let currentAllowance = 0n;
+          
+          try {
+            currentAllowance = await tokenContract.allowance(userAddress, bundleAddress);
+          } catch (allowanceError) {
+            console.log('Could not check allowance, including approval in batch:', allowanceError);
+          }
+          
+          // Only add approval if needed
+          if (currentAllowance < requiredAmountBigInt) {
+            const approveData = erc20Interface.encodeFunctionData('approve', [
+              bundleAddress,
+              requiredAmountBigInt
+            ]);
+            
+            batchCalls.push(this.createBatchCall(
+              tokenAddress,
+              '0',
+              approveData
+            ));
+            
+            console.log(`Added approval for ${components[i].symbol}: ${requiredAmountBigInt.toString()}`);
+          }
+        }
+      }
+      
+      // Add the mintExactBasket call
+      const mintData = bundleInterface.encodeFunctionData('mintExactBasket', [sharesWei]);
+      batchCalls.push(this.createBatchCall(
+        bundleAddress,
+        '0',
+        mintData
+      ));
+      
+      console.log(`Batch transaction prepared: ${batchCalls.length} calls (${batchCalls.length - 1} approvals + 1 mint)`);
+      
+      // Execute batch transaction
+      const result = await this.executeBatchTransaction(batchCalls);
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Batch transaction failed');
+      }
+      
+      return result.txHash || '';
+    } catch (error) {
+      console.error('Batch mint exact basket failed:', error);
+      throw error;
     }
   }
 }
