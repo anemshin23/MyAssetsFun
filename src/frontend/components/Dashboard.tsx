@@ -14,7 +14,7 @@ interface Bundle {
 
 const Dashboard: React.FC = () => {
   const { isConnected, connector } = useAccount();
-  const [activeTab, setActiveTab] = useState<'bundles' | 'investments' | 'notifications' | 'settings'>('bundles');
+  const [activeTab, setActiveTab] = useState<'bundles' | 'investments' | 'allbundles' | 'notifications' | 'settings'>('bundles');
   const [notifications, setNotifications] = useState([
     {
       id: '1',
@@ -311,6 +311,67 @@ const Dashboard: React.FC = () => {
                           Mark Read
                         </button>
                       )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* All Bundles Tab */}
+          {activeTab === 'allbundles' && !loading && (
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-6">All Bundles ({allBundles.length})</h2>
+              
+              {allBundles.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="text-slate-300 text-lg mb-4">No bundles deployed yet</div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {allBundles.map((bundle) => (
+                    <div key={bundle.address} className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg border border-purple-500/20 rounded-xl p-6 hover:shadow-purple-500/25 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105">
+                      <div className="flex items-start justify-between mb-4">
+                        <div>
+                          <h3 className="text-xl font-bold text-white mb-1">{bundle.name}</h3>
+                          <p className="text-purple-400 font-medium">{bundle.symbol}</p>
+                          <p className="text-slate-400 text-xs mt-1">
+                            By: {bundle.creator.slice(0, 6)}...{bundle.creator.slice(-4)}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-lg font-bold text-white">${parseFloat(bundle.nav).toFixed(4)}</div>
+                          <div className="text-xs text-slate-300">NAV</div>
+                          <div className="text-sm text-purple-300 mt-1">
+                            {parseFloat(bundle.totalSupply).toFixed(2)} shares
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="mb-4">
+                        <div className="text-sm text-slate-300 mb-2">Components ({bundle.components.length}):</div>
+                        <div className="flex flex-wrap gap-1">
+                          {bundle.components.slice(0, 3).map((component) => (
+                            <span key={component.token} className="px-2 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs font-medium backdrop-blur-sm border border-purple-400/30">
+                              {component.symbol}
+                            </span>
+                          ))}
+                          {bundle.components.length > 3 && (
+                            <span className="px-2 py-1 bg-slate-500/20 text-slate-300 rounded-full text-xs font-medium backdrop-blur-sm">
+                              +{bundle.components.length - 3} more
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <button className="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white py-2 px-3 rounded-lg font-medium hover:from-purple-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20 text-sm">
+                          Invest
+                        </button>
+                        <button className="flex-1 bg-slate-700/60 text-white py-2 px-3 rounded-lg font-medium hover:bg-slate-600/80 transition-all duration-300 backdrop-blur-sm border border-slate-500/30 text-sm">
+                          Details
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>

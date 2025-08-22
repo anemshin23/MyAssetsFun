@@ -75,6 +75,7 @@ interface ManageBundleModalProps {
 }
 
 const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, onClose, bundleManager }) => {
+  const { address } = useAccount();
   const [activeTab, setActiveTab] = useState<'invest' | 'redeem'>('invest');
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -82,6 +83,65 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
   const [error, setError] = useState<string | null>(null);
   const [expectedShares, setExpectedShares] = useState<string>('0');
   const [investMethod, setInvestMethod] = useState<'single' | 'exact'>('exact'); // Default to exact basket
+  const [selectedInputToken, setSelectedInputToken] = useState<string>('0x93B0c7AF3A1772919b56b1A2bE9966204dD39082'); // Default to USDC
+  const [tokenBalances, setTokenBalances] = useState<Record<string, string>>({});
+  const [loadingBalances, setLoadingBalances] = useState(false);
+  const [supportsBatch, setSupportsBatch] = useState<boolean>(false);
+  const [useBatchTransactions, setUseBatchTransactions] = useState<boolean>(true); // Default to using batch
+
+  // Available input tokens for single token investment
+  const availableInputTokens = [
+    { symbol: 'USDC', name: 'USD Coin (Mock)', address: '0x93B0c7AF3A1772919b56b1A2bE9966204dD39082' },
+    { symbol: 'BTC', name: 'Bitcoin (Mock)', address: '0xCb3bb12157097612D4e98981F03d3bB68a16672f' },
+    { symbol: 'ETH', name: 'Ethereum (Mock)', address: '0x50e05C0E4ebF75d86d9a21BA33a0cb819438deCD' },
+    { symbol: 'BERA', name: 'Berachain (Mock)', address: '0x25beBbD6B6bA19f90BCDD5f23aC67FbeA065AbC7' },
+    { symbol: 'RAMEN', name: 'RAMEN (tst)', address: '0x33E2d7Fc013D43bE07e90Cb49f072ECf65Cc9CbD' },
+    { symbol: 'OOGA', name: 'OOGA (tst)', address: '0xD78a73e98EcCd3ADc3B0352F1d033dbd6D6a98e4' },
+    { symbol: 'YEET', name: 'YEET (tst)', address: '0xa2De30d3BcD85192F616474E50660C65b676D856' }
+  ];
+
+  // Check batch transaction support when modal opens
+  useEffect(() => {
+    const checkBatchSupport = async () => {
+      if (bundleManager && isOpen) {
+        try {
+          const batchSupported = await bundleManager.supportsBatchTransactions();
+          setSupportsBatch(batchSupported);
+          console.log('Batch transactions supported:', batchSupported);
+        } catch (error) {
+          console.error('Failed to check batch support:', error);
+          setSupportsBatch(false);
+        }
+      }
+    };
+
+    checkBatchSupport();
+  }, [bundleManager, isOpen]);
+
+  // Load token balances when modal opens or address changes
+  useEffect(() => {
+    const loadTokenBalances = async () => {
+      if (bundleManager && address && isOpen) {
+        setLoadingBalances(true);
+        try {
+          const balances: Record<string, string> = {};
+          
+          for (const token of availableInputTokens) {
+            const balance = await bundleManager.getUserTokenBalance(token.address, address);
+            balances[token.address] = balance;
+          }
+          
+          setTokenBalances(balances);
+        } catch (error) {
+          console.error('Failed to load token balances:', error);
+        } finally {
+          setLoadingBalances(false);
+        }
+      }
+    };
+
+    loadTokenBalances();
+  }, [bundleManager, address, isOpen]);
 
   // Calculate expected shares when amount changes
   useEffect(() => {
@@ -94,10 +154,10 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
             // For exact basket, the amount IS the shares
             setExpectedShares(amount);
           } else if (activeTab === 'invest' && investMethod === 'single') {
-            // For single token, calculate expected shares from USDC amount
+            // For single token, calculate expected shares from selected input token amount
             const shares = await bundleManager.calculateExpectedShares(
               bundle.address,
-              '0x93B0c7AF3A1772919b56b1A2bE9966204dD39082', // USDC
+              selectedInputToken,
               amount
             );
             setExpectedShares(shares);
@@ -139,14 +199,21 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
 
     try {
       if (investMethod === 'exact') {
-        // Use mintExactBasket - provide exact shares
-        const hash = await bundleManager.mintExactBasket(bundle.address, expectedShares);
-        setTxHash(hash);
+        // Use mintExactBasket - choose batch or regular based on support and user preference
+        if (supportsBatch && useBatchTransactions) {
+          console.log('Using batch transaction for mintExactBasket');
+          const hash = await bundleManager.mintExactBasketBatch(bundle.address, expectedShares);
+          setTxHash(hash);
+        } else {
+          console.log('Using regular transaction for mintExactBasket');
+          const hash = await bundleManager.mintExactBasket(bundle.address, expectedShares);
+          setTxHash(hash);
+        }
       } else {
-        // Use mintFromSingle with USDC
+        // Use mintFromSingle with selected input token
         const hash = await bundleManager.mintFromSingle(
           bundle.address,
-          '0x93B0c7AF3A1772919b56b1A2bE9966204dD39082', // USDC
+          selectedInputToken,
           amount,
           '0' // Will trigger automatic calculation
         );
@@ -256,13 +323,92 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
                   Single Token
                 </button>
               </div>
+
+              {/* Batch Transaction Toggle - only show for exact basket method */}
+              {investMethod === 'exact' && supportsBatch && (
+                <div className="mb-4">
+                  <div className="flex items-center justify-between p-3 bg-blue-500/10 rounded-xl border border-blue-400/30 backdrop-blur-sm">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                      <div>
+                        <div className="text-sm font-medium text-blue-200">Batch Transactions</div>
+                        <div className="text-xs text-blue-300">Approve all tokens + mint in single confirmation</div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setUseBatchTransactions(!useBatchTransactions)}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                        useBatchTransactions ? 'bg-blue-500' : 'bg-slate-600'
+                      }`}
+                    >
+                      <span
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                          useBatchTransactions ? 'translate-x-6' : 'translate-x-1'
+                        }`}
+                      />
+                    </button>
+                  </div>
+                  {!useBatchTransactions && (
+                    <div className="mt-2 p-2 bg-yellow-500/10 rounded-lg border border-yellow-400/30">
+                      <div className="text-xs text-yellow-200">
+                        ⚠️ You'll need to approve each component token separately (up to {bundle.components.length} transactions)
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Token Selection for Single Token Method */}
+          {activeTab === 'invest' && investMethod === 'single' && (
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-slate-300 mb-2">
+                Input Token
+              </label>
+              <select
+                value={selectedInputToken}
+                onChange={(e) => setSelectedInputToken(e.target.value)}
+                className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white backdrop-blur-sm"
+              >
+                {availableInputTokens.map((token) => {
+                  const balance = tokenBalances[token.address] || '0';
+                  const balanceNum = parseFloat(balance);
+                  return (
+                    <option key={token.address} value={token.address}>
+                      {token.symbol} - Balance: {balanceNum.toFixed(4)}
+                    </option>
+                  );
+                })}
+              </select>
+              
+              {/* Token Balance Display */}
+              <div className="mt-2 p-3 bg-blue-500/10 rounded-lg border border-blue-400/30 backdrop-blur-sm">
+                <div className="flex justify-between items-center">
+                  <span className="text-blue-200 text-sm">Available Balance:</span>
+                  <div className="text-right">
+                    {loadingBalances ? (
+                      <span className="text-blue-200 text-sm">Loading...</span>
+                    ) : (
+                      <>
+                        <span className="text-blue-100 font-medium">
+                          {parseFloat(tokenBalances[selectedInputToken] || '0').toFixed(4)}
+                        </span>
+                        <span className="text-blue-200 text-sm ml-1">
+                          {availableInputTokens.find(t => t.address === selectedInputToken)?.symbol}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
               {activeTab === 'invest' 
-                ? (investMethod === 'exact' ? 'Number of Shares' : 'Investment Amount (USDC)')
+                ? (investMethod === 'exact' ? 'Number of Shares' : `Investment Amount (${availableInputTokens.find(t => t.address === selectedInputToken)?.symbol})`)
                 : 'Shares to Redeem'
               }
             </label>
@@ -287,17 +433,27 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
                 {investMethod === 'exact' ? (
                   <>
                     <div>• Method: Provide exact amounts of each component token</div>
-                    <div>• Requires: Component tokens (COMP1, COMP2, COMP3)</div>
+                    <div>• Requires: Component tokens </div>
                     <div>• Shares to mint: {amount || '0'}</div>
                     <div>• Bypasses swapping - more reliable</div>
+                    {supportsBatch && useBatchTransactions && (
+                      <div>•  Batch transaction: single confirmation for all approvals + mint</div>
+                    )}
+                    {supportsBatch && !useBatchTransactions && (
+                      <div>•  Multiple transactions: up to {bundle.components.length} approvals + 1 mint</div>
+                    )}
+                    {!supportsBatch && (
+                      <div>•  Multiple transactions required (wallet doesn't support batch)</div>
+                    )}
                   </>
                 ) : (
                   <>
-                    <div>• Minimum investment: 0.1 USDC</div>
+                    <div>• Input token: {availableInputTokens.find(t => t.address === selectedInputToken)?.symbol}</div>
+                    <div>• Available balance: {parseFloat(tokenBalances[selectedInputToken] || '0').toFixed(4)}</div>
                     <div>• Current NAV: ${parseFloat(bundle.nav).toFixed(4)}</div>
                     <div>• Expected shares: {parseFloat(expectedShares).toFixed(6)}</div>
                     <div>• Min shares (95% slippage): {(parseFloat(expectedShares) * 0.95).toFixed(6)}</div>
-                    <div>• Requires swap routing (may fail)</div>
+                    <div>• Uses Kodiak DEX for automatic swapping</div>
                   </>
                 )}
               </div>
@@ -352,7 +508,9 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
           >
             {isLoading 
               ? (activeTab === 'invest' ? 'Investing...' : 'Redeeming...') 
-              : (activeTab === 'invest' ? 'Invest' : 'Redeem')
+              : activeTab === 'invest' 
+                ? (investMethod === 'exact' && supportsBatch && useBatchTransactions ? 'Execute Batch Transaction' : 'Invest')
+                : 'Redeem'
             }
           </button>
         </div>

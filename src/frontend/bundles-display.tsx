@@ -476,7 +476,7 @@ const BundlesDisplay: React.FC = () => {
       <RainbowKitProvider>
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-pink-900 to-orange-900">
           {/* Header */}
-          <div className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg border-b border-pink-500/20 px-6 py-4 shadow-2xl">
+          <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg border-b border-purple-500/20 px-6 py-4 shadow-2xl z-10">
             <div className="max-w-7xl mx-auto flex items-center justify-between">
               <div>
                 <h1 className="text-3xl font-bold text-white">MyAssetsFun</h1>

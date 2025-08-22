@@ -186,6 +186,13 @@ export const BundleV3ProductionABI = [
   },
   {
     "inputs": [],
+    "name": "creationUnit",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getTotalValue",
     "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
     "stateMutability": "view",

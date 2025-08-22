@@ -64,14 +64,26 @@ const CreateBundle: React.FC = () => {
   // Available tokens - updated to use our deployed component tokens
   const availableTokens = [
     // Our newly deployed component tokens (have oracle prices and user has balance)
-    { symbol: 'COMP1', name: 'Component Token 1', address: '0x33E2d7Fc013D43bE07e90Cb49f072ECf65Cc9CbD' },
-    { symbol: 'COMP2', name: 'Component Token 2', address: '0xD78a73e98EcCd3ADc3B0352F1d033dbd6D6a98e4' },
-    { symbol: 'COMP3', name: 'Component Token 3', address: '0xa2De30d3BcD85192F616474E50660C65b676D856' },
+    { symbol: 'RAMEN', name: 'RAMEN (tst)', address: '0x33E2d7Fc013D43bE07e90Cb49f072ECf65Cc9CbD' },
+    { symbol: 'OOGA', name: 'OOGA (tst)', address: '0xD78a73e98EcCd3ADc3B0352F1d033dbd6D6a98e4' },
+    { symbol: 'YEET', name: 'YEET (tst)', address: '0xa2De30d3BcD85192F616474E50660C65b676D856' },
     // Our deployed mock tokens (also have oracle prices)
     { symbol: 'USDC', name: 'USD Coin (Mock)', address: '0x93B0c7AF3A1772919b56b1A2bE9966204dD39082' },
     { symbol: 'BTC', name: 'Bitcoin (Mock)', address: '0xCb3bb12157097612D4e98981F03d3bB68a16672f' },
     { symbol: 'ETH', name: 'Ethereum (Mock)', address: '0x50e05C0E4ebF75d86d9a21BA33a0cb819438deCD' },
     { symbol: 'BERA', name: 'Berachain (Mock)', address: '0x25beBbD6B6bA19f90BCDD5f23aC67FbeA065AbC7' },
+    // Extra tokens with placeholder addresses
+    { symbol: 'BERA', name: 'Bera', address: '0x0000000000000000000000000000000000001001' },
+    { symbol: 'swBERA', name: 'Staked Bera', address: '0x0000000000000000000000000000000000001002' },
+    { symbol: 'IBGT', name: 'IBGT', address: '0x0000000000000000000000000000000000001003' },
+    { symbol: 'osBGT', name: 'osBGT', address: '0x0000000000000000000000000000000000001004' },
+    { symbol: 'BITCOIN', name: 'Bitcoin', address: '0x0000000000000000000000000000000000001005' },
+    { symbol: 'HENLO', name: 'Henlo', address: '0x0000000000000000000000000000000000001006' },
+    { symbol: 'YEET', name: 'Yeet', address: '0x0000000000000000000000000000000000001007' },
+    { symbol: 'OOGA', name: 'Ooga', address: '0x0000000000000000000000000000000000001008' },
+    { symbol: 'RAMEN', name: 'Ramen', address: '0x0000000000000000000000000000000000001009' },
+    { symbol: 'POLLEN', name: 'Pollen', address: '0x0000000000000000000000000000000000001010' },
+    { symbol: 'DOLO', name: 'Dolo', address: '0x0000000000000000000000000000000000001011' },
   ];
 
   const filteredTokens = availableTokens.filter(token =>
