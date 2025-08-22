@@ -129,14 +129,14 @@ const CreateBundle: React.FC = () => {
             <div key={step} className="flex items-center">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
                 currentStep >= step 
-                  ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white' 
+                  ? 'bg-gradient-to-r from-pink-500 to-orange-500 text-white' 
                   : 'bg-slate-700 text-slate-400'
               }`}>
                 {step}
               </div>
               {step < 4 && (
                 <div className={`w-16 h-1 mx-2 ${
-                  currentStep > step ? 'bg-gradient-to-r from-purple-500 to-blue-500' : 'bg-slate-700'
+                  currentStep > step ? 'bg-gradient-to-r from-pink-500 to-orange-500' : 'bg-slate-700'
                 }`}></div>
               )}
             </div>
@@ -152,7 +152,7 @@ const CreateBundle: React.FC = () => {
 
       {/* Step 1: Bundle Details */}
       {currentStep === 1 && (
-        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
+        <div className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg rounded-2xl p-8 border border-pink-500/20 shadow-2xl">
           <h2 className="text-2xl font-bold text-white mb-6">Bundle Details</h2>
           <div className="space-y-6">
             <div>
@@ -162,7 +162,7 @@ const CreateBundle: React.FC = () => {
                 value={bundleConfig.name}
                 onChange={(e) => setBundleConfig({ ...bundleConfig, name: e.target.value })}
                 placeholder="e.g., DeFi Growth Bundle"
-                className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white placeholder-slate-400 backdrop-blur-sm"
+                className="w-full px-4 py-3 bg-slate-700/60 border border-pink-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-white placeholder-slate-400 backdrop-blur-sm"
               />
             </div>
             <div>
@@ -172,7 +172,7 @@ const CreateBundle: React.FC = () => {
                 value={bundleConfig.symbol}
                 onChange={(e) => setBundleConfig({ ...bundleConfig, symbol: e.target.value.toUpperCase() })}
                 placeholder="e.g., DEFI"
-                className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white placeholder-slate-400 backdrop-blur-sm"
+                className="w-full px-4 py-3 bg-slate-700/60 border border-pink-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-white placeholder-slate-400 backdrop-blur-sm"
               />
             </div>
             <div>
@@ -182,13 +182,13 @@ const CreateBundle: React.FC = () => {
                 onChange={(e) => setBundleConfig({ ...bundleConfig, description: e.target.value })}
                 placeholder="Describe your bundle strategy..."
                 rows={4}
-                className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white placeholder-slate-400 backdrop-blur-sm"
+                className="w-full px-4 py-3 bg-slate-700/60 border border-pink-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-white placeholder-slate-400 backdrop-blur-sm"
               />
             </div>
             <button
               onClick={() => setCurrentStep(2)}
               disabled={!bundleConfig.name || !bundleConfig.symbol}
-              className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-4 rounded-xl font-bold text-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-500 shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-pink-500 to-orange-500 text-white py-4 rounded-xl font-bold text-lg hover:from-pink-600 hover:to-orange-600 transition-all duration-500 shadow-2xl hover:shadow-pink-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-pink-400/20 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed"
             >
               Next: Asset Selection
             </button>
@@ -198,7 +198,7 @@ const CreateBundle: React.FC = () => {
 
       {/* Step 2: Asset Selection */}
       {currentStep === 2 && (
-        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
+        <div className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg rounded-2xl p-8 border border-pink-500/20 shadow-2xl">
           <h2 className="text-2xl font-bold text-white mb-6">Asset Selection</h2>
           
           {/* Search */}
@@ -208,19 +208,19 @@ const CreateBundle: React.FC = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search tokens..."
-              className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white placeholder-slate-400 backdrop-blur-sm"
+              className="w-full px-4 py-3 bg-slate-700/60 border border-pink-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-white placeholder-slate-400 backdrop-blur-sm"
             />
           </div>
 
           {/* Token List */}
           <div className="grid grid-cols-2 gap-4 mb-6 max-h-96 overflow-y-auto">
             {filteredTokens.map((token) => (
-              <label key={token.symbol} className="flex items-center gap-3 p-3 bg-slate-700/60 border border-purple-500/30 rounded-lg hover:border-purple-400/50 cursor-pointer backdrop-blur-sm transition-all duration-300">
+              <label key={token.symbol} className="flex items-center gap-3 p-3 bg-slate-700/60 border border-pink-500/30 rounded-lg hover:border-pink-400/50 cursor-pointer backdrop-blur-sm transition-all duration-300">
                 <input
                   type="checkbox"
                   checked={selectedTokens.includes(token.symbol)}
                   onChange={() => handleTokenSelection(token.symbol)}
-                  className="rounded border-purple-400 text-purple-500 focus:ring-purple-500"
+                  className="rounded border-pink-400 text-pink-500 focus:ring-pink-500"
                 />
                 <div>
                   <div className="font-medium text-white">{token.symbol}</div>
@@ -240,7 +240,7 @@ const CreateBundle: React.FC = () => {
             <button
               onClick={addSelectedTokens}
               disabled={selectedTokens.length === 0}
-              className="px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-xl hover:from-purple-600 hover:to-blue-600 transition-all duration-500 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed"
+              className="px-6 py-3 bg-gradient-to-r from-pink-500 to-orange-500 text-white rounded-xl hover:from-pink-600 hover:to-orange-600 transition-all duration-500 shadow-lg hover:shadow-pink-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-pink-400/20 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed"
             >
               Next: Configuration
             </button>
@@ -250,7 +250,7 @@ const CreateBundle: React.FC = () => {
 
       {/* Step 3: Configuration */}
       {currentStep === 3 && (
-        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
+        <div className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg rounded-2xl p-8 border border-pink-500/20 shadow-2xl">
           <h2 className="text-2xl font-bold text-white mb-6">Configuration</h2>
           
           {/* Asset Weights */}
@@ -258,7 +258,7 @@ const CreateBundle: React.FC = () => {
             <h3 className="text-lg font-semibold text-white mb-4">Asset Weights</h3>
             <div className="space-y-4">
               {bundleConfig.assets.map((asset) => (
-                <div key={asset.symbol} className="flex items-center justify-between p-4 bg-purple-500/10 rounded-lg border border-purple-400/20 backdrop-blur-sm">
+                <div key={asset.symbol} className="flex items-center justify-between p-4 bg-pink-500/10 rounded-lg border border-pink-400/20 backdrop-blur-sm">
                   <div className="flex items-center gap-3">
                     <span className="font-medium text-white">{asset.symbol}</span>
                     <span className="text-sm text-slate-300">{asset.name}</span>
@@ -268,7 +268,7 @@ const CreateBundle: React.FC = () => {
                       type="number"
                       value={asset.weight}
                       onChange={(e) => handleWeightChange(asset.symbol, parseFloat(e.target.value) || 0)}
-                      className="w-20 px-3 py-2 bg-slate-700/60 border border-purple-500/30 rounded-lg text-center text-white backdrop-blur-sm"
+                      className="w-20 px-3 py-2 bg-slate-700/60 border border-pink-500/30 rounded-lg text-center text-white backdrop-blur-sm"
                       min="0"
                       max="100"
                       step="0.1"
@@ -278,7 +278,7 @@ const CreateBundle: React.FC = () => {
                 </div>
               ))}
               <div className={`text-center p-3 rounded-lg backdrop-blur-sm ${
-                totalWeight === 100 ? 'bg-purple-500/20 text-purple-300 border border-purple-400/30' : 'bg-red-500/20 text-red-300 border border-red-400/30'
+                totalWeight === 100 ? 'bg-pink-500/20 text-pink-300 border border-pink-400/30' : 'bg-red-500/20 text-red-300 border border-red-400/30'
               }`}>
                 Total Weight: {totalWeight.toFixed(1)}% {totalWeight === 100 ? '✓' : '✗'}
               </div>
@@ -294,7 +294,7 @@ const CreateBundle: React.FC = () => {
                 <select
                   value={bundleConfig.rebalancePolicy}
                   onChange={(e) => setBundleConfig({ ...bundleConfig, rebalancePolicy: e.target.value as any })}
-                  className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white backdrop-blur-sm"
+                  className="w-full px-4 py-3 bg-slate-700/60 border border-pink-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-white backdrop-blur-sm"
                 >
                   <option value="" disabled>Select rebalance policy</option>
                   <option value="daily">Daily</option>
@@ -310,7 +310,7 @@ const CreateBundle: React.FC = () => {
                     type="number"
                     value={bundleConfig.threshold}
                     onChange={(e) => setBundleConfig({ ...bundleConfig, threshold: parseFloat(e.target.value) || 0 })}
-                    className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white backdrop-blur-sm"
+                    className="w-full px-4 py-3 bg-slate-700/60 border border-pink-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-white backdrop-blur-sm"
                     min="0"
                     step="0.1"
                   />
@@ -336,7 +336,7 @@ const CreateBundle: React.FC = () => {
                   }}
                   onKeyDown={(e) => e.preventDefault()}
                   onPaste={(e) => e.preventDefault()}
-                  className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white backdrop-blur-sm"
+                  className="w-full px-4 py-3 bg-slate-700/60 border border-pink-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-white backdrop-blur-sm"
                   min="0"
                   max="2"
                   step="0.1"
@@ -356,7 +356,7 @@ const CreateBundle: React.FC = () => {
                   }}
                   onKeyDown={(e) => e.preventDefault()}
                   onPaste={(e) => e.preventDefault()}
-                  className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white backdrop-blur-sm"
+                  className="w-full px-4 py-3 bg-slate-700/60 border border-pink-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-white backdrop-blur-sm"
                   min="0"
                   max="2"
                   step="0.1"
@@ -376,7 +376,7 @@ const CreateBundle: React.FC = () => {
             <button
               onClick={() => setCurrentStep(4)}
               disabled={!isValid}
-              className="px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-xl hover:from-purple-600 hover:to-blue-600 transition-all duration-500 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed"
+              className="px-6 py-3 bg-gradient-to-r from-pink-500 to-orange-500 text-white rounded-xl hover:from-pink-600 hover:to-orange-600 transition-all duration-500 shadow-lg hover:shadow-pink-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-pink-400/20 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed"
             >
               Next: Review & Deploy
             </button>
@@ -386,11 +386,11 @@ const CreateBundle: React.FC = () => {
 
       {/* Step 4: Review & Deploy */}
       {currentStep === 4 && (
-        <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl p-8 border border-purple-500/20 shadow-2xl">
+        <div className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg rounded-2xl p-8 border border-pink-500/20 shadow-2xl">
           <h2 className="text-2xl font-bold text-white mb-6">Review & Deploy</h2>
           
           {/* Summary Card */}
-          <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 p-6 rounded-xl border border-purple-400/20 mb-8 backdrop-blur-sm">
+          <div className="bg-gradient-to-r from-pink-500/10 to-orange-500/10 p-6 rounded-xl border border-pink-400/20 mb-8 backdrop-blur-sm">
             <h3 className="text-xl font-bold text-white mb-4">Bundle Summary</h3>
             <div className="grid grid-cols-2 gap-6">
               <div>
@@ -434,9 +434,9 @@ const CreateBundle: React.FC = () => {
             
             {/* Kodiak Features Summary */}
             {bundleConfig.enableIslands && (
-              <div className="mt-6 p-4 bg-blue-500/10 border border-blue-400/30 rounded-lg backdrop-blur-sm">
-                <h4 className="font-semibold text-blue-300 mb-2">🐻 Kodiak Features Enabled</h4>
-                <div className="text-sm text-blue-200 space-y-1">
+              <div className="mt-6 p-4 bg-orange-500/10 border border-orange-400/30 rounded-lg backdrop-blur-sm">
+                <h4 className="font-semibold text-orange-300 mb-2">🐻 Kodiak Features Enabled</h4>
+                <div className="text-sm text-orange-200 space-y-1">
                   <div>• {bundleConfig.islandAllocation}% allocated to Islands for yield generation</div>
                   <div>• Automated PoL rewards from Berachain validators</div>
                   {bundleConfig.enableRewardReinvestment && (
@@ -453,10 +453,10 @@ const CreateBundle: React.FC = () => {
             <button
               onClick={handleDeployBundle}
               disabled={isDeploying}
-              className={`px-12 py-4 rounded-xl font-bold text-xl transition-all duration-500 shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20 ${
+              className={`px-12 py-4 rounded-xl font-bold text-xl transition-all duration-500 shadow-2xl hover:shadow-pink-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-pink-400/20 ${
                 isDeploying 
                   ? 'bg-slate-600 cursor-not-allowed text-white'
-                  : 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600'
+                  : 'bg-gradient-to-r from-pink-500 to-orange-500 text-white hover:from-pink-600 hover:to-orange-600'
               }`}
             >
               {isDeploying ? 'Deploying...' : 'Deploy Bundle'}
@@ -476,20 +476,20 @@ const CreateBundle: React.FC = () => {
             
             {/* Deployment Status */}
             {deploymentResult && (
-              <div className="mt-6 p-6 bg-purple-500/10 border border-purple-400/30 rounded-xl backdrop-blur-sm">
-                <h4 className="text-lg font-semibold text-purple-300 mb-3">✅ Bundle Deployed Successfully!</h4>
+              <div className="mt-6 p-6 bg-pink-500/10 border border-pink-400/30 rounded-xl backdrop-blur-sm">
+                <h4 className="text-lg font-semibold text-pink-300 mb-3">✅ Bundle Deployed Successfully!</h4>
                 <div className="space-y-2 text-sm">
                   <div>
-                    <span className="font-medium text-purple-200">Bundle Address: </span>
-                    <span className="font-mono text-purple-300">{deploymentResult.bundleAddress}</span>
+                    <span className="font-medium text-pink-200">Bundle Address: </span>
+                    <span className="font-mono text-pink-300">{deploymentResult.bundleAddress}</span>
                   </div>
                   <div>
-                    <span className="font-medium text-purple-200">Transaction: </span>
+                    <span className="font-medium text-pink-200">Transaction: </span>
                     <a 
                       href={`https://artio.beratrail.io/tx/${deploymentResult.transactionHash}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-purple-300 hover:underline"
+                      className="font-mono text-pink-300 hover:underline"
                     >
                       {deploymentResult.transactionHash.slice(0, 20)}...{deploymentResult.transactionHash.slice(-10)}
                     </a>

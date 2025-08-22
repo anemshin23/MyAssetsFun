@@ -323,8 +323,8 @@ const BundlesDisplay: React.FC = () => {
 
   if (loading && bundles.length === 0) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-blue-50">
-        <div className="text-lg text-blue-600">Loading...</div>
+      <div className="flex items-center justify-center min-h-screen bg-orange-50">
+        <div className="text-lg text-orange-600">Loading...</div>
       </div>
     );
   }
@@ -350,9 +350,9 @@ const BundlesDisplay: React.FC = () => {
   return (
       <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider>
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-blue-900">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-pink-900 to-orange-900">
       {/* Header */}
-          <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg border-b border-purple-500/20 px-6 py-4 shadow-2xl">
+          <div className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg border-b border-pink-500/20 px-6 py-4 shadow-2xl">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div>
                 <h1 className="text-3xl font-bold text-white">MyAssetsFun</h1>
@@ -364,23 +364,23 @@ const BundlesDisplay: React.FC = () => {
           {/* Full Screen Hero Section */}
           <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
             {/* Animated Background Pattern */}
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-900/40 via-blue-900/40 to-slate-900/40">
+            <div className="absolute inset-0 bg-gradient-to-br from-pink-900/40 via-orange-900/40 to-slate-900/40">
               <div className="absolute inset-0 opacity-20" style={{
-                backgroundImage: `radial-gradient(circle at 30px 30px, rgba(147, 51, 234, 0.3) 2px, transparent 2px)`,
+                backgroundImage: `radial-gradient(circle at 30px 30px, rgba(236, 72, 153, 0.3) 2px, transparent 2px)`,
                 backgroundSize: '60px 60px',
                 animation: 'float 20s ease-in-out infinite'
               }}></div>
             </div>
             
             {/* Enhanced Floating Elements */}
-            <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-purple-400/20 to-blue-400/20 rounded-full blur-2xl animate-pulse"></div>
-            <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-2xl animate-pulse delay-1000"></div>
-            <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-gradient-to-r from-purple-400/20 to-blue-400/20 rounded-full blur-2xl animate-pulse delay-2000"></div>
+            <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-pink-400/20 to-orange-400/20 rounded-full blur-2xl animate-pulse"></div>
+            <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-r from-orange-400/20 to-pink-400/20 rounded-full blur-2xl animate-pulse delay-1000"></div>
+            <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-gradient-to-r from-pink-400/20 to-orange-400/20 rounded-full blur-2xl animate-pulse delay-2000"></div>
             
             {/* Hero Content */}
             <div className="relative z-10 text-center px-6 py-40">
               
-              <h1 className="text-6xl lg:text-8xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-12 animate-fade-in" style={{ lineHeight: '1.1' }}>
+              <h1 className="text-6xl lg:text-8xl font-bold bg-gradient-to-r from-pink-400 via-orange-400 to-pink-400 bg-clip-text text-transparent mb-12 animate-fade-in" style={{ lineHeight: '1.1' }}>
                 Assets are more fun<br />together!
               </h1>
               
@@ -389,7 +389,7 @@ const BundlesDisplay: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                 <button
                   onClick={() => setCurrentView('influencers')}
-                  className="group bg-gradient-to-r from-purple-500 to-blue-500 text-white px-12 py-6 rounded-2xl text-xl font-semibold hover:from-purple-600 hover:to-blue-600 transition-all duration-500 shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-2 hover:scale-105 backdrop-blur-sm border border-purple-400/20"
+                  className="group bg-gradient-to-r from-pink-500 to-orange-500 text-white px-12 py-6 rounded-2xl text-xl font-semibold hover:from-pink-600 hover:to-orange-600 transition-all duration-500 shadow-2xl hover:shadow-pink-500/25 transform hover:-translate-y-2 hover:scale-105 backdrop-blur-sm border border-pink-400/20"
                 >
                   <span className="flex items-center gap-3">
                     <span>Explore Bundles</span>
@@ -399,7 +399,7 @@ const BundlesDisplay: React.FC = () => {
                 
                 <button
                   onClick={() => setCurrentView('create')}
-                  className="group bg-slate-800/60 text-purple-400 border-2 border-purple-400/30 px-12 py-6 rounded-2xl text-xl font-semibold hover:bg-slate-700/80 hover:border-purple-400/50 transition-all duration-500 shadow-2xl hover:shadow-purple-400/25 transform hover:-translate-y-2 hover:scale-105 backdrop-blur-sm"
+                  className="group bg-slate-800/60 text-pink-400 border-2 border-pink-400/30 px-12 py-6 rounded-2xl text-xl font-semibold hover:bg-slate-700/80 hover:border-pink-400/50 transition-all duration-500 shadow-2xl hover:shadow-pink-400/25 transform hover:-translate-y-2 hover:scale-105 backdrop-blur-sm"
                 >
                   <span className="flex items-center gap-3">
                     <span>Create Bundle</span>
@@ -410,45 +410,45 @@ const BundlesDisplay: React.FC = () => {
             </div>
 
             {/* Enhanced Scroll Indicator */}
-            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-purple-300 animate-bounce">
+            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-pink-300 animate-bounce">
               <p className="text-lg font-medium">Scroll to discover</p>
-              <svg className="w-8 h-8 mx-auto mt-3 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <svg className="w-8 h-8 mx-auto mt-3 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
               </svg>
             </div>
           </div>
 
           {/* Enhanced Learn More Section */}
-          <div className="bg-gradient-to-br from-slate-800/80 to-purple-900/80 backdrop-blur-lg py-20">
+          <div className="bg-gradient-to-br from-slate-800/80 to-pink-900/80 backdrop-blur-lg py-20">
             <div className="max-w-4xl mx-auto px-6">
               <h2 className="text-4xl font-bold text-white text-center mb-12">Why Bundle Assets?</h2>
               
               <div className="prose prose-lg max-w-none text-slate-300 leading-relaxed space-y-8">
-                <p className="hover:text-purple-300 transition-colors duration-300">
+                <p className="hover:text-pink-300 transition-colors duration-300">
                   Cryptocurrency bundling represents a revolutionary approach to digital asset investment that combines the power of diversification with the simplicity of single-transaction investing. When you bundle assets, you're essentially creating a miniature portfolio within a single investment vehicle, allowing you to gain exposure to multiple cryptocurrencies without the complexity of managing individual positions.
                 </p>
                 
-                <p className="hover:text-purple-300 transition-colors duration-300">
+                <p className="hover:text-pink-300 transition-colors duration-300">
                   The primary advantage of bundling lies in its ability to reduce risk through strategic diversification. By combining complementary assets—such as established Layer 1 blockchains, emerging DeFi protocols, and stablecoins—you create a balanced portfolio that can weather market volatility more effectively than any single asset. When one cryptocurrency experiences a downturn, others in your bundle may remain stable or even appreciate, helping to cushion your overall investment.
                 </p>
                 
-                <p className="hover:text-purple-300 transition-colors duration-300">
+                <p className="hover:text-pink-300 transition-colors duration-300">
                   Beyond risk management, bundling offers significant practical benefits for both novice and experienced investors. For newcomers to the crypto space, bundles provide a curated entry point that eliminates the overwhelming task of researching hundreds of individual tokens. Instead of making dozens of separate investment decisions, you can rely on proven combinations or create your own strategic allocations based on your investment goals and risk tolerance.
                 </p>
                 
-                <p className="hover:text-purple-300 transition-colors duration-300">
+                <p className="hover:text-pink-300 transition-colors duration-300">
                   Experienced investors benefit from the operational efficiency that bundling provides. Managing multiple individual positions requires constant monitoring, rebalancing, and transaction management—all of which incur time costs and trading fees. Bundles streamline this process by allowing you to maintain your desired asset allocation through a single, cohesive investment that automatically maintains your target weights through periodic rebalancing.
                 </p>
                 
-                <p className="hover:text-purple-300 transition-colors duration-300">
+                <p className="hover:text-pink-300 transition-colors duration-300">
                   The strategic allocation capabilities of bundling are particularly valuable in the dynamic cryptocurrency market. You can create bundles that target specific sectors—such as DeFi protocols, gaming tokens, or infrastructure projects—or design portfolios that balance high-growth potential assets with more stable, established cryptocurrencies. This flexibility allows you to align your investments with your market outlook and personal investment philosophy.
                 </p>
                 
-                <p className="hover:text-purple-300 transition-colors duration-300">
+                <p className="hover:text-pink-300 transition-colors duration-300">
                   Cost efficiency is another compelling reason to embrace bundling. Traditional approaches to building a diversified crypto portfolio often involve numerous transactions, each carrying network fees, exchange fees, and potential slippage costs. Bundling consolidates these costs into a single transaction, potentially saving significant amounts on fees while also reducing the complexity of tracking multiple positions across different platforms.
                 </p>
                 
-                <p className="hover:text-purple-300 transition-colors duration-300">
+                <p className="hover:text-pink-300 transition-colors duration-300">
                   Finally, bundling fosters a collaborative investment community where knowledge and strategies can be shared transparently. When experienced traders and analysts create bundles, they're essentially sharing their market insights and portfolio strategies with the broader community. This democratization of investment expertise allows less experienced investors to benefit from proven approaches while learning about effective portfolio construction techniques.
                 </p>
       </div>
@@ -456,7 +456,7 @@ const BundlesDisplay: React.FC = () => {
               <div className="text-center mt-16">
                 <button
                   onClick={() => setCurrentView('bundles')}
-                  className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-12 py-4 rounded-2xl text-lg font-semibold hover:from-purple-600 hover:to-blue-600 transition-all duration-500 shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 hover:scale-105 backdrop-blur-sm border border-purple-400/20"
+                  className="bg-gradient-to-r from-pink-500 to-orange-500 text-white px-12 py-4 rounded-2xl text-lg font-semibold hover:from-pink-600 hover:to-orange-600 transition-all duration-500 shadow-2xl hover:shadow-pink-500/25 transform hover:-translate-y-1 hover:scale-105 backdrop-blur-sm border border-pink-400/20"
                 >
                   Start Exploring Bundles
                 </button>
@@ -474,9 +474,9 @@ const BundlesDisplay: React.FC = () => {
     
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider>
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-blue-900">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-pink-900 to-orange-900">
           {/* Header */}
-          <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg border-b border-purple-500/20 px-6 py-4 shadow-2xl">
+          <div className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg border-b border-pink-500/20 px-6 py-4 shadow-2xl">
             <div className="max-w-7xl mx-auto flex items-center justify-between">
               <div>
                 <h1 className="text-3xl font-bold text-white">MyAssetsFun</h1>
@@ -484,7 +484,7 @@ const BundlesDisplay: React.FC = () => {
               <div className="flex items-center gap-4">
               <button
                   onClick={() => setCurrentView('home')}
-                  className="bg-slate-700/60 text-purple-400 px-6 py-3 rounded-xl font-semibold hover:bg-slate-600/80 transition-all duration-300 shadow-lg hover:shadow-purple-400/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20"
+                  className="bg-slate-700/60 text-pink-400 px-6 py-3 rounded-xl font-semibold hover:bg-slate-600/80 transition-all duration-300 shadow-lg hover:shadow-pink-400/25 transform hover:-translate-y-1 backdrop-blur-sm border border-pink-400/20"
                 >
                  <div>
                   <FaHome />
@@ -498,15 +498,15 @@ const BundlesDisplay: React.FC = () => {
 
           {/* Navigation */}
 
-          <div className="bg-gradient-to-r from-slate-800/60 to-purple-800/60 backdrop-blur-lg border-b border-purple-500/20">
+          <div className="bg-gradient-to-r from-slate-800/60 to-pink-800/60 backdrop-blur-lg border-b border-pink-500/20">
             <div className="max-w-7xl mx-auto px-6">
               <div className="flex space-x-8">
               <button
                   onClick={() => setCurrentView('influencers')}
                   className={`py-4 px-2 border-b-2 font-medium text-sm transition-all duration-300 ${
                     currentView === 'influencers'
-                      ? 'border-purple-500 text-purple-400'
-                      : 'border-transparent text-slate-400 hover:text-purple-300 hover:border-purple-400/50'
+                      ? 'border-pink-500 text-pink-400'
+                      : 'border-transparent text-slate-400 hover:text-pink-300 hover:border-pink-400/50'
                   }`}
                 >
                   Influencers
@@ -515,8 +515,8 @@ const BundlesDisplay: React.FC = () => {
                   onClick={() => setCurrentView('bundles')}
                   className={`py-4 px-2 border-b-2 font-medium text-sm transition-all duration-300 ${
                     currentView === 'bundles'
-                      ? 'border-purple-500 text-purple-400'
-                      : 'border-transparent text-slate-400 hover:text-purple-300 hover:border-purple-400/50'
+                      ? 'border-pink-500 text-pink-400'
+                      : 'border-transparent text-slate-400 hover:text-pink-300 hover:border-pink-400/50'
                   }`}
                 >
                   All Bundles
@@ -526,8 +526,8 @@ const BundlesDisplay: React.FC = () => {
                   onClick={() => setCurrentView('create')}
                   className={`py-4 px-2 border-b-2 font-medium text-sm transition-all duration-300 ${
                     currentView === 'create'
-                      ? 'border-purple-500 text-purple-400'
-                      : 'border-transparent text-slate-400 hover:text-purple-300 hover:border-purple-400/50'
+                      ? 'border-pink-500 text-pink-400'
+                      : 'border-transparent text-slate-400 hover:text-pink-300 hover:border-pink-400/50'
                   }`}
                 >
                   Create Bundle
@@ -537,8 +537,8 @@ const BundlesDisplay: React.FC = () => {
                   onClick={() => setCurrentView('manage')}
                   className={`py-4 px-2 border-b-2 font-medium text-sm ${
                     currentView === 'manage'
-                      ? 'border-purple-500 text-purple-400'
-                      : 'border-transparent text-slate-400 hover:text-purple-300 hover:border-purple-400/50'
+                      ? 'border-pink-500 text-pink-400'
+                      : 'border-transparent text-slate-400 hover:text-pink-300 hover:border-pink-400/50'
                   }`}
                 >
                   Manage Bundles
@@ -548,8 +548,8 @@ const BundlesDisplay: React.FC = () => {
                   onClick={() => setCurrentView('dashboard')}
                   className={`py-4 px-2 border-b-2 font-medium text-sm transition-all duration-300 ${
                     currentView === 'dashboard'
-                      ? 'border-purple-500 text-purple-400'
-                      : 'border-transparent text-slate-400 hover:text-purple-300 hover:border-purple-400/50'
+                      ? 'border-pink-500 text-pink-400'
+                      : 'border-transparent text-slate-400 hover:text-pink-300 hover:border-pink-400/50'
                   }`}
                 >
                   Dashboard
@@ -565,14 +565,14 @@ const BundlesDisplay: React.FC = () => {
               <>
                 {/* Bundles Header */}
                 <div className="mb-8">
-                  <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-2">
+                  <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-400 to-orange-400 bg-clip-text text-transparent mb-2">
                     All Bundles
                   </h1>
                   <p className="text-xl text-slate-300">Discover all created bundles</p>
                 </div>
 
                 {/* Filters Section */}
-                <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl border border-purple-500/20 p-8 shadow-2xl mb-8 hover:shadow-purple-500/10 transition-all duration-500">
+                <div className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg rounded-2xl border border-pink-500/20 p-8 shadow-2xl mb-8 hover:shadow-pink-500/10 transition-all duration-500">
                   <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-3">
                     Filter Bundles
                   </h3>
@@ -583,7 +583,7 @@ const BundlesDisplay: React.FC = () => {
                         <div className="relative flex-1">
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 hover:border-purple-400/50 transition-all duration-300 text-white placeholder-slate-400 backdrop-blur-sm"
+                            className="w-full px-4 py-3 bg-slate-700/60 border border-pink-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 hover:border-pink-400/50 transition-all duration-300 text-white placeholder-slate-400 backdrop-blur-sm"
                             value={selectedUsername}
                             onChange={(e) => setSelectedUsername(e.target.value)}
                             placeholder="Search by username (e.g., cryptotrader) or currency (e.g., $BTC, $ETH)"
@@ -603,7 +603,7 @@ const BundlesDisplay: React.FC = () => {
                             }
                           }}
                           disabled={!selectedUsername.trim()}
-                          className="px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-xl hover:from-purple-600 hover:to-blue-600 transition-all duration-300 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed whitespace-nowrap font-medium shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20"
+                          className="px-6 py-3 bg-gradient-to-r from-pink-500 to-orange-500 text-white rounded-xl hover:from-pink-600 hover:to-orange-600 transition-all duration-300 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed whitespace-nowrap font-medium shadow-lg hover:shadow-pink-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-pink-400/20"
                         >
                           Search
                         </button>
@@ -632,7 +632,7 @@ const BundlesDisplay: React.FC = () => {
                           {selectedCashtags.map((cashtag) => (
                             <span
                               key={cashtag}
-                              className="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-purple-300 rounded-full text-sm font-medium border border-purple-400/30 backdrop-blur-sm"
+                              className="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-pink-500/20 to-orange-500/20 text-pink-300 rounded-full text-sm font-medium border border-pink-400/30 backdrop-blur-sm"
                             >
                               {cashtag}
                               <button
@@ -642,7 +642,7 @@ const BundlesDisplay: React.FC = () => {
                                     setFilteredBundles([]);
                                   }
                                 }}
-                                className="text-purple-400 hover:text-purple-300 hover:bg-purple-500/30 rounded-full w-5 h-5 flex items-center justify-center transition-all duration-200"
+                                className="text-pink-400 hover:text-pink-300 hover:bg-pink-500/30 rounded-full w-5 h-5 flex items-center justify-center transition-all duration-200"
                               >
                                 ×
                               </button>
@@ -658,8 +658,8 @@ const BundlesDisplay: React.FC = () => {
                 <div className="mb-8">
                   {filteredBundles.length > 0 && (
                     <div className="mb-6 text-center">
-                      <div className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-purple-300 px-6 py-3 rounded-full border border-purple-400/30 backdrop-blur-sm">
-                        <span className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></span>
+                      <div className="inline-flex items-center gap-3 bg-gradient-to-r from-pink-500/20 to-orange-500/20 text-pink-300 px-6 py-3 rounded-full border border-pink-400/30 backdrop-blur-sm">
+                        <span className="w-2 h-2 bg-pink-400 rounded-full animate-pulse"></span>
                         <span className="text-lg font-medium">
                           {selectedCashtags.length > 0 && selectedUsername.trim() !== '' 
                             ? `Showing bundles with ${selectedCashtags.join(', ')} and username "${selectedUsername}"`
@@ -674,7 +674,7 @@ const BundlesDisplay: React.FC = () => {
                   
                   {(filteredBundles.length > 0 ? filteredBundles : bundles).filter(bundle => bundle.bundle.length > 1).length === 0 ? (
                     <div className="text-center py-16">
-                      <div className="w-24 h-24 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-purple-400/30">
+                      <div className="w-24 h-24 bg-gradient-to-r from-pink-500/20 to-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-pink-400/30">
                         <span className="text-4xl">📦</span>
                       </div>
                       <div className="text-2xl font-bold text-white mb-3">No multi-currency bundles found</div>
@@ -690,21 +690,21 @@ const BundlesDisplay: React.FC = () => {
                       {(filteredBundles.length > 0 ? filteredBundles : bundles)
                         .filter(bundle => bundle.bundle.length > 1) // Only show bundles with more than one currency
                         .slice(0, 6).map((bundle) => (
-                        <div key={bundle.id} className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl border border-purple-500/20 p-8 shadow-2xl hover:shadow-purple-500/25 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105">
+                        <div key={bundle.id} className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg rounded-2xl border border-pink-500/20 p-8 shadow-2xl hover:shadow-pink-500/25 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105">
                           {/* Bundle Header */}
                           <div className="flex items-start justify-between mb-6">
                             <a 
                               href={`https://twitter.com/${bundle.originalUsername}/status/${bundle.originalTweetId}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 text-purple-10 hover:text-purple-0 text-xl font-bold transition-all duration-300"
+                              className="inline-flex items-center gap-2 text-pink-400 hover:text-pink-300 text-xl font-bold transition-all duration-300"
                             >
                               Bundle from @{bundle.originalUsername}
                             </a>
                   </div>
 
                   {/* Summary Stats */}
-                          <div className="flex items-center justify-between mb-6 p-4 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-xl border border-purple-400/20 backdrop-blur-sm">
+                          <div className="flex items-center justify-between mb-6 p-4 bg-gradient-to-r from-pink-500/10 to-orange-500/10 rounded-xl border border-pink-400/20 backdrop-blur-sm">
                     <div>
                               <div className="text-slate-300 text-sm font-medium">Total Value</div>
                               <div className="text-2xl font-bold text-white">
@@ -718,7 +718,7 @@ const BundlesDisplay: React.FC = () => {
                               </div>
                               <button
                                 onClick={() => toggleBundleExpansion(bundle.id)}
-                                className="flex items-center gap-2 text-purple-10 hover:text-purple-0 text-sm font-medium mt-2 transition-all duration-300"
+                                className="flex items-center gap-2 text-pink-400 hover:text-pink-300 text-sm font-medium mt-2 transition-all duration-300"
                               >
                                 {expandedBundles.has(bundle.id) ? (
                                   <>
@@ -739,7 +739,7 @@ const BundlesDisplay: React.FC = () => {
                     </div>
                     <div className="text-right">
                               <div className="text-slate-300 text-sm font-medium">Performance</div>
-                              <div className={`text-2xl font-bold ${getBundlePerformance(bundle) > 0 ? 'text-purple-10' : 'text-red-400'}`}>
+                              <div className={`text-2xl font-bold ${getBundlePerformance(bundle) > 0 ? 'text-pink-400' : 'text-red-400'}`}>
                                 {getBundlePerformance(bundle) > 0 ? '+' : ''}{getBundlePerformance(bundle).toFixed(1)}%
                               </div>
                     </div>
@@ -754,14 +754,14 @@ const BundlesDisplay: React.FC = () => {
                                 const change = cachedData ? cachedData.change : Math.random() * 20 - 10;
                                 
                                 return (
-                                  <div key={index} className="flex items-center justify-between p-3 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-xl border border-purple-400/20 backdrop-blur-sm">
+                                  <div key={index} className="flex items-center justify-between p-3 bg-gradient-to-r from-pink-500/10 to-orange-500/10 rounded-xl border border-pink-400/20 backdrop-blur-sm">
                                     <div className="flex items-center gap-3">
                                       <span className="font-bold text-white text-lg">{cashtag}</span>
-                                      <span className="text-purple-10 text-sm font-medium bg-slate-700/60 px-2 py-1 rounded-full backdrop-blur-sm">({Math.round(100 / bundle.bundle.length)}%)</span>
+                                      <span className="text-pink-400 text-sm font-medium bg-slate-700/60 px-2 py-1 rounded-full backdrop-blur-sm">({Math.round(100 / bundle.bundle.length)}%)</span>
                                     </div>
                                     <div className="text-right">
                                       <div className="text-white font-medium">${price.toFixed(2)}</div>
-                                      <div className={`text-sm ${change > 0 ? 'text-purple-10' : 'text-red-400'}`}>
+                                      <div className={`text-sm ${change > 0 ? 'text-pink-400' : 'text-red-400'}`}>
                                         {change > 0 ? '+' : ''}{change.toFixed(1)}%
                                       </div>
                                     </div>
@@ -775,13 +775,13 @@ const BundlesDisplay: React.FC = () => {
                           
 
                   {/* Action Button */}
-                          <button className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-4 px-6 rounded-xl font-bold text-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-500 mb-4 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20">
+                          <button className="w-full bg-gradient-to-r from-pink-500 to-orange-500 text-white py-4 px-6 rounded-xl font-bold text-lg hover:from-pink-600 hover:to-orange-600 transition-all duration-500 mb-4 shadow-lg hover:shadow-pink-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-pink-400/20">
                     Buy Bundle
                   </button>
 
                   {/* Timestamp */}
                           <div className="flex items-center gap-2 text-slate-400 text-sm justify-center">
-                            <span className="w-4 h-4 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full animate-pulse"></span>
+                            <span className="w-4 h-4 bg-gradient-to-r from-pink-400 to-orange-400 rounded-full animate-pulse"></span>
                     <span>{formatDate(bundle.completedAt)}</span>
                   </div>
                 </div>

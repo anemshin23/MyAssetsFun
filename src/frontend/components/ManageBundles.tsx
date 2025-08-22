@@ -13,7 +13,7 @@ const BundleCard: React.FC<BundleCardProps> = ({ bundle, onManage }) => {
   const userValue = parseFloat(bundle.userBalanceUSD);
   
   return (
-    <div className="bg-gradient-to-r from-slate-800/80 to-purple-800/80 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/20 shadow-2xl hover:shadow-purple-500/25 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105">
+    <div className="bg-gradient-to-r from-slate-800/80 to-pink-800/80 backdrop-blur-lg rounded-2xl p-6 border border-pink-500/20 shadow-2xl hover:shadow-pink-500/25 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105">
       <div className="flex justify-between items-start mb-4">
         <div>
           <h3 className="text-xl font-bold text-white">{bundle.name}</h3>
@@ -38,7 +38,7 @@ const BundleCard: React.FC<BundleCardProps> = ({ bundle, onManage }) => {
         </div>
         <div className="flex justify-between">
           <span className="text-slate-300">Position Value</span>
-          <span className="font-medium text-purple-400">${userValue.toFixed(2)}</span>
+          <span className="font-medium text-pink-400">${userValue.toFixed(2)}</span>
         </div>
       </div>
 
@@ -59,7 +59,7 @@ const BundleCard: React.FC<BundleCardProps> = ({ bundle, onManage }) => {
 
       <button
         onClick={() => onManage(bundle)}
-        className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 rounded-xl font-medium hover:from-purple-600 hover:to-blue-600 transition-all duration-500 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20"
+        className="w-full bg-gradient-to-r from-pink-500 to-orange-500 text-white py-3 rounded-xl font-medium hover:from-pink-600 hover:to-orange-600 transition-all duration-500 shadow-lg hover:shadow-pink-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-pink-400/20"
       >
         Manage Position
       </button>
@@ -178,7 +178,7 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-      <div className="bg-gradient-to-r from-slate-800/90 to-purple-800/90 backdrop-blur-lg rounded-2xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto border border-purple-500/20 shadow-2xl">
+      <div className="bg-gradient-to-r from-slate-800/90 to-pink-800/90 backdrop-blur-lg rounded-2xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto border border-pink-500/20 shadow-2xl">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-white">Manage {bundle.symbol}</h2>
           <button
@@ -190,7 +190,7 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
         </div>
 
         {/* Bundle Info */}
-        <div className="bg-purple-500/10 p-4 rounded-xl mb-6 border border-purple-400/20 backdrop-blur-sm">
+        <div className="bg-pink-500/10 p-4 rounded-xl mb-6 border border-pink-400/20 backdrop-blur-sm">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <div className="text-sm text-slate-300">Your Position</div>
@@ -198,7 +198,7 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
             </div>
             <div>
               <div className="text-sm text-slate-300">Value</div>
-              <div className="font-semibold text-purple-400">${parseFloat(bundle.userBalanceUSD).toFixed(2)}</div>
+              <div className="font-semibold text-pink-400">${parseFloat(bundle.userBalanceUSD).toFixed(2)}</div>
             </div>
           </div>
         </div>
@@ -209,7 +209,7 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
             onClick={() => setActiveTab('invest')}
             className={`flex-1 py-2 px-4 rounded-lg transition-all duration-300 ${
               activeTab === 'invest'
-                ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+                ? 'bg-gradient-to-r from-pink-500 to-orange-500 text-white shadow-lg'
                 : 'text-slate-300 hover:text-white'
             }`}
           >
@@ -219,7 +219,7 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
             onClick={() => setActiveTab('redeem')}
             className={`flex-1 py-2 px-4 rounded-lg transition-all duration-300 ${
               activeTab === 'redeem'
-                ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+                ? 'bg-gradient-to-r from-pink-500 to-orange-500 text-white shadow-lg'
                 : 'text-slate-300 hover:text-white'
             }`}
           >
@@ -239,7 +239,7 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
                   onClick={() => setInvestMethod('exact')}
                   className={`flex-1 py-2 px-4 rounded-lg transition-all duration-300 text-sm ${
                     investMethod === 'exact'
-                      ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+                      ? 'bg-gradient-to-r from-pink-500 to-orange-500 text-white shadow-lg'
                       : 'text-slate-300 hover:text-white'
                   }`}
                 >
@@ -249,7 +249,7 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
                   onClick={() => setInvestMethod('single')}
                   className={`flex-1 py-2 px-4 rounded-lg transition-all duration-300 text-sm ${
                     investMethod === 'single'
-                      ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+                      ? 'bg-gradient-to-r from-pink-500 to-orange-500 text-white shadow-lg'
                       : 'text-slate-300 hover:text-white'
                   }`}
                 >
@@ -274,13 +274,13 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
                 ? (investMethod === 'exact' ? '1.0' : '100') 
                 : '10.0'
               }
-              className="w-full px-4 py-3 bg-slate-700/60 border border-purple-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white placeholder-slate-400 backdrop-blur-sm"
+              className="w-full px-4 py-3 bg-slate-700/60 border border-pink-500/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-white placeholder-slate-400 backdrop-blur-sm"
             />
           </div>
 
           {activeTab === 'invest' && (
-            <div className="bg-blue-500/10 p-4 rounded-xl border border-blue-400/30 backdrop-blur-sm">
-              <div className="text-sm text-blue-200">
+            <div className="bg-orange-500/10 p-4 rounded-xl border border-orange-400/30 backdrop-blur-sm">
+              <div className="text-sm text-orange-200">
                 <div className="font-semibold mb-1">
                   {investMethod === 'exact' ? 'Exact Basket Details:' : 'Single Token Details:'}
                 </div>
@@ -322,8 +322,8 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
           )}
 
           {txHash && (
-            <div className="bg-purple-500/10 border border-purple-400/30 rounded-xl p-4 backdrop-blur-sm">
-              <div className="text-purple-200 text-sm">
+            <div className="bg-pink-500/10 border border-pink-400/30 rounded-xl p-4 backdrop-blur-sm">
+              <div className="text-pink-200 text-sm">
                 <div className="font-semibold">Transaction Successful!</div>
                 <div className="break-all mt-1">
                   <a 
@@ -342,11 +342,11 @@ const ManageBundleModal: React.FC<ManageBundleModalProps> = ({ bundle, isOpen, o
           <button
             onClick={activeTab === 'invest' ? handleInvest : handleRedeem}
             disabled={isLoading || !amount}
-            className={`w-full py-3 rounded-xl font-medium transition-all duration-500 shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-purple-400/20 ${
+            className={`w-full py-3 rounded-xl font-medium transition-all duration-500 shadow-lg hover:shadow-pink-500/25 transform hover:-translate-y-1 backdrop-blur-sm border border-pink-400/20 ${
               isLoading || !amount
                 ? 'bg-slate-600 text-slate-400 cursor-not-allowed'
                 : activeTab === 'invest'
-                ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600'
+                ? 'bg-gradient-to-r from-pink-500 to-orange-500 text-white hover:from-pink-600 hover:to-orange-600'
                 : 'bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600'
             }`}
           >
@@ -426,13 +426,13 @@ const ManageBundles: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-2">Manage Bundles</h1>
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-400 to-orange-400 bg-clip-text text-transparent mb-2">Manage Bundles</h1>
         <p className="text-slate-300">Invest in or redeem from deployed asset bundles</p>
       </div>
 
       {loading ? (
         <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
           <p className="text-slate-300">Loading bundles...</p>
         </div>
       ) : bundles.length === 0 ? (
