@@ -495,8 +495,17 @@ export class BundleManager {
       if (error instanceof Error && error.message.includes('Minimum')) {
         throw error;
       }
+      
       // For other errors, return a safe minimum that meets creation unit
-      return '1.0'; // 1 full share
+      try {
+        const signer = await this.provider.getSigner();
+        const bundleContract = new Contract(bundleAddress, BundleV3ProductionABI, signer);
+        const creationUnit = await bundleContract.creationUnit();
+        return formatEther(creationUnit); // Return minimum as a string
+      } catch (fetchError) {
+        console.error('Failed to fetch creation unit, returning 1.0 as fallback:', fetchError);
+        return '1.0'; // Fallback in case creation unit cannot be fetched
+      }
     }
   }
 
