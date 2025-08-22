@@ -447,9 +447,8 @@ const CreateBundle: React.FC = () => {
             {/* Kodiak Features Summary */}
             {bundleConfig.enableIslands && (
               <div className="mt-6 p-4 bg-pink-400/20 border border-pink-300/40 rounded-lg backdrop-blur-sm">
-                <h4 className="font-semibold text-pink-200 mb-2">🐻 Kodiak Features Enabled</h4>
                 <div className="text-sm text-pink-100 space-y-1">
-                  <div>• {bundleConfig.islandAllocation}% allocated to Islands for yield generation</div>
+                  <div>• {bundleConfig.islandAllocation}% allocated for yield generation</div>
                   <div>• Automated PoL rewards from Berachain validators</div>
                   {bundleConfig.enableRewardReinvestment && (
                     <div>• {bundleConfig.rewardReinvestmentRatio}% rewards auto-reinvested for compound growth</div>
@@ -478,7 +477,7 @@ const CreateBundle: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex justify-center mt-6">
+          <div className="flex justify-center mt-6 gap-4 items-center">
             <button
               onClick={() => setCurrentStep(3)}
               className="px-6 py-3 bg-pink-800/60 text-white rounded-xl hover:bg-pink-700/80 transition-all duration-300 backdrop-blur-sm border border-pink-400/40"
@@ -488,8 +487,8 @@ const CreateBundle: React.FC = () => {
             
             {/* Deployment Status */}
             {deploymentResult && (
-              <div className="mt-6 p-6 bg-pink-400/20 border border-pink-300/40 rounded-xl backdrop-blur-sm">
-                <h4 className="text-lg font-semibold text-pink-200 mb-3">✅ Bundle Deployed Successfully!</h4>
+              <div className="p-6 bg-pink-400/20 border border-pink-300/40 rounded-xl backdrop-blur-sm">
+                <h4 className="text-lg font-semibold text-pink-200 mb-3">Bundle Deployed Successfully!</h4>
                 <div className="space-y-2 text-sm">
                   <div>
                     <span className="font-medium text-pink-100">Bundle Address: </span>

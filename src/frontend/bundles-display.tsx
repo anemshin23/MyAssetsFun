@@ -410,16 +410,16 @@ const BundlesDisplay: React.FC = () => {
             </div>
 
             {/* Enhanced Scroll Indicator */}
-            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-pink-300 animate-bounce">
+            {/* <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-pink-300 animate-bounce">
               <p className="text-lg font-medium">Scroll to discover</p>
               <svg className="w-8 h-8 mx-auto mt-3 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
               </svg>
-            </div>
+            </div> */}
           </div>
 
           {/* Enhanced Learn More Section */}
-          <div className="bg-gradient-to-br from-slate-800/80 to-pink-900/80 backdrop-blur-lg py-20">
+          {/* <div className="bg-gradient-to-br from-slate-800/80 to-pink-900/80 backdrop-blur-lg py-20">
             <div className="max-w-4xl mx-auto px-6">
               <h2 className="text-4xl font-bold text-white text-center mb-12">Why Bundle Assets?</h2>
               
@@ -462,7 +462,7 @@ const BundlesDisplay: React.FC = () => {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </RainbowKitProvider>
       </WagmiConfig>
